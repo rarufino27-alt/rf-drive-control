@@ -389,21 +389,26 @@ Valor líquido por hora: R$ ${valorHoraLiquida.toFixed(2)}
         return;
       }
 
-      const mensagem = `🚖 *Estimativa RF VIAGENS* 🚖
+      const mensagem = `🚖 *Cálculo de Viagem* 🚖
 
-Motorista: ${motorista}
-CPF/CNPJ: ${cpfCnpj}
-Carro: ${carro}
-Placa: ${placa}
-Cor: ${cor}
-Origem: ${origem}
-Destino: ${destino}
-Valor Total: R$ ${valorTotal}
-Duração: ${duracaoMin} minutos`;
+👨🏽‍💼Motorista: ${motorista}
+🪪CPF/CNPJ: ${cpfCnpj}
+🚖Carro: ${carro}
+🚕Placa: ${placa}
+⚪Cor: ${cor}
+
+🛫Origem: ${origem}
+🛬Destino: ${destino}
+
+💰Valor Total: R$ ${valorTotal}
+
+⏳Duração: ${duracaoMin} minutos`;
 
       window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
     }
   </script>
 </body>
 </html>
+
+
 
