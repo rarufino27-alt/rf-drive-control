@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Perfil - Motorista App</title>
+
+<style>
+.bottom-menu{
+    position:fixed;
+    bottom:15px;
+    left:50%;
+    transform:translateX(-50%);
+    width:88%;
+    background:#1B1B1B;
+    padding:10px 0;
+    border-radius:18px;
+    display:flex;
+    justify-content:space-around;
+    box-shadow:0 6px 25px rgba(0,0,0,0.6);
+    z-index:1000;
+}
+.bottom-menu .menu-item{
+    text-align:center;
+    color:#fff;
+    text-decoration:none;
+    font-size:13px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+.bottom-menu .menu-item .icon{
+    font-size:22px;
+    margin-bottom:4px;
+}
+.bottom-menu .menu-item.active{
+    color:var(--accent);
+}
+
+:root{
+    --bg:#121212; 
+    --card:#1E1E1E; 
+    --panel:#2A2A2A; 
+    --accent:#1DB954; 
+    --danger:#ff3b30; 
+    --muted:#bbb;
+}
+
+*{box-sizing:border-box}
+
+body{
+    margin:0; 
+    font-family:Arial, Helvetica, sans-serif; 
+    background:var(--bg); 
+    color:#fff; 
+    padding-bottom:160px;
+}
+
+header{
+    background:var(--accent); 
+    padding:14px; 
+    text-align:center; 
+    color:#000; 
+    font-weight:700; 
+    font-size:20px;
+}
+
+.container{
+    max-width:980px; 
+    margin:12px auto; 
+    padding:0 16px; 
+}
+
+#greeting{
+    text-align:center; 
+    color:var(--accent); 
+    margin:8px 0 14px 0; 
+    font-size:18px;
+}
+
+.row{
+    display:flex; 
+    gap:16px; 
+    flex-wrap:wrap; 
+    align-items:flex-start;
+}
+
+.col-1{
+    flex:0 0 320px; 
+    min-width:260px;
+}
+
+.col-2{
+    flex:1 1 560px; 
+    min-width:280px;
+}
+
+.card{
+    background:var(--card); 
+    border-radius:12px; 
+    padding:14px; 
+    box-shadow:0 6px 18px rgba(0,0,0,.5); 
+    margin-bottom:16px;
+}
+
+.card h3{
+    margin:6px 0 12px 0; 
+    font-size:16px;
+}
+
+.foto{
+    width:120px; 
+    height:120px; 
+    border-radius:50%; 
+    object-fit:cover; 
+    border:3px solid var(--accent); 
+    display:block; 
+    margin:10px auto; 
+    background:var(--panel);
+}
+
+.input, input, select, textarea{
+    width:100%; 
+    padding:10px; 
+    border-radius:8px; 
+    border:1px solid #333; 
+    background:var(--panel); 
+    color:#fff; 
+    margin-bottom:8px;
+}
+
+.btn{
+    width:100%; 
+    padding:10px; 
+    border-radius:10px; 
+    border:none; 
+    background:var(--accent); 
+    color:#000; 
+    font-weight:700; 
+    cursor:pointer;
+}
+
+.valorLinha{
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center; 
+    margin-top:6px; 
+    color:var(--muted); 
+    font-size:14px;
+}
+
+.small{ color:var(--muted); font-size:13px; }
+
+.receber-item{
+    display:flex; 
+    gap:8px; 
+    align-items:center; 
+    justify-content:space-between; 
+    padding:8px; 
+    border-radius:8px; 
+    background:#0f0f0f; 
+    margin-top:8px;
+}
+
+/* MENU */
+.bottom-menu{
+    position:fixed; bottom:15px; left:50%; transform:translateX(-50%);
+    width:88%; background:#1B1B1B; padding:10px 0; border-radius:18px;
+    display:flex; justify-content:space-around;
+    box-shadow:0 6px 25px rgba(0,0,0,0.6); z-index:1000;
+}
+
+.bottom-menu .menu-item{
+    text-align:center; color:#fff; text-decoration:none; 
+    font-size:13px; display:flex; flex-direction:column; align-items:center;
+}
+
+.bottom-menu .menu-item .icon{ font-size:22px; margin-bottom:4px; }
+.bottom-menu .menu-item.active{ color:var(--accent); }
+
+</style>
+</head>
+<!-- MENU INFERIOR -->
+<nav class="bottom-menu" aria-label="Menu">
+    <a href="index.html" class="menu-item">
+        <span class="icon">🏠</span>
+        <span>Dashboard</span>
+    </a>
+
+    <a href="entradas.html" class="menu-item">
+        <span class="icon">💵</span>
+        <span>Entradas</span>
+    </a>
+
+    <a href="manutencao.html" class="menu-item">
+        <span class="icon">🛠️</span>
+        <span>Manutenção</span>
+    </a>
+
+    <a href="resumo.html" class="menu-item">
+        <span class="icon">📊</span>
+        <span>Resumo</span>
+    </a>
+
+    <!-- Item ativo nesta página -->
+    <a href="perfil.html" class="menu-item active">
+        <span class="icon">👤</span>
+        <span>Perfil</span>
+    </a>
+
+    <a href="calculadora.html" class="menu-item">
+        <span class="icon">📟</span>
+        <span>Calc</span>
+    </a>
+</nav>
+
+<body>
+
+<header>Perfil</header>
+<div id="greeting"></div>
+
+<div class="container">
+
+    <div class="row">
+
+        <!-- COLUNA ESQUERDA -->
+        <div class="col-1">
+
+            <div class="card">
+                <h3>Dados do Motorista</h3>
+
+                <img id="fotoPerfil" class="foto" src="" alt="Foto do motorista">
+                <input id="fotoInput" type="file" accept="image/*">
+
+                <input id="nome" class="input" placeholder="Primeiro nome">
+                <input id="carro" class="input" placeholder="Marca do carro">
+                <input id="modelo" class="input" placeholder="Modelo do carro">
+                <input id="ano" class="input" placeholder="Ano">
+                <input id="placa" class="input" placeholder="Placa">
+
+                <button id="salvarPerfilBtn" class="btn">Salvar Perfil</button>
+            </div>
+            <div class="card">
+                <h3>Saldo Inicial</h3>
+
+                <input id="saldoInicial" type="number" class="input" placeholder="Saldo inicial do mês (R$)" step="0.01">
+
+                <div class="valorLinha" style="margin-top:10px;">
+                    <span>Saldo atual:</span>
+                    <strong id="saldoAtualDisplay">R$ 0,00</strong>
+                </div>
+
+                <button id="salvarSaldoBtn" class="btn" style="margin-top:12px;">Salvar Saldo</button>
+            </div>
+
+
+            <div class="card">
+                <h3>Meta Mensal</h3>
+                <input id="metaMensal" type="number" class="input" placeholder="Valor da meta mensal (R$)" step="0.01">
+                <div class="valorLinha"><span>Total a receber:</span><strong id="tvReceber">R$ 0,00</strong></div>
+                <div class="valorLinha"><span>Meta líquida:</span><strong id="tvMetaLiquida">R$ 0,00</strong></div>
+                <div class="valorLinha"><span>Falta para meta:</span><strong id="tvFalta">R$ 0,00</strong></div>
+                <button id="salvarMetaBtn" class="btn">Salvar Meta</button>
+            </div>
+
+
+            <div class="card">
+                <h3>Valores a Receber</h3>
+
+                <input id="receberValor" class="input" type="number" placeholder="Valor (R$)" step="0.01">
+                <input id="receberData" class="input" type="date">
+
+                <div style="display:flex;gap:8px">
+                    <button id="addReceberBtn" class="btn">Adicionar</button>
+                    <button id="tutorialOpenBtn" class="btn" style="background:#666;color:#fff">Ajuda</button>
+                </div>
+
+                <div id="listaReceber"></div>
+
+                <div style="display:flex;gap:8px;margin-top:14px;">
+                    <button id="btnWhats" class="btn" style="background:#25D366;color:#000">Enviar WhatsApp</button>
+                    <button id="btnPdf" class="btn" style="background:#ff9f00;color:#000">Gerar PDF</button>
+                </div>
+            </div>
+
+        </div>
+        <!-- COLUNA DIREITA -->
+        <div class="col-2">
+
+            <div class="card">
+                <h3>Progresso Mensal</h3>
+
+                <div class="progressWrap">
+
+                    <!-- CÍRCULO -->
+                    <div class="circular" id="circularWrap"></div>
+
+                    <!-- DADOS -->
+                    <div style="flex:1; min-width:220px;">
+
+                        <div class="small">Meta mensal</div>
+                        <div id="labelMeta" style="font-weight:800;font-size:18px;margin-top:6px;">R$ 0,00</div>
+
+                        <div class="small" style="margin-top:8px;">Realizado (mês)</div>
+                        <div id="labelRealizado" style="font-weight:800;font-size:18px;margin-top:6px;">R$ 0,00</div>
+
+                        <div class="small" style="margin-top:8px;">A receber</div>
+                        <div id="labelReceber" style="font-weight:800;font-size:18px;margin-top:6px;">R$ 0,00</div>
+
+                        <!-- BARRA PROGRESSO -->
+                        <div style="margin-top:12px;">
+                            <div class="progressBar">
+                                <div class="fill" id="linearFill" style="width:0%"></div>
+                            </div>
+                            <div class="small" style="margin-top:6px">Progresso mensal</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- DETALHES -->
+            <div class="card">
+                <h3>Detalhes</h3>
+
+                <div class="metrics">
+                    <div class="metric">
+                        <h4>Meta mensal</h4>
+                        <div class="big" id="metaMensalVal">R$ 0,00</div>
+                    </div>
+
+                    <div class="metric">
+                        <h4>Realizado no mês</h4>
+                        <div class="big" id="realizadoMesVal">R$ 0,00</div>
+                    </div>
+
+                    <div class="metric">
+                        <h4>Saídas no mês</h4>
+                        <div class="big" id="saidasMesVal">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <!-- GRÁFICO BARRAS -->
+                <div style="margin-top:12px;">
+                    <div class="chartRow">
+
+                        <div class="bar">
+                            <div class="inner" id="barMeta" style="height:10%"></div>
+                            <div class="label">Meta</div>
+                        </div>
+
+                        <div class="bar">
+                            <div class="inner" id="barRealizado" style="height:10%"></div>
+                            <div class="label">Realizado</div>
+                        </div>
+
+                        <div class="bar">
+                            <div class="inner" id="barReceber" style="height:10%"></div>
+                            <div class="label">A Receber</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="alertMonthly" class="alert">
+                    Você está abaixo da meta mensal — revise seus custos e recebíveis.
+                </div>
+
+            </div>
+
+        </div> <!-- fim col-2 -->
+    </div> <!-- fim row -->
+
+</div> <!-- fim container -->
+<!-- MODAL DE AJUDA -->
+<div id="modalTutorial" role="dialog" aria-hidden="true">
+    <div class="modalInner">
+        <h2>Como usar esta tela</h2>
+        <ol>
+            <li>Preencha seus dados de motorista.</li>
+            <li>Defina sua meta mensal.</li>
+            <li>Cadastre valores a receber.</li>
+            <li>Acompanhe o progresso mensal nos gráficos.</li>
+        </ol>
+
+        <div style="display:flex;gap:8px;margin-top:12px;">
+            <button id="tutorialCloseBtn" class="btn" style="flex:1">Fechar</button>
+            <button id="tutorialNeverBtn" class="btn" style="flex:1;background:#666;color:#fff">Não mostrar novamente</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- MENU INFERIOR -->
+<nav class="bottom-menu">
+    <a href="index.html" class="menu-item"><span class="icon">🏠</span><span>Dashboard</span></a>
+    <a href="entradas.html" class="menu-item"><span class="icon">💵</span><span>Entradas</span></a>
+    <a href="manutencao.html" class="menu-item"><span class="icon">🛠️</span><span>Manutenção</span></a>
+    <a href="resumo.html" class="menu-item"><span class="icon">📊</span><span>Resumo</span></a>
+    <a href="perfil.html" class="menu-item active"><span class="icon">👤</span><span>Perfil</span></a>
+    <a href="calculadora.html" class="menu-item"><span class="icon">📟</span><span>Calc</span></a>
+</nav>
+
+<!-- Bibliotecas necessárias -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* Atalhos */
+const $ = id => document.getElementById(id);
+const brl = v => Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+
+/* STORAGE */
+let perfil = JSON.parse(localStorage.getItem("perfilMotorista") || "{}");
+let meta = JSON.parse(localStorage.getItem("metaMensal") || "{}");
+let valoresReceber = JSON.parse(localStorage.getItem("valoresReceber") || "[]");
+let registros = JSON.parse(localStorage.getItem("entradasSaidas") || "[]");
+let saldoInicialObj = JSON.parse(localStorage.getItem("saldoInicial") || "{}");
+
+/* -----------------------
+   INICIALIZAÇÃO
+----------------------- */
+function init(){
+    // FOTO
+    $("fotoPerfil").src = perfil.foto || "";
+
+    // CAMPOS PERFIL
+    $("nome").value = perfil.nome || "";
+    $("carro").value = perfil.carro || "";
+    $("modelo").value = perfil.modelo || "";
+    $("ano").value = perfil.ano || "";
+    $("placa").value = perfil.placa || "";
+
+    // META
+    $("metaMensal").value = meta.valor || "";
+
+    // SALDO INICIAL
+    $("saldoInicial").value = saldoInicialObj.valor || "";
+    $("saldoAtualDisplay").innerText = brl(saldoInicialObj.valor || 0);
+
+    carregarNome();
+    renderReceber();
+    updateAll();
+}
+
+init();
+
+/* Saudação */
+function carregarNome(){
+    const n = perfil.nome ? perfil.nome.split(" ")[0] : "";
+    $("greeting").innerText = n ? `Olá, ${n}!` : "";
+}
+
+/* FOTO DE PERFIL */
+$("fotoInput").addEventListener("change", e => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        perfil.foto = ev.target.result;
+        $("fotoPerfil").src = perfil.foto;
+        localStorage.setItem("perfilMotorista", JSON.stringify(perfil));
+    };
+    reader.readAsDataURL(file);
+});
+
+/* SALVAR PERFIL */
+$("salvarPerfilBtn").addEventListener("click", () => {
+    perfil.nome = $("nome").value;
+    perfil.carro = $("carro").value;
+    perfil.modelo = $("modelo").value;
+    perfil.ano = $("ano").value;
+    perfil.placa = $("placa").value;
+
+    localStorage.setItem("perfilMotorista", JSON.stringify(perfil));
+    carregarNome();
+    alert("Perfil salvo!");
+});
+
+/* SALVAR SALDO INICIAL */
+$("salvarSaldoBtn").addEventListener("click", () => {
+    const v = Number($("saldoInicial").value) || 0;
+    saldoInicialObj = { valor: v };
+
+    localStorage.setItem("saldoInicial", JSON.stringify(saldoInicialObj));
+
+    $("saldoAtualDisplay").innerText = brl(v);
+
+    updateAll();
+
+    alert("Saldo inicial salvo!");
+});
+
+/* META MENSAL */
+$("salvarMetaBtn").addEventListener("click",()=>{
+    meta.valor = Number($("metaMensal").value)||0;
+    localStorage.setItem("metaMensal",JSON.stringify(meta));
+    updateAll();
+    alert("Meta salva!");
+});
+
+/* -----------------------
+   VALORES A RECEBER
+----------------------- */
+$("addReceberBtn").addEventListener("click", ()=>{
+    const valor = Number($("receberValor").value);
+    const data  = $("receberData").value;
+
+    if(!valor || !data){
+        alert("Preencha valor e data.");
+        return;
+    }
+
+    valoresReceber.push({valor,data});
+    localStorage.setItem("valoresReceber",JSON.stringify(valoresReceber));
+
+    $("receberValor").value = "";
+    $("receberData").value = "";
+
+    renderReceber();
+    updateAll();
+});
+
+function renderReceber(){
+    const el = $("listaReceber");
+    if(!valoresReceber.length){
+        el.innerHTML = `<div class="small">Nenhum valor a receber.</div>`;
+        return;
+    }
+
+    let html = "";
+    valoresReceber.forEach((r,i)=>{
+        html += `
+        <div class="receber-item">
+            <div style="flex:1">
+                <div style="font-weight:700">${r.data} — ${brl(r.valor)}</div>
+                <div class="small">Previsto</div>
+            </div>
+
+            <div style="display:flex;gap:6px">
+                <button 
+                    onclick="marcarComoRecebido(${i})"
+                    style="background:#0b74ff;color:#fff;border:none;padding:8px;border-radius:8px;cursor:pointer">
+                    Recebido
+                </button>
+
+                <button 
+                    onclick="removerReceber(${i})"
+                    style="background:#ff3b30;color:#fff;border:none;padding:8px;border-radius:8px;cursor:pointer">
+                    Remover
+                </button>
+            </div>
+        </div>`;
+    });
+
+    el.innerHTML = html;
+}
+
+function removerReceber(i){
+    valoresReceber.splice(i,1);
+    localStorage.setItem("valoresReceber",JSON.stringify(valoresReceber));
+    renderReceber();
+    updateAll();
+}
+
+function marcarComoRecebido(i){
+    const r = valoresReceber[i];
+    if(!confirm("Confirmar recebimento?")) return;
+
+    // adiciona como entrada no financeiro
+    registros.push({
+        id: Date.now(),
+        tipo:"entrada",
+        valor: r.valor,
+        criadoEm: new Date().toISOString(),
+        subtipo:"extra",
+        formaPag:"a_receber"
+    });
+
+    localStorage.setItem("entradasSaidas", JSON.stringify(registros));
+
+    valoresReceber.splice(i,1);
+    localStorage.setItem("valoresReceber", JSON.stringify(valoresReceber));
+
+    renderReceber();
+    updateAll();
+}
+
+/* -----------------------
+    CÁLCULOS MENSAIS
+----------------------- */
+function isSameMonthISO(iso){
+    const d = new Date(iso);
+    const now = new Date();
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+}
+
+function entradasLiquidasMes(){
+    return registros.reduce((s,r)=>{
+        if(r.tipo==="entrada" && isSameMonthISO(r.criadoEm)) 
+            return s + Number(r.valor||0);
+        return s;
+    },0);
+}
+
+function saidasMes(){
+    return registros.reduce((s,r)=>{
+        if(r.tipo==="saida" && isSameMonthISO(r.criadoEm)) 
+            return s + Number(r.valor||0);
+        return s;
+    },0);
+}
+
+function totalReceberNoMes(){
+    const now = new Date();
+    return valoresReceber.reduce((s,r)=>{
+        const d = new Date(r.data);
+        if(d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear())
+            return s + Number(r.valor||0);
+        return s;
+    },0);
+}
+
+function realizadoMes(){
+    return entradasLiquidasMes() - saidasMes() + (saldoInicialObj.valor||0);
+}
+
+function diasRestantes(){
+    const hoje = new Date();
+    const ultimo = new Date(hoje.getFullYear(),hoje.getMonth()+1,0).getDate();
+    return ultimo - hoje.getDate() + 1;
+}
+
+/* -----------------------
+   ATUALIZA TODA A TELA
+----------------------- */
+function updateAll(){
+
+    const metaMensal = Number(meta.valor||0);
+    const receb = totalReceberNoMes();
+    const entradas = entradasLiquidasMes();
+    const saidas = saidasMes();
+    const realizado = realizadoMes();
+
+    const metaLiquida = metaMensal - receb;
+
+    // LABELS
+    $("labelMeta").innerText = brl(metaMensal);
+    $("labelReceber").innerText = brl(receb);
+    $("labelRealizado").innerText = brl(realizado);
+
+    $("metaMensalVal").innerText = brl(metaMensal);
+    $("realizadoMesVal").innerText = brl(realizado);
+    $("saidasMesVal").innerText = brl(saidas);
+
+    $("tvMetaLiquida").innerText = brl(metaLiquida);
+    $("tvFalta").innerText = brl(Math.max(0, metaLiquida - realizado));
+
+    // CÍRCULO
+    const pct = metaLiquida>0 ? Math.min(100, Math.round((realizado/metaLiquida)*100)) : 100;
+    renderCircular(pct);
+
+    $("linearFill").style.width = pct + "%";
+
+    // GRÁFICOS
+    const max = Math.max(metaLiquida, realizado, receb, 1);
+
+    $("barMeta").style.height = `${(metaLiquida/max)*100}%`;
+    $("barRealizado").style.height = `${(realizado/max)*100}%`;
+    $("barReceber").style.height = `${(receb/max)*100}%`;
+
+    // ALERTA
+    $("alertMonthly").style.display = realizado < metaLiquida ? "block" : "none";
+}
+
+/* GRÁFICO CIRCULAR */
+function renderCircular(pct){
+  const size = 140;
+  const stroke = 12;
+  const radius = (size - stroke)/2;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference * (1 - Math.max(0, Math.min(pct,100))/100);
+
+  $('circularWrap').innerHTML = `
+    <div style="
+      position:relative;
+      width:${size}px;
+      height:${size}px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    ">
+      <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="position:absolute;top:0;left:0;">
+        <defs>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#1DB954"/>
+            <stop offset="100%" stop-color="#0ab85a"/>
+          </linearGradient>
+        </defs>
+
+        <circle cx="${size/2}" cy="${size/2}" r="${radius}" 
+          stroke="#0e0e0e" stroke-width="${stroke}" fill="none"/>
+        
+        <circle cx="${size/2}" cy="${size/2}" r="${radius}"
+          stroke="url(#g1)" stroke-width="${stroke}" stroke-linecap="round"
+          stroke-dasharray="${circumference}"
+          stroke-dashoffset="${offset}"
+          fill="none" style="transition: stroke-dashoffset .6s ease;"/>
+      </svg>
+
+      <div style="
+        position:absolute;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        text-align:center;
+        color:#fff;
+      ">
+        <div style="font-size:24px;font-weight:800;">${pct}%</div>
+        <div style="font-size:12px;color:#bbb;">da meta</div>
+      </div>
+    </div>`;
+}
+
+/* -----------------------
+   WHATSAPP
+----------------------- */
+$("btnWhats").addEventListener("click", ()=>{
+
+    const msg = 
+`📊 *Relatório do Mês*
+
+🎯 Meta: ${brl(meta.valor)}
+📥 A receber: ${brl(totalReceberNoMes())}
+💰 Realizado: ${brl(realizadoMes())}
+📤 Saídas: ${brl(saidasMes())}
+💵 Entradas: ${brl(entradasLiquidasMes())}
+🏦 Saldo inicial: ${brl(saldoInicialObj.valor||0)}
+⏳ Dias restantes: ${diasRestantes()}`;
+
+    const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank");
+});
+
+/* -----------------------
+   PDF
+----------------------- */
+$("btnPdf").addEventListener("click", async ()=>{
+
+    const container = document.querySelector(".container");
+
+    const canvas = await html2canvas(container,{scale:2});
+
+    const img = canvas.toDataURL("image/png");
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p","mm","a4");
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const imgProps = pdf.getImageProperties(img);
+    const imgHeight = (imgProps.height * pageWidth) / imgProps.width;
+
+    pdf.addImage(img,"PNG",0,0,pageWidth,imgHeight);
+    pdf.save("relatorio_perfil.pdf");
+});
+
+/* -----------------------
+   MODAL
+----------------------- */
+$("tutorialOpenBtn").onclick = ()=> $("modalTutorial").style.display="block";
+$("tutorialCloseBtn").onclick = ()=> $("modalTutorial").style.display="none";
+$("tutorialNeverBtn").onclick = ()=>{
+    localStorage.setItem("hide_tutorial","1");
+    $("modalTutorial").style.display="none";
+};
+
+</script>
+
+</body>
+</html>
