@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Calculadora de Viagens</title>
+
+<style>
+:root{
+    --bg:#121212;
+    --card:#1E1E1E;
+    --panel:#2A2A2A;
+    --accent:#1DB954;
+    --danger:#ff3b30;
+    --muted:#bbbbbb;
+}
+
+*{box-sizing:border-box;}
+body{
+    margin:0;
+    background:var(--bg);
+    color:#fff;
+    font-family:Arial;
+    padding-bottom:200px;
+}
+header{
+    background:var(--accent);
+    color:#000;
+    padding:14px;
+    font-size:20px;
+    text-align:center;
+    font-weight:700;
+}
+
+.container{
+    max-width:900px;
+    margin:18px auto;
+    padding:0 16px;
+}
+
+.card{
+    background:var(--card);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,.5);
+}
+
+label{
+    display:block;
+    font-size:14px;
+    color:var(--muted);
+    margin-top:12px;
+}
+
+input, select{
+    width:100%;
+    padding:10px;
+    margin-top:6px;
+    border-radius:10px;
+    border:1px solid #333;
+    background:var(--panel);
+    color:#fff;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    margin-top:14px;
+    border-radius:10px;
+    background:var(--accent);
+    color:#000;
+    font-weight:700;
+    cursor:pointer;
+}
+
+#resultado{
+    background:#0f0f0f;
+    padding:14px;
+    border-radius:10px;
+    margin-top:16px;
+    white-space:pre-wrap;
+    color:#1DB954;
+    font-weight:700;
+    border:1px solid #222;
+}
+
+/* bottom menu */
+.bottom-menu{
+    position:fixed;
+    bottom:15px;
+    left:50%;
+    transform:translateX(-50%);
+    width:88%;
+    background:#1B1B1B;
+    padding:10px 0;
+    border-radius:18px;
+    display:flex;
+    justify-content:space-around;
+    box-shadow:0 6px 25px rgba(0,0,0,0.6);
+    z-index:1000;
+}
+.bottom-menu .menu-item{
+    text-align:center;
+    color:#fff;
+    text-decoration:none;
+    font-size:13px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+.bottom-menu .menu-item .icon{
+    font-size:22px;
+    margin-bottom:4px;
+}
+.bottom-menu .menu-item.active{
+    color:var(--accent);
+}
+</style>
+</head>
+
+<body>
+
+<header>Calculadora de Viagens</header>
+
+<div class="container">
+
+    <div class="card">
+        <label>Motorista</label>
+        <input id="motorista" type="text">
+
+        <label>CPF/CNPJ</label>
+        <input id="cpfCnpj" type="text">
+
+        <label>Carro / Modelo</label>
+        <input id="carro" type="text">
+
+        <label>Placa</label>
+        <input id="placa" type="text">
+
+        <label>Origem</label>
+        <input id="origem" type="text">
+
+        <label>Destino</label>
+        <input id="destino" type="text">
+
+        <label>Valor por KM</label>
+        <input id="valorKm" type="number" step="0.01">
+
+        <label>KM Rodado</label>
+        <input id="kmRodado" type="number" step="0.01">
+
+        <label>Duração (minutos)</label>
+        <input id="duracaoMin" type="number">
+
+        <label>Tipo de uso</label>
+        <select id="tipoUso">
+            <option value="cidade">Cidade</option>
+            <option value="pista">Pista</option>
+        </select>
+
+        <label>Tipo de viagem</label>
+        <select id="tipoViagem">
+            <option value="soIdaComVolta">Só ida (com volta)</option>
+            <option value="soIdaSemVolta">Só ida (sem volta)</option>
+            <option value="idaVoltaEspera">Ida e volta + espera</option>
+            <option value="idaVolta">Ida e volta</option>
+            <option value="bateVolta">Bate e volta</option>
+        </select>
+    </div>
+
+    <!-- GNV -->
+    <div class="card">
+        <h3 style="margin-top:0">Informações GNV</h3>
+
+        <label>Valor cilindro cheio</label>
+        <input id="valorCilindro" type="number" step="0.01">
+
+        <label>Autonomia Cidade (KM)</label>
+        <input id="autonomiaCidade" type="number">
+
+        <label>Autonomia Pista (KM)</label>
+        <input id="autonomiaPista" type="number">
+
+        <button onclick="salvarGNV()">Salvar GNV</button>
+    </div>
+
+    <!-- GASOLINA / ETANOL -->
+    <div class="card">
+        <h3 style="margin-top:0">Informações Gasolina / Etanol</h3>
+
+        <h4 style="margin-bottom:6px; color:#1DB954">Gasolina</h4>
+        <label>Valor tanque cheio</label>
+        <input id="gasolinaValor" type="number" step="0.01">
+
+        <label>Autonomia Cidade (km/l)</label>
+        <input id="gasolinaCidade" type="number">
+
+        <label>Autonomia Pista (km/l)</label>
+        <input id="gasolinaPista" type="number">
+
+        <h4 style="margin-top:18px; margin-bottom:6px; color:#1DB954">Etanol</h4>
+        <label>Valor tanque cheio</label>
+        <input id="etanolValor" type="number" step="0.01">
+
+        <label>Autonomia Cidade (km/l)</label>
+        <input id="etanolCidade" type="number">
+
+        <label>Autonomia Pista (km/l)</label>
+        <input id="etanolPista" type="number">
+
+        <button onclick="salvarCombustiveis()">Salvar Gasolina/Etanol</button>
+    </div>
+
+    <button onclick="calcularEstimativa()">Calcular Estimativa</button>
+    <button onclick="enviarWhatsApp()">Enviar WhatsApp</button>
+
+    <div id="resultado"></div>
+
+</div>
+
+<!-- MENU INFERIOR -->
+<nav class="bottom-menu">
+    <a href="index.html" class="menu-item"><span class="icon">🏠</span>Dashboard</a>
+    <a href="entradas.html" class="menu-item"><span class="icon">💵</span>Entradas</a>
+    <a href="manutencao.html" class="menu-item"><span class="icon">🛠️</span>Manutenção</a>
+    <a href="resumo.html" class="menu-item"><span class="icon">📊</span>Resumo</a>
+    <a href="perfil.html" class="menu-item"><span class="icon">👤</span>Perfil</a>
+    <a href="calculadora.html" class="menu-item active"><span class="icon">📟</span>Calc</a>
+</nav>
+
+<script>
+/* ===== FORMATADOR ===== */
+function fmt(valor){
+    if(valor === Infinity || isNaN(valor)) return "N/D";
+    return "R$ " + Number(valor).toFixed(2);
+}
+
+/* ===== PERFIL ===== */
+const PERFIL_KEY = "perfilCalc";
+function salvarPerfil(){
+    const p = {
+        motorista: motorista.value,
+        cpfCnpj: cpfCnpj.value,
+        carro: carro.value,
+        placa: placa.value
+    };
+    localStorage.setItem(PERFIL_KEY, JSON.stringify(p));
+}
+function carregarPerfil(){
+    const p = JSON.parse(localStorage.getItem(PERFIL_KEY) || "{}");
+    if(p.motorista) motorista.value = p.motorista;
+    if(p.cpfCnpj) cpfCnpj.value = p.cpfCnpj;
+    if(p.carro) carro.value = p.carro;
+    if(p.placa) placa.value = p.placa;
+}
+["motorista","cpfCnpj","carro","placa"].forEach(id=>{
+    document.getElementById(id).addEventListener("input", salvarPerfil);
+});
+carregarPerfil();
+
+/* ===== SALVAR DADOS GNV ===== */
+function salvarGNV(){
+    const dados = {
+        valorCilindro:Number(valorCilindro.value) || 0,
+        autonomiaCidade:Number(autonomiaCidade.value) || 0,
+        autonomiaPista:Number(autonomiaPista.value) || 0
+    };
+    localStorage.setItem("gnvData", JSON.stringify(dados));
+    alert("GNV salvo!");
+}
+function carregarGNV(){
+    const g = JSON.parse(localStorage.getItem("gnvData") || "{}");
+    if(g.valorCilindro) valorCilindro.value = g.valorCilindro;
+    if(g.autonomiaCidade) autonomiaCidade.value = g.autonomiaCidade;
+    if(g.autonomiaPista) autonomiaPista.value = g.autonomiaPista;
+}
+carregarGNV();
+
+/* ===== GASOLINA / ETANOL ===== */
+function salvarCombustiveis(){
+    const dados = {
+        gasolinaValor: Number(gasolinaValor.value) || 0,
+        gasolinaCidade: Number(gasolinaCidade.value) || 0,
+        gasolinaPista: Number(gasolinaPista.value) || 0,
+
+        etanolValor: Number(etanolValor.value) || 0,
+        etanolCidade: Number(etanolCidade.value) || 0,
+        etanolPista: Number(etanolPista.value) || 0
+    };
+
+    localStorage.setItem("combData", JSON.stringify(dados));
+    alert("Gasolina / Etanol salvos!");
+}
+function carregarCombustiveis(){
+    const c = JSON.parse(localStorage.getItem("combData") || "{}");
+
+    if(c.gasolinaValor) gasolinaValor.value = c.gasolinaValor;
+    if(c.gasolinaCidade) gasolinaCidade.value = c.gasolinaCidade;
+    if(c.gasolinaPista) gasolinaPista.value = c.gasolinaPista;
+
+    if(c.etanolValor) etanolValor.value = c.etanolValor;
+    if(c.etanolCidade) etanolCidade.value = c.etanolCidade;
+    if(c.etanolPista) etanolPista.value = c.etanolPista;
+}
+carregarCombustiveis();
+
+/* ===== CÁLCULO ===== */
+let valorTotalBrutoGlobal = 0;
+let duracaoMinGlobal = 0;
+
+function calcularEstimativa(){
+    const km = Number(kmRodado.value);
+    const valKm = Number(valorKm.value);
+    const dur = Number(duracaoMin.value);
+
+    if(!km || !valKm || !dur){
+        alert("Preencha KM, valor por KM e duração.");
+        return;
+    }
+
+    const gnv = JSON.parse(localStorage.getItem("gnvData") || "{}");
+    const comb = JSON.parse(localStorage.getItem("combData") || "{}");
+
+    /* ==========================
+         CÁLCULO BRUTO
+    =========================== */
+    let bruto = valKm * km;
+
+    switch(tipoViagem.value){
+        case "idaVolta":
+            bruto *= 2;
+            break;
+        case "idaVoltaEspera":
+            bruto = (valKm * km * 2) * 1.10;
+            break;
+        case "bateVolta":
+            bruto = (valKm * km * 2) / 1.25;
+            break;
+    }
+
+    const uso = tipoUso.value;
+
+    /* ===== FUNÇÃO DE CUSTO ===== */
+    function calcCusto(valorTanque, autoCidade, autoPista){
+        const autonomia = uso === "cidade" ? autoCidade : autoPista;
+
+        if(!valorTanque || !autonomia) return Infinity;
+
+        let custo = (valorTanque / autonomia) * km;
+
+        // viagens de ida e volta dobram combustível
+        if(tipoViagem.value !== "soIdaSemVolta"){
+            custo *= 2;
+        }
+
+        return custo;
+    }
+
+    const custoGnv = calcCusto(gnv.valorCilindro, gnv.autonomiaCidade, gnv.autonomiaPista);
+    const custoGas = calcCusto(comb.gasolinaValor, comb.gasolinaCidade, comb.gasolinaPista);
+    const custoEta = calcCusto(comb.etanolValor, comb.etanolCidade, comb.etanolPista);
+
+    /* ==========================
+         ESCOLHER O MAIS BARATO
+    =========================== */
+    const menor = Math.min(custoGnv, custoGas, custoEta);
+    const melhor =
+        menor === custoGnv ? "GNV" :
+        menor === custoGas ? "Gasolina" :
+                             "Etanol";
+
+    const liquido = bruto - menor;
+
+    valorTotalBrutoGlobal = bruto;
+    duracaoMinGlobal = dur;
+
+    /* ==========================
+           RESULTADO FINAL
+    =========================== */
+    resultado.innerText =
+`Valor Bruto: ${fmt(bruto)}
+
+Custo GNV: ${fmt(custoGnv)}
+Custo Gasolina: ${fmt(custoGas)}
+Custo Etanol: ${fmt(custoEta)}
+
+➡ Combustível mais barato: ${melhor}
+
+Lucro final usando ${melhor}: ${fmt(liquido)}
+
+Duração: ${dur} min`;
+}
+
+/* ===== WHATSAPP ===== */
+function enviarWhatsApp(){
+    if(!valorTotalBrutoGlobal){
+        alert("Faça o cálculo primeiro.");
+        return;
+    }
+
+    const msg =
+`🚖 Cálculo de Viagem
+
+Bruto: ${fmt(valorTotalBrutoGlobal)}
+Duração: ${duracaoMinGlobal} min`;
+
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+}
+</script>
+
+</body>
+</html>
