@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Entradas e Saídas - Motorista App</title>
+<style>
+    :root{
+        --bg:#121212;
+        --card:#1E1E1E;
+        --muted:#bbb;
+        --accent:#1DB954;
+        --danger:#ff3b30;
+        --panel:#2A2A2A;
+    }
+
+    body{
+        margin:0;
+        font-family:Arial, sans-serif;
+        background:var(--bg);
+        color:#fff;
+        overflow-x:hidden;
+        padding-bottom:120px; /* espaço para menu inferior */
+    }
+
+    header{
+        background:var(--accent);
+        padding:18px;
+        font-size:22px;
+        font-weight:bold;
+        text-align:center;
+        color:#000;
+        position:relative;
+    }
+
+    .container{ padding:16px; max-width:980px; margin:0 auto; box-sizing:border-box; }
+
+    /* topo de abas */
+    .tabs {
+        display:flex;
+        gap:8px;
+        margin-bottom:16px;
+    }
+    .tab{
+        flex:1;
+        background:var(--card);
+        padding:10px;
+        text-align:center;
+        border-radius:10px;
+        cursor:pointer;
+        color:#ddd;
+        font-weight:600;
+        user-select:none;
+        box-shadow:0 2px 6px rgba(0,0,0,0.4);
+    }
+    .tab.active{
+        background:linear-gradient(180deg,var(--accent),#12a443);
+        color:#000;
+    }
+
+    .card{
+        background:var(--card);
+        padding:18px;
+        border-radius:14px;
+        margin-bottom:18px;
+        box-shadow:0 6px 18px rgba(0,0,0,0.4);
+    }
+
+    .form input, .form select{
+        width:100%;
+        padding:10px 12px;
+        margin-bottom:10px;
+        border-radius:8px;
+        border:1px solid #333;
+        background:var(--panel);
+        color:#fff;
+        box-sizing:border-box;
+    }
+
+    button{
+        width:100%;
+        padding:12px;
+        background:var(--accent);
+        color:#000;
+        border:none;
+        border-radius:10px;
+        font-size:15px;
+        cursor:pointer;
+        font-weight:700;
+    }
+
+    .row{ display:flex; gap:10px; }
+    .col{ flex:1; }
+
+    .lists{
+        display:flex;
+        gap:16px;
+        flex-wrap:wrap;
+    }
+    .list-panel{
+        flex:1 1 320px;
+        min-width:280px;
+    }
+
+    .item{
+        background:#111;
+        padding:12px;
+        border-radius:10px;
+        margin-bottom:10px;
+        display:flex;
+        justify-content:space-between;
+        align-items:flex-start;
+        gap:10px;
+    }
+    .item small{ color:var(--muted); display:block; margin-top:6px; }
+    .item .vals{ text-align:right; min-width:110px; }
+
+    .remove{
+        background:var(--danger);
+        padding:6px 9px;
+        border-radius:8px;
+        color:#fff;
+        border:none;
+        cursor:pointer;
+        font-weight:700;
+    }
+
+    .totals{ text-align:right; margin-bottom:10px; font-weight:700; color:var(--accent); }
+
+    /* bottom menu (Uber style) */
+    .bottom-menu{
+        position:fixed;
+        bottom:15px;
+        left:50%;
+        transform:translateX(-50%);
+        width:88%;
+        background:#1B1B1B;
+        padding:10px 0;
+        border-radius:18px;
+        display:flex;
+        justify-content:space-around;
+        box-shadow:0 6px 25px rgba(0,0,0,0.6);
+        z-index:1000;
+    }
+    .bottom-menu .menu-item{
+        text-align:center;
+        color:#fff;
+        text-decoration:none;
+        font-size:13px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+    }
+    .bottom-menu .menu-item .icon{ font-size:22px; margin-bottom:4px; }
+    .bottom-menu .menu-item.active{ color:var(--accent); }
+
+    /* modal */
+    #modalMaquineta .modalBox{ background:var(--card); margin:auto; padding:16px; width:92%; max-width:420px; border-radius:12px; }
+    #modalMaquineta{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:2000; padding-top:36px; box-sizing:border-box; }
+
+    @media (max-width:720px){
+        .row{ flex-direction:column; }
+    }
+</style>
+</head>
+<body>
+
+<header>Entradas & Saídas</header>
+
+<div class="container">
+
+    <!-- abas -->
+    <div class="tabs" role="tablist" aria-label="Seleção">
+        <div class="tab active" id="tab-corridas" data-tab="corridas">Entradas (Corridas)</div>
+        <div class="tab" id="tab-outras" data-tab="outras">Outras Entradas</div>
+        <div class="tab" id="tab-saidas" data-tab="saidas">Saídas (Despesas)</div>
+    </div>
+
+    <!-- FORMS -->
+    <div class="card" id="form-corridas">
+        <h3>Nova Entrada — Corrida</h3>
+        <div class="form">
+            <select id="categoriaEntrada">
+                <option value="">Selecione o tipo</option>
+                <option value="particular">Viagem Particular</option>
+                <option value="empresa">Viagem de Empresa</option>
+                <option value="app">Viagem de Aplicativo</option>
+            </select>
+
+            <div id="subAppEntrada" style="display:none;">
+                <select id="appTipoEntrada">
+                    <option value="">Selecione o Aplicativo</option>
+                    <option value="uber">Uber</option>
+                    <option value="99">99</option>
+                    <option value="indriver">InDriver</option>
+                    <option value="outros">Outros</option>
+                </select>
+
+                <input id="taxaAppEntrada" type="number" placeholder="Taxa do App (%)">
+            </div>
+
+            <input id="descricaoEntrada" type="text" placeholder="Descrição da corrida">
+            <div class="row">
+                <div class="col"><input id="valorBrutoEntrada" type="number" placeholder="Valor bruto (R$)" step="0.01"></div>
+                <div class="col"><input id="valorLiquidoEntrada" type="number" placeholder="Valor líquido (R$)" step="0.01"></div>
+            </div>
+
+            <select id="formaPagEntrada">
+                <option value="">Forma de pagamento</option>
+                <option value="dinheiro">Dinheiro</option>
+                <option value="pix">PIX</option>
+                <option value="appMobile">Pagamento no App</option>
+                <option value="cartao">Cartão</option>
+            </select>
+
+            <div id="cartaoEntrada" style="display:none;">
+                <select id="maqEntrada"></select>
+                <select id="parcelaEntrada">
+                    <option value="debito">Débito</option>
+                    <option value="credito_avista">Crédito à vista</option>
+                    <option value="2">2x</option>
+                    <option value="3">3x</option>
+                    <option value="4">4x</option>
+                    <option value="5">5x</option>
+                </select>
+                <button type="button" onclick="abrirCadastroMaquineta()">+ Cadastrar Maquineta</button>
+            </div>
+
+            <button type="button" id="btnAdicionarCorrida">Adicionar Corrida</button>
+        </div>
+    </div>
+
+    <div class="card" id="form-outras" style="display:none;">
+        <h3>Nova Entrada — Outras</h3>
+        <div class="form">
+            <input id="descricaoOutra" type="text" placeholder="Descrição (ex: reembolso, ajuda, aluguel recebido)">
+            <div class="row">
+                <div class="col"><input id="valorBrutoOutra" type="number" placeholder="Valor bruto (R$)" step="0.01"></div>
+                <div class="col"><input id="valorLiquidoOutra" type="number" placeholder="Valor líquido (R$)" step="0.01"></div>
+            </div>
+
+            <select id="formaPagOutra">
+                <option value="">Forma de pagamento</option>
+                <option value="dinheiro">Dinheiro</option>
+                <option value="pix">PIX</option>
+                <option value="appMobile">Pagamento no App</option>
+                <option value="cartao">Cartão</option>
+            </select>
+
+            <div id="cartaoOutra" style="display:none;">
+                <select id="maqOutra"></select>
+                <select id="parcelaOutra">
+                    <option value="debito">Débito</option>
+                    <option value="credito_avista">Crédito à vista</option>
+                    <option value="2">2x</option>
+                    <option value="3">3x</option>
+                    <option value="4">4x</option>
+                    <option value="5">5x</option>
+                </select>
+                <button type="button" onclick="abrirCadastroMaquineta()">+ Cadastrar Maquineta</button>
+            </div>
+
+            <button type="button" id="btnAdicionarOutra">Adicionar Entrada</button>
+        </div>
+    </div>
+
+    <div class="card" id="form-saidas" style="display:none;">
+        <h3>Nova Saída</h3>
+        <div class="form">
+            <input id="descricaoSaida" type="text" placeholder="Descrição da despesa">
+            <div class="row">
+                <div class="col"><input id="valorBrutoSaida" type="number" placeholder="Valor (R$)" step="0.01"></div>
+                <div class="col">
+                    <select id="formaPagSaida">
+                        <option value="">Forma de pagamento</option>
+                        <option value="dinheiro">Dinheiro</option>
+                        <option value="pix">PIX</option>
+                        <option value="cartao">Cartão</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="cartaoSaida" style="display:none;">
+                <select id="tipoCartaoSaida">
+                    <option value="debito">Débito</option>
+                    <option value="credito">Crédito</option>
+                </select>
+            </div>
+
+            <button type="button" id="btnAdicionarSaida">Adicionar Saída</button>
+        </div>
+    </div>
+
+    <!-- LISTAS: duas colunas (Entradas + Saídas) -->
+    <div class="lists">
+        <div class="list-panel">
+            <div class="card">
+                <h3>Entradas (Corridas + Outras)</h3>
+                <div id="totalEntradas" class="totals">R$ 0,00</div>
+                <div id="listaEntradas"></div>
+            </div>
+        </div>
+
+        <div class="list-panel">
+            <div class="card">
+                <h3 class="tituloVermelho" style="color:var(--danger)">Saídas</h3>
+                <div id="totalSaidas" class="totals" style="color:var(--danger)">R$ 0,00</div>
+                <div id="listaSaidas"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- modal maquineta -->
+<div id="modalMaquineta" aria-hidden="true">
+    <div class="modalBox">
+        <h3 style="margin-top:0">Cadastrar Maquineta</h3>
+        <input id="maqNome" type="text" placeholder="Nome da maquineta">
+        <input id="maqDebito" type="number" placeholder="Taxa débito (%)">
+        <input id="maqCreditoAvista" type="number" placeholder="Taxa crédito à vista (%)">
+        <input id="maq2x" type="number" placeholder="Taxa 2x (%)">
+        <input id="maq3x" type="number" placeholder="Taxa 3x (%)">
+        <input id="maq4x" type="number" placeholder="Taxa 4x (%)">
+        <input id="maq5x" type="number" placeholder="Taxa 5x (%)">
+        <div style="display:flex;gap:8px;margin-top:12px;">
+            <button type="button" id="btnSalvarMaquineta">Salvar</button>
+            <button type="button" id="btnCancelarMaquineta" style="background:var(--danger);color:#fff">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- bottom menu -->
+<nav class="bottom-menu" aria-label="Menu">
+    <a href="index.html" class="menu-item" id="m-index"><span class="icon">🏠</span><span>Dashboard</span></a>
+    <a href="entradas.html" class="menu-item active" id="m-entradas"><span class="icon">💵</span><span>Entradas</span></a>
+    <a href="manutencao.html" class="menu-item" id="m-manut"><span class="icon">🛠️</span><span>Manutenção</span></a>
+    <a href="resumo.html" class="menu-item" id="m-resumo"><span class="icon">📊</span><span>Resumo</span></a>
+   <a href="perfil.html" class="menu-item">
+    <span class="icon">👤</span>
+    <span>Perfil</span>
+</a>
+    <a href="calculadora.html" class="menu-item" id="m-calc"><span class="icon">📟</span><span>Calc</span></a>
+</nav>
+
+<script>
+/* ------------------ STORAGE ------------------ */
+let registros = JSON.parse(localStorage.getItem("entradasSaidas") || "[]");
+let maquinetas = JSON.parse(localStorage.getItem("maquinetas") || "[]");
+
+/* helpers */
+const $ = id => document.getElementById(id);
+const formatBRL = v => Number(v||0).toLocaleString("pt-BR",{style:'currency',currency:'BRL'});
+
+/* TAB SWITCHING */
+function setActiveTab(name){
+    // hide all forms
+    ['corridas','outras','saidas'].forEach(t=>{
+        const tabEl = document.querySelector(`.tab[data-tab="${t}"]`);
+        tabEl.classList.toggle('active', t===name);
+        $('form-'+t)?.setAttribute?.('data-hidden',''); // noop safe
+    });
+
+    $('form-corridas').style.display = name === 'corridas' ? 'block' : 'none';
+    $('form-outras').style.display = name === 'outras' ? 'block' : 'none';
+    $('form-saidas').style.display = name === 'saidas' ? 'block' : 'none';
+}
+
+/* connect tabs UI */
+document.querySelectorAll('.tab').forEach(t=>{
+    t.addEventListener('click', ()=> setActiveTab(t.getAttribute('data-tab')));
+});
+/* ensure initial */
+setActiveTab('corridas');
+
+/* ------------------ MAQUINETAS ------------------ */
+function abrirCadastroMaquineta(){ $('modalMaquineta').style.display = 'block'; $('modalMaquineta').setAttribute('aria-hidden','false'); }
+function fecharCadastroMaquineta(){ $('modalMaquineta').style.display = 'none'; $('modalMaquineta').setAttribute('aria-hidden','true'); }
+
+function persistMaquinetas(){ localStorage.setItem('maquinetas', JSON.stringify(maquinetas)); }
+function persist(){ localStorage.setItem('entradasSaidas', JSON.stringify(registros)); }
+
+/* atualizar selects */
+function atualizarMaquinetas(selectId){
+    const sel = $(selectId);
+    if(!sel) return;
+    sel.innerHTML = '';
+    maquinetas.forEach((m,i)=>{
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.text = m.nome;
+        sel.appendChild(opt);
+    });
+}
+
+/* salvar maquineta */
+$('btnSalvarMaquineta').addEventListener('click', ()=>{
+    const nome = $('maqNome').value.trim();
+    if(!nome){ alert('Informe o nome da maquineta'); return; }
+    const m = {
+        nome,
+        debito: Number($('maqDebito').value) || 0,
+        credito_avista: Number($('maqCreditoAvista')?.value) || 0,
+        "2": Number($('maq2x').value) || 0,
+        "3": Number($('maq3x').value) || 0,
+        "4": Number($('maq4x').value) || 0,
+        "5": Number($('maq5x').value) || 0
+    };
+    maquinetas.push(m);
+    persistMaquinetas();
+    atualizarMaquinetas('maqEntrada');
+    atualizarMaquinetas('maqOutra');
+    atualizarMaquinetas('maqSaida');
+    fecharCadastroMaquineta();
+    // limpar modal
+    ['maqNome','maqDebito','maqCreditoAvista','maq2x','maq3x','maq4x','maq5x'].forEach(id=>{ if($(id)) $(id).value = ''; });
+});
+$('btnCancelarMaquineta').addEventListener('click', ()=> fecharCadastroMaquineta());
+
+/* ------------------ REUTILIZÁVEIS: cálculo líquido ------------------ */
+function calcularLiquidoParaMaquineta(bruto, index, parcela){
+    bruto = Number(bruto) || 0;
+    if(index === null || index === undefined || index === '') return bruto;
+    const m = maquinetas[index];
+    if(!m) return bruto;
+    let taxa = 0;
+    if(parcela === 'debito') taxa = Number(m.debito || 0);
+    else if(parcela === 'credito_avista') taxa = Number(m.credito_avista || 0);
+    else taxa = Number(m[parcela] || 0);
+    return +(bruto - (bruto * (taxa/100)));
+}
+
+/* ------------------ FORM CORRIDAS ------------------ */
+$('categoriaEntrada').addEventListener('change', ()=>{
+    const cat = $('categoriaEntrada').value;
+    $('subAppEntrada').style.display = cat === 'app' ? 'block' : 'none';
+});
+['taxaAppEntrada','valorBrutoEntrada','parcelaEntrada'].forEach(id=>{
+    const el = $(id); if(el) el.addEventListener('input', recalcCorrida);
+});
+$('formaPagEntrada').addEventListener('change', ()=>{
+    const forma = $('formaPagEntrada').value;
+    $('cartaoEntrada').style.display = forma === 'cartao' ? 'block' : 'none';
+    if(forma === 'cartao'){ atualizarMaquinetas('maqEntrada'); }
+});
+
+function recalcCorrida(){
+    const bruto = Number($('valorBrutoEntrada').value) || 0;
+    let liquido = bruto;
+    if($('categoriaEntrada').value === 'app'){
+        const taxa = Number($('taxaAppEntrada').value) || 0;
+        liquido -= bruto * (taxa/100);
+    }
+    if($('formaPagEntrada').value === 'cartao'){
+        const index = $('maqEntrada').value;
+        const par = $('parcelaEntrada').value;
+        liquido = calcularLiquidoParaMaquineta(bruto, index, par);
+    }
+    if(!isFinite(liquido)) liquido = bruto;
+    $('valorLiquidoEntrada').value = liquido.toFixed(2);
+}
+
+$('btnAdicionarCorrida').addEventListener('click', ()=>{
+    const categoria = $('categoriaEntrada').value;
+    const descricao = ($('descricaoEntrada').value||'').trim();
+    const bruto = Number($('valorBrutoEntrada').value);
+    if(!categoria){ alert('Selecione o tipo de entrada.'); return; }
+    if(!descricao){ alert('Preencha a descrição.'); return; }
+    if(!bruto || bruto <= 0){ alert('Informe um valor bruto válido.'); return; }
+    recalcCorrida();
+    const liquido = Number($('valorLiquidoEntrada').value) || bruto;
+    const registro = {
+        id: Date.now(),
+        tipo: 'entrada',
+        subtipo: 'corrida',
+        categoria: categoria,
+        appTipo: $('appTipoEntrada').value || null,
+        formaPag: $('formaPagEntrada').value || null,
+        maquinetaIndex: ($('maqEntrada')?$('maqEntrada').value:null),
+        valorBruto: bruto,
+        valor: liquido,
+        descricao,
+        criadoEm: new Date().toISOString()
+    };
+    registros.unshift(registro);
+    persist();
+    mostrarListas();
+    limparFormCorrida();
+});
+
+function limparFormCorrida(){
+    $('categoriaEntrada').value = '';
+    $('appTipoEntrada').value = '';
+    $('taxaAppEntrada').value = '';
+    $('descricaoEntrada').value = '';
+    $('valorBrutoEntrada').value = '';
+    $('valorLiquidoEntrada').value = '';
+    $('formaPagEntrada').value = '';
+    $('cartaoEntrada').style.display = 'none';
+}
+
+/* ------------------ FORM OUTRAS ------------------ */
+$('formaPagOutra').addEventListener('change', ()=>{
+    const forma = $('formaPagOutra').value;
+    $('cartaoOutra').style.display = forma === 'cartao' ? 'block' : 'none';
+    if(forma === 'cartao') atualizarMaquinetas('maqOutra');
+});
+['valorBrutoOutra','parcelaOutra'].forEach(id=>{
+    const el = $(id); if(el) el.addEventListener('input', recalcOutra);
+});
+
+function recalcOutra(){
+    const bruto = Number($('valorBrutoOutra').value) || 0;
+    let liquido = bruto;
+    if($('formaPagOutra').value === 'cartao'){
+        const index = $('maqOutra').value;
+        const par = $('parcelaOutra').value;
+        liquido = calcularLiquidoParaMaquineta(bruto, index, par);
+    }
+    if(!isFinite(liquido)) liquido = bruto;
+    $('valorLiquidoOutra').value = liquido.toFixed(2);
+}
+
+$('btnAdicionarOutra').addEventListener('click', ()=>{
+    const descricao = ($('descricaoOutra').value||'').trim();
+    const bruto = Number($('valorBrutoOutra').value);
+    if(!descricao){ alert('Preencha a descrição da entrada.'); return; }
+    if(!bruto || bruto <= 0){ alert('Informe um valor bruto válido.'); return; }
+    recalcOutra();
+    const liquido = Number($('valorLiquidoOutra').value) || bruto;
+    const registro = {
+        id: Date.now(),
+        tipo: 'entrada',
+        subtipo: 'outra',
+        categoria: null,
+        appTipo: null,
+        formaPag: $('formaPagOutra').value || null,
+        maquinetaIndex: ($('maqOutra')?$('maqOutra').value:null),
+        valorBruto: bruto,
+        valor: liquido,
+        descricao,
+        criadoEm: new Date().toISOString()
+    };
+    registros.unshift(registro);
+    persist();
+    mostrarListas();
+    limparFormOutra();
+});
+
+function limparFormOutra(){
+    $('descricaoOutra').value = '';
+    $('valorBrutoOutra').value = '';
+    $('valorLiquidoOutra').value = '';
+    $('formaPagOutra').value = '';
+    $('cartaoOutra').style.display = 'none';
+}
+
+/* ------------------ FORM SAIDAS ------------------ */
+$('formaPagSaida').addEventListener('change', ()=>{
+    const forma = $('formaPagSaida').value;
+    $('cartaoSaida').style.display = forma === 'cartao' ? 'block' : 'none';
+});
+
+$('btnAdicionarSaida').addEventListener('click', ()=>{
+    const descricao = ($('descricaoSaida').value||'').trim();
+    const bruto = Number($('valorBrutoSaida').value);
+    if(!descricao){ alert('Preencha a descrição da saída.'); return; }
+    if(!bruto || bruto <= 0){ alert('Informe um valor válido para a saída.'); return; }
+    const registro = {
+        id: Date.now(),
+        tipo: 'saida',
+        descricao,
+        valor: bruto,
+        formaPag: $('formaPagSaida').value || null,
+        tipoCartao: ($('tipoCartaoSaida')?$('tipoCartaoSaida').value:null),
+        criadoEm: new Date().toISOString()
+    };
+    registros.unshift(registro);
+    persist();
+    mostrarListas();
+    limparFormSaida();
+});
+
+function limparFormSaida(){
+    $('descricaoSaida').value = '';
+    $('valorBrutoSaida').value = '';
+    $('formaPagSaida').value = '';
+    $('cartaoSaida').style.display = 'none';
+}
+
+/* ------------------ MOSTRAR LISTAS ------------------ */
+/* Observação: por sua escolha (opção 2) Entradas (corridas + outras) aparecem juntas no mesmo painel */
+function mostrarListas(){
+    const listaE = $('listaEntradas');
+    const listaS = $('listaSaidas');
+    listaE.innerHTML = '';
+    listaS.innerHTML = '';
+
+    let totalBrutoEntradas = 0;
+    let totalSaidas = 0;
+
+    registros.forEach(r=>{
+        const div = document.createElement('div');
+        div.className = 'item';
+
+        if(r.tipo === 'entrada'){
+            // detalhe
+            let detalhe = r.subtipo ? (r.subtipo === 'corrida' ? `Corrida • ${r.categoria || ''}` : 'Outra entrada') : '';
+            if(r.appTipo) detalhe += ` • ${r.appTipo}`;
+            if(r.formaPag) detalhe += ` • ${r.formaPag}`;
+
+            div.innerHTML = `
+                <div>
+                    <strong style="display:block">${escapeHtml(r.descricao)}</strong>
+                    <small>${escapeHtml(detalhe)}</small>
+                    <small>Bruto: ${formatBRL(r.valorBruto)} ${r.valor ? `• Líquido: ${formatBRL(r.valor)}` : ''}</small>
+                </div>
+                <div class="vals">
+                    <div style="margin-bottom:8px">${formatBRL(r.valorBruto)}</div>
+                    <div><button class="remove" onclick="remover(${r.id})">Excluir</button></div>
+                </div>
+            `;
+            listaE.appendChild(div);
+            totalBrutoEntradas += Number(r.valorBruto || 0);
+        } else {
+            // saída
+            let detalhe = r.formaPag ? `${r.formaPag}` : '';
+            if(r.tipoCartao) detalhe += ` • ${r.tipoCartao}`;
+            div.innerHTML = `
+                <div>
+                    <strong style="display:block">${escapeHtml(r.descricao)}</strong>
+                    <small>${escapeHtml(detalhe)}</small>
+                </div>
+                <div class="vals">
+                    <div style="margin-bottom:8px">${formatBRL(r.valor)}</div>
+                    <div><button class="remove" onclick="remover(${r.id})">Excluir</button></div>
+                </div>
+            `;
+            listaS.appendChild(div);
+            totalSaidas += Number(r.valor || 0);
+        }
+    });
+
+    $('totalEntradas').innerText = formatBRL(totalBrutoEntradas);
+    $('totalSaidas').innerText = formatBRL(totalSaidas);
+}
+
+/* ------------------ REMOVER ------------------ */
+function remover(id){
+    if(!confirm('Excluir este registro?')) return;
+    registros = registros.filter(r => r.id !== id);
+    persist();
+    mostrarListas();
+}
+
+/* ------------------ UTIL ------------------ */
+function escapeHtml(text){
+    if(!text) return '';
+    return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,"&#039;");
+}
+
+/* ------------------ BOOT ------------------ */
+(function boot(){
+    // reload storage (in case modified elsewhere)
+    registros = JSON.parse(localStorage.getItem('entradasSaidas') || '[]');
+    maquinetas = JSON.parse(localStorage.getItem('maquinetas') || '[]');
+    atualizarMaquinetas('maqEntrada');
+    atualizarMaquinetas('maqOutra');
+    atualizarMaquinetas('maqSaida');
+    mostrarListas();
+
+    // ensure event binding for some dynamic inputs
+    $('valorBrutoEntrada')?.addEventListener('input', recalcCorrida);
+    $('valorBrutoOutra')?.addEventListener('input', recalcOutra);
+})();
+</script>
+</body>
+</html>
