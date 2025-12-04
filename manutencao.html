@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <title>Manutenção - Motorista App</title>
 
 <!-- Fonte corporativa -->
@@ -13,7 +13,6 @@
    VARIÁVEIS TEMA (CLARO / ESCURO)
    ========================================================= */
 :root{
-    /* Claro corporativo */
     --bg:#f6f7fb;
     --card:#ffffff;
     --panel:#f1f4f9;
@@ -24,75 +23,81 @@
     --accent-success:#1DB954;
     --accent-danger:#ff3b30;
     --warning:#f3b22a;
-    --shadow:0 6px 20px rgba(15,30,45,0.08);
+    --shadow:0 4px 16px rgba(15,30,45,0.08);
     --radius:14px;
 }
 
-/* Tema escuro global */
+/* Tema escuro */
 .dark{
     --bg:#0e0f11;
     --card:#1a1b1e;
     --panel:#222326;
     --text:#f1f1f1;
     --muted:#889099;
-    --shadow:0 6px 26px rgba(0,0,0,0.55);
+    --shadow:0 4px 22px rgba(0,0,0,0.6);
 }
 
 /* =========================================================
    BASE
    ========================================================= */
-*{box-sizing:border-box}
+*{box-sizing:border-box; font-family:'Inter',sans-serif;}
+
 body{
     margin:0;
-    font-family:'Inter',sans-serif;
     background:var(--bg);
     color:var(--text);
     padding-bottom:140px;
+    overflow-x:hidden;
 }
 
 /* =========================================================
-   HEADER CORPORATIVO
+   HEADER
    ========================================================= */
 header{
     display:flex;
     align-items:center;
     justify-content:space-between;
     padding:18px 16px;
+    margin:0 auto 10px auto;
     max-width:980px;
-    margin:0 auto 12px auto;
 }
 
 .brand{
     display:flex;
-    gap:12px;
     align-items:center;
+    gap:10px;
 }
 
 .logo{
-    width:42px; height:42px;
+    width:42px;
+    height:42px;
     border-radius:10px;
-    display:flex; align-items:center; justify-content:center;
     background:linear-gradient(135deg,var(--brand),var(--brand-dark));
-    font-weight:800; color:#fff;
-    box-shadow:var(--shadow);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-weight:800;
+    font-size:18px;
 }
 
 .brand h1{
     margin:0;
-    font-size:17px;
+    font-size:18px;
     font-weight:800;
 }
 
 /* Botão modo escuro */
 #toggleDarkBtn{
-    width:44px; height:44px;
-    border-radius:12px;
+    width:44px;
+    height:44px;
     border:none;
-    cursor:pointer;
-    font-size:20px;
+    border-radius:12px;
+    font-size:19px;
     background:var(--panel);
     color:var(--text);
     box-shadow:var(--shadow);
+    cursor:pointer;
 }
 
 /* =========================================================
@@ -115,8 +120,22 @@ header{
     margin-bottom:18px;
 }
 
-.row{ display:flex; gap:14px; flex-wrap:wrap; }
-.col{ flex:1; min-width:260px; }
+h3{
+    margin:0 0 14px 0;
+    font-size:17px;
+    font-weight:700;
+}
+
+.row{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.col{
+    flex:1;
+    min-width:160px;
+}
 
 .label{
     font-size:13px;
@@ -124,7 +143,7 @@ header{
     margin-bottom:6px;
 }
 
-input, select{
+input{
     width:100%;
     padding:12px 14px;
     border-radius:10px;
@@ -134,61 +153,35 @@ input, select{
     font-size:15px;
 }
 
-input:focus, select:focus{
-    outline:none;
+input:focus{
     border-color:var(--brand);
+    outline:none;
 }
 
+/* Buttons */
 .btn{
     background:var(--brand);
     color:#fff;
     padding:12px;
-    border-radius:12px;
     border:none;
+    width:100%;
+    border-radius:12px;
     font-weight:700;
     cursor:pointer;
-    width:100%;
-    font-size:15px;
 }
 
 .btnGhost{
     background:var(--panel);
     color:var(--text);
-    padding:10px;
-    border-radius:10px;
+    padding:11px;
     border:none;
-    cursor:pointer;
-    font-weight:600;
-}
-
-.smallNote{
-    font-size:13px;
-    color:var(--muted);
-    margin-top:8px;
-}
-
-/* =========================================================
-   STATUS BADGES
-   ========================================================= */
-.badge{
-    padding:6px 10px;
+    width:100%;
     border-radius:10px;
-    font-size:13px;
-    font-weight:700;
+    font-weight:600;
+    cursor:pointer;
 }
 
-.statusGreen{ background:#d7fbe3; color:#0b6620; }
-.dark .statusGreen{ background:#114222; color:#9dffc1; }
-
-.statusWarn{ background:#fff4d6; color:#9d6700; }
-.dark .statusWarn{ background:#6a4c09; color:#ffeab3; }
-
-.statusRed{ background:#ffe3e3; color:#a00000; }
-.dark .statusRed{ background:#5a0a06; color:#ffb3b3; }
-
-/* =========================================================
-   LIST ITEM
-   ========================================================= */
+/* List items */
 .listItem{
     background:var(--panel);
     padding:14px;
@@ -199,8 +192,48 @@ input:focus, select:focus{
     gap:12px;
 }
 
+/* Status badges */
+.badge{
+    padding:6px 10px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.statusGreen{ background:#d7fbe3; color:#0b6620; }
+.statusWarn{ background:#fff4d6; color:#9d6700; }
+.statusRed{ background:#ffe3e3; color:#a00000; }
+
+.dark .statusGreen{ background:#114222; color:#9dffc1; }
+.dark .statusWarn{ background:#6a4c09; color:#ffeab3; }
+.dark .statusRed{ background:#5a0a06; color:#ffb3b3; }
+
+/* Table */
+.table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+}
+
+.table th{
+    text-align:left;
+    padding:8px;
+    font-size:12px;
+    color:var(--muted);
+}
+
+.table td{
+    padding:8px;
+}
+
+/* Table responsiveness */
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+}
+
 /* =========================================================
-   BOTTOM MENU CORPORATIVO
+   BOTTOM MENU
    ========================================================= */
 .bottom-menu{
     position:fixed;
@@ -214,38 +247,31 @@ input:focus, select:focus{
     border-radius:18px;
     display:flex;
     justify-content:space-around;
-    box-shadow:0 12px 26px rgba(0,0,0,0.25);
+    color:#fff;
     z-index:999;
+    box-shadow:0 10px 25px rgba(0,0,0,0.25);
 }
 
-.bottom-menu .menu-item{
-    color:#fff;
+.menu-item{
     text-decoration:none;
-    font-size:13px;
     text-align:center;
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
     display:flex;
     flex-direction:column;
-    align-items:center;
     gap:4px;
-    font-weight:700;
 }
 
-.bottom-menu .menu-item .icon{
+.menu-item .icon{
     font-size:20px;
 }
 
-.bottom-menu .menu-item.active{
-    opacity:1;
-    transform:scale(1.04);
-}
-
-/* RESPONSIVO */
-@media(max-width:720px){
-    .row{ flex-direction:column; }
+.menu-item.active{
+    transform:scale(1.05);
 }
 </style>
 </head>
-
 <body>
 
 <header>
@@ -253,448 +279,333 @@ input:focus, select:focus{
         <div class="logo">RF</div>
         <h1>Manutenção</h1>
     </div>
-
-    <!-- Toggle modo escuro -->
     <button id="toggleDarkBtn">🌙</button>
 </header>
 
 <div class="container">
-<!-- =========================================================
-     CARD: DADOS DO VEÍCULO / KM ATUAL
-     ========================================================= -->
+
+<!-- DADOS DO VEÍCULO -->
 <div class="card">
-    <h3 style="margin-top:0; font-size:17px; font-weight:700;">Dados do Veículo / KM Atual</h3>
+    <h3>Dados do Veículo / KM Atual</h3>
 
     <div class="row">
         <div class="col">
             <div class="label">Nome / Proprietário</div>
-            <input id="perfilNome" placeholder="Nome completo">
+            <input id="perfilNome">
         </div>
 
         <div class="col">
             <div class="label">Marca</div>
-            <input id="perfilMarca" placeholder="Marca do veículo">
+            <input id="perfilMarca">
         </div>
 
         <div class="col">
             <div class="label">Modelo</div>
-            <input id="perfilModelo" placeholder="Modelo do veículo">
+            <input id="perfilModelo">
         </div>
     </div>
 
     <div class="row">
         <div class="col">
             <div class="label">Ano</div>
-            <input id="perfilAno" placeholder="Ex: 2018">
+            <input id="perfilAno">
         </div>
 
         <div class="col">
             <div class="label">Placa</div>
-            <input id="perfilPlaca" placeholder="Ex: ABC1D23">
+            <input id="perfilPlaca">
         </div>
 
         <div class="col">
-            <div class="label">KM atual (registrar diariamente)</div>
-            <input id="kmAtual" type="number" placeholder="Ex: 123456">
+            <div class="label">KM atual</div>
+            <input id="kmAtual" type="number">
         </div>
     </div>
 
-    <div style="display:flex; gap:10px; margin-top:12px;">
-        <button id="salvarPerfil" class="btn" style="flex:2;">Salvar dados e atualizar KM</button>
+    <div class="row" style="margin-top:10px;">
+        <button id="salvarPerfil" class="btn" style="flex:2;">Salvar / Atualizar KM</button>
         <button id="limparPerfil" class="btnGhost" style="flex:1;">Recarregar</button>
     </div>
 
-    <div style="display:flex; gap:10px; margin-top:12px;">
-        <button id="exportWhats" class="btnGhost" style="flex:1;">Enviar WhatsApp</button>
-        <button id="exportPdf" class="btnGhost" style="flex:1;">Gerar PDF</button>
+    <div class="row" style="margin-top:10px;">
+        <button id="exportWhats" class="btnGhost">WhatsApp</button>
+        <button id="exportPdf" class="btnGhost">PDF</button>
     </div>
 
-    <div class="smallNote">
-        Ao salvar o KM atual, todos os registros de manutenção serão recalculados automaticamente.
-    </div>
 </div>
 
-<!-- =========================================================
-     CARD: CADASTRAR MANUTENÇÃO / ITEM
-     ========================================================= -->
+<!-- CADASTRAR MANUTENÇÃO -->
 <div class="card">
-    <h3 style="margin-top:0; font-size:17px; font-weight:700;">Cadastrar manutenção / item</h3>
+    <h3>Cadastrar manutenção / item</h3>
 
-    <div class="label">Nome da manutenção</div>
-    <input id="mNome" placeholder="Ex: Troca de óleo">
+    <div class="label">Nome</div>
+    <input id="mNome">
 
     <div class="row">
         <div class="col">
-            <div class="label">KM da última troca</div>
-            <input id="mKmUltima" type="number" placeholder="Ex: 45000">
+            <div class="label">KM última troca</div>
+            <input id="mKmUltima" type="number">
         </div>
 
         <div class="col">
-            <div class="label">Intervalo para próxima troca (km)</div>
-            <input id="mIntervalo" type="number" placeholder="Ex: 10000">
+            <div class="label">Intervalo (km)</div>
+            <input id="mIntervalo" type="number">
         </div>
     </div>
 
     <div class="row">
         <div class="col">
-            <div class="label">Custo estimado da manutenção</div>
-            <input id="mCusto" type="number" step="0.01" placeholder="R$">
+            <div class="label">Custo estimado</div>
+            <input id="mCusto" type="number" step="0.01">
         </div>
 
         <div class="col">
-            <div class="label">Observações (opcional)</div>
-            <input id="mObs" placeholder="Ex: usar óleo sintético...">
+            <div class="label">Observação</div>
+            <input id="mObs">
         </div>
     </div>
 
-    <div style="display:flex; gap:10px; margin-top:12px;">
-        <button id="addManut" class="btn" style="flex:2;">Adicionar / Salvar manutenção</button>
+    <div class="row" style="margin-top:10px;">
+        <button id="addManut" class="btn" style="flex:2;">Adicionar / Salvar</button>
         <button id="limparFormManut" class="btnGhost" style="flex:1;">Limpar</button>
     </div>
 </div>
 
-<!-- =========================================================
-     CARD: LISTA DE MANUTENÇÕES
-     ========================================================= -->
+<!-- LISTA -->
 <div class="card">
-    <h3 style="margin-top:0; font-size:17px; font-weight:700;">Manutenções cadastradas</h3>
-
+    <h3>Manutenções cadastradas</h3>
     <div id="listaManutencoes"></div>
+</div>
 
-    <div class="smallNote" style="margin-top:14px;">
-        • Vermelho: ≤ 800 km<br>
-        • Amarelo: ≤ 2000 km<br>
-        • Verde: > 2000 km
+<!-- HISTORICO -->
+<div class="card">
+    <h3>Histórico</h3>
+    <div class="table-wrapper">
+        <table class="table" id="histTable">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Nome</th>
+                    <th>KM</th>
+                    <th>Valor</th>
+                    <th>Obs</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
 </div>
 
-<!-- =========================================================
-     CARD: HISTÓRICO DE MANUTENÇÕES
-     ========================================================= -->
-<div class="card">
-    <h3 style="margin-top:0; font-size:17px; font-weight:700;">Histórico de manutenções realizadas</h3>
-
-    <table class="table" id="histTable" style="width:100%; margin-top:10px; border-collapse:collapse;">
-        <thead>
-            <tr>
-                <th style="padding:8px; font-size:13px;">Data</th>
-                <th style="padding:8px; font-size:13px;">Nome</th>
-                <th style="padding:8px; font-size:13px;">KM</th>
-                <th style="padding:8px; font-size:13px;">Valor</th>
-                <th style="padding:8px; font-size:13px;">Obs</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
 </div>
-<!-- =========================================================
-     MENU INFERIOR CORPORATIVO
-     ========================================================= -->
+
+<!-- MENU -->
 <nav class="bottom-menu">
-    <a href="index.html" class="menu-item">
-        <span class="icon">🏠</span>
-        <span>Dashboard</span>
-    </a>
-
-    <a href="entradas.html" class="menu-item">
-        <span class="icon">💵</span>
-        <span>Entradas</span>
-    </a>
-
-    <a href="manutencao.html" class="menu-item active">
-        <span class="icon">🛠️</span>
-        <span>Manutenção</span>
-    </a>
-
-    <a href="resumo.html" class="menu-item">
-        <span class="icon">📊</span>
-        <span>Resumo</span>
-    </a>
-
-    <a href="perfil.html" class="menu-item">
-        <span class="icon">👤</span>
-        <span>Perfil</span>
-    </a>
-
-    <a href="calculadora.html" class="menu-item">
-        <span class="icon">📟</span>
-        <span>Calc</span>
-    </a>
+    <a href="index.html" class="menu-item"><span class="icon">🏠</span>Dashboard</a>
+    <a href="entradas.html" class="menu-item"><span class="icon">💵</span>Entradas</a>
+    <a href="manutencao.html" class="menu-item active"><span class="icon">🛠️</span>Manutenção</a>
+    <a href="resumo.html" class="menu-item"><span class="icon">📊</span>Resumo</a>
+    <a href="perfil.html" class="menu-item"><span class="icon">👤</span>Perfil</a>
+    <a href="calculadora.html" class="menu-item"><span class="icon">📟</span>Calc</a>
 </nav>
-
-<!-- libs for PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <script>
-/* =========================================================
-   TEMA GLOBAL (CLARO / ESCURO) — SINCRONIZADO ENTRE PÁGINAS
-   ========================================================= */
+/* ===================== THEME ====================== */
 function applyTheme(){
-    const theme = localStorage.getItem("themeMode") || "light";
-    if(theme === "dark"){
+    const t = localStorage.getItem("themeMode") || "light";
+    if(t === "dark"){
         document.body.classList.add("dark");
-        document.getElementById("toggleDarkBtn").textContent = "☀️";
+        toggleDarkBtn.textContent = "☀️";
     } else {
         document.body.classList.remove("dark");
-        document.getElementById("toggleDarkBtn").textContent = "🌙";
+        toggleDarkBtn.textContent = "🌙";
     }
 }
-
-document.getElementById("toggleDarkBtn").addEventListener("click", () => {
-    const theme = document.body.classList.contains("dark") ? "light" : "dark";
-    localStorage.setItem("themeMode", theme);
+toggleDarkBtn.onclick = () => {
+    const mode = document.body.classList.contains("dark") ? "light" : "dark";
+    localStorage.setItem("themeMode", mode);
     applyTheme();
-});
-
+};
 applyTheme();
 
+/* ===================== HELPERS ====================== */
+const $ = e => document.getElementById(e);
+const currency = v => Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const now = () => new Date().toISOString();
+const esc = t => t ? t.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])) : "";
 
-/* =========================================================
-   STORAGE HELPERS
-   ========================================================= */
-const $ = id => document.getElementById(id);
-const fmt = v => Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-const nowISO = ()=> new Date().toISOString();
+/* ===================== STORAGE ====================== */
+const load = k => JSON.parse(localStorage.getItem(k) || (k==="manutencoes"?"[]":k==="manutHistorico"?"[]":"{}"));
+const save = (k,v) => localStorage.setItem(k, JSON.stringify(v));
 
-function loadPerfil(){ return JSON.parse(localStorage.getItem('perfilMotorista') || '{}'); }
-function savePerfil(p){ localStorage.setItem('perfilMotorista', JSON.stringify(p)); }
+/* ===================== PERFIL ====================== */
+function renderPerfil(){
+    const p = load("perfilMotorista");
+    $("perfilNome").value = p.nome || "";
+    $("perfilMarca").value = p.carro || "";
+    $("perfilModelo").value = p.modelo || "";
+    $("perfilAno").value = p.ano || "";
+    $("perfilPlaca").value = p.placa || "";
+    $("kmAtual").value = p.kmAtual || "";
+}
 
-function loadManuts(){ return JSON.parse(localStorage.getItem('manutencoes') || '[]'); }
-function saveManuts(a){ localStorage.setItem('manutencoes', JSON.stringify(a)); }
+function salvarPerfil(){
+    const p = load("perfilMotorista");
+    p.nome = $("perfilNome").value.trim();
+    p.carro = $("perfilMarca").value.trim();
+    p.modelo = $("perfilModelo").value.trim();
+    p.ano = $("perfilAno").value.trim();
+    p.placa = $("perfilPlaca").value.trim();
+    const km = Number($("kmAtual").value);
+    if(km){ p.kmAtual = km; }
+    save("perfilMotorista", p);
 
-function loadHist(){ return JSON.parse(localStorage.getItem('manutHistorico') || '[]'); }
-function saveHist(a){ localStorage.setItem('manutHistorico', JSON.stringify(a)); }
+    // recalc manutenções
+    const manuts = load("manutencoes");
+    manuts.forEach(m => calc(m, p.kmAtual||0));
+    save("manutencoes", manuts);
 
+    renderManutencoes();
+    alert("Dados salvos!");
+}
 
-/* =========================================================
-   CÁLCULOS DE MANUTENÇÃO
-   ========================================================= */
-function calcularProximas(m, kmAtual){
+/* ===================== MANUTENÇÕES ====================== */
+function calc(m, kmAtual){
     m.kmProxima = Number(m.kmUltimaTroca) + Number(m.intervaloKm);
     m.kmRestante = m.kmProxima - kmAtual;
     m.valorPorKm = (Number(m.custoEstimado)||0) / (Number(m.intervaloKm)||1);
-    return m;
 }
 
-function colorFromKmRestante(km){
-    if(km <= 800) return 'statusRed';
-    if(km <= 2000) return 'statusWarn';
-    return 'statusGreen';
-}
-
-
-/* =========================================================
-   RENDERIZAÇÃO DO PERFIL
-   ========================================================= */
-function renderPerfil(){
-    const p = loadPerfil();
-    $('perfilNome').value = p.nome || "";
-    $('perfilMarca').value = p.carro || "";
-    $('perfilModelo').value = p.modelo || "";
-    $('perfilAno').value = p.ano || "";
-    $('perfilPlaca').value = p.placa || "";
-    $('kmAtual').value = p.kmAtual || "";
-}
-
-
-/* =========================================================
-   RENDERIZAÇÃO DAS MANUTENÇÕES
-   ========================================================= */
 function renderManutencoes(){
-    const manuts = loadManuts();
-    const perfil = loadPerfil();
-    const kmAtual = Number(perfil.kmAtual || 0);
-
-    manuts.forEach(m => calcularProximas(m, kmAtual));
-    manuts.sort((a,b) => a.kmRestante - b.kmRestante);
-    saveManuts(manuts);
-
-    const box = $('listaManutencoes');
+    const box = $("listaManutencoes");
     box.innerHTML = "";
+    const manuts = load("manutencoes");
+    const perfil = load("perfilMotorista");
+    const kmAtual = Number(perfil.kmAtual||0);
 
-    if(manuts.length === 0){
-        box.innerHTML = `<div class="smallNote">Nenhuma manutenção cadastrada.</div>`;
+    manuts.forEach(m => calc(m, kmAtual));
+    manuts.sort((a,b)=>a.kmRestante - b.kmRestante);
+    save("manutencoes", manuts);
+
+    if(!manuts.length){
+        box.innerHTML = `<div class='smallNote'>Nenhuma manutenção cadastrada</div>`;
         return;
     }
 
-    manuts.forEach(m => {
+    manuts.forEach(m=>{
         const div = document.createElement("div");
-        div.className = "listItem";
+        div.className="listItem";
 
-        const statusClass = colorFromKmRestante(m.kmRestante);
-        const txt = m.kmRestante < 0 ? `${Math.abs(m.kmRestante)} km atrasado` : `${m.kmRestante} km restantes`;
+        const color =
+            m.kmRestante <= 800 ? "statusRed" :
+            m.kmRestante <= 2000 ? "statusWarn" : "statusGreen";
 
         div.innerHTML = `
             <div style="flex:1;">
-                <div style="font-weight:700; font-size:15px;">${escape(m.nome)}</div>
-                <div class="smallNote">Última troca: ${m.kmUltimaTroca} km • Próxima: ${m.kmProxima} km</div>
-                <div class="smallNote">Custo estimado: ${fmt(m.custoEstimado)}</div>
-                ${m.obs ? `<div class="smallNote">Obs: ${escape(m.obs)}</div>` : ""}
+                <div style="font-weight:700;">${esc(m.nome)}</div>
+                <div class="smallNote">Última: ${m.kmUltimaTroca} • Próx: ${m.kmProxima}</div>
+                <div class="smallNote">Custo: ${currency(m.custoEstimado)}</div>
+                ${m.obs ? `<div class="smallNote">${esc(m.obs)}</div>` : ""}
             </div>
 
             <div style="text-align:right;">
-                <div class="badge ${statusClass}">${txt}</div>
+                <div class="badge ${color}">${m.kmRestante} km</div>
 
-                <div style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
-                    <button class="btnGhost" style="font-size:12px;" onclick="editarManut(${m.id})">Editar</button>
-                    <button class="btnGhost" style="font-size:12px;" onclick="removerManut(${m.id})">Remover</button>
-                    <button class="btn" style="font-size:12px;" onclick="marcarRealizada(${m.id})">Marcar Realizada</button>
+                <div style="margin-top:8px; display:flex; flex-direction:column; gap:6px;">
+                    <button class="btnGhost" onclick="editar(${m.id})">Editar</button>
+                    <button class="btnGhost" onclick="remover(${m.id})">Remover</button>
+                    <button class="btn" onclick="realizada(${m.id})">Realizar</button>
                 </div>
             </div>
         `;
-
         box.appendChild(div);
     });
 }
 
+function adicionar(){
+    const nome = $("mNome").value.trim();
+    const u = Number($("mKmUltima").value);
+    const int = Number($("mIntervalo").value);
+    const custo = Number($("mCusto").value);
+    const obs = $("mObs").value.trim();
 
-/* =========================================================
-   RENDERIZAÇÃO DO HISTÓRICO
-   ========================================================= */
-function renderHistorico(){
-    const hist = loadHist();
-    const tbody = document.querySelector("#histTable tbody");
-    tbody.innerHTML = "";
+    if(!nome || !u || !int) return alert("Preencha nome, km e intervalo.");
 
-    if(hist.length === 0){
-        tbody.innerHTML = `<tr><td colspan="5" class="smallNote">Nenhum registro ainda.</td></tr>`;
-        return;
-    }
-
-    hist.slice().reverse().forEach(h => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${new Date(h.data).toLocaleString()}</td>
-            <td>${escape(h.nome)}</td>
-            <td>${h.kmTroca}</td>
-            <td>${fmt(h.custoPago)}</td>
-            <td>${escape(h.obs||"")}</td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-
-/* =========================================================
-   AÇÕES
-   ========================================================= */
-function salvarPerfil(){
-    const p = loadPerfil();
-    p.nome = $('perfilNome').value.trim();
-    p.carro = $('perfilMarca').value.trim();
-    p.modelo = $('perfilModelo').value.trim();
-    p.ano = $('perfilAno').value.trim();
-    p.placa = $('perfilPlaca').value.trim();
-
-    const kmNovo = Number($('kmAtual').value);
-    if(kmNovo){ p.kmAtual = kmNovo; }
-
-    savePerfil(p);
-
-    const manuts = loadManuts();
-    manuts.forEach(m => calcularProximas(m, kmNovo));
-    saveManuts(manuts);
-
-    renderManutencoes();
-    alert("Dados salvos e manutenções recalculadas!");
-}
-
-function limparPerfil(){
-    renderPerfil();
-    renderManutencoes();
-    renderHistorico();
-}
-
-function adicionarManut(){
-    const nome = $('mNome').value.trim();
-    const kmUltima = Number($('mKmUltima').value);
-    const intervalo = Number($('mIntervalo').value);
-    const custo = Number($('mCusto').value);
-    const obs = $('mObs').value.trim();
-
-    if(!nome || !kmUltima || !intervalo){
-        alert("Preencha nome, km da última troca e intervalo.");
-        return;
-    }
-
-    const perfil = loadPerfil();
-    const kmAtual = Number(perfil.kmAtual || 0);
+    const perfil = load("perfilMotorista");
+    const kmAtual = Number(perfil.kmAtual||0);
 
     const m = {
         id: Date.now(),
         nome,
-        kmUltimaTroca: kmUltima,
-        intervaloKm: intervalo,
-        custoEstimado: custo,
+        kmUltimaTroca:u,
+        intervaloKm:int,
+        custoEstimado:custo,
         obs,
-        criadoEm: nowISO()
+        criadoEm:now()
     };
 
-    calcularProximas(m, kmAtual);
+    calc(m, kmAtual);
 
-    const manuts = loadManuts();
-    manuts.push(m);
-    saveManuts(manuts);
+    const arr = load("manutencoes");
+    arr.push(m);
+    save("manutencoes", arr);
 
     renderManutencoes();
     limparFormManut();
 }
 
-function editarManut(id){
-    const manuts = loadManuts();
-    const m = manuts.find(x => x.id === id);
+function editar(id){
+    const arr = load("manutencoes");
+    const m = arr.find(x=>x.id===id);
     if(!m) return;
 
-    $('mNome').value = m.nome;
-    $('mKmUltima').value = m.kmUltimaTroca;
-    $('mIntervalo').value = m.intervaloKm;
-    $('mCusto').value = m.custoEstimado;
-    $('mObs').value = m.obs;
+    $("mNome").value = m.nome;
+    $("mKmUltima").value = m.kmUltimaTroca;
+    $("mIntervalo").value = m.intervaloKm;
+    $("mCusto").value = m.custoEstimado;
+    $("mObs").value = m.obs;
 
-    removerManut(id);
-    window.scrollTo({top:0, behavior:"smooth"});
+    remover(id);
+    window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function removerManut(id){
-    if(!confirm("Deseja remover esta manutenção?")) return;
-    const manuts = loadManuts().filter(m => m.id !== id);
-    saveManuts(manuts);
+function remover(id){
+    if(!confirm("Deseja remover?")) return;
+    const arr = load("manutencoes").filter(x=>x.id!==id);
+    save("manutencoes", arr);
     renderManutencoes();
 }
 
-function marcarRealizada(id){
-    const manuts = loadManuts();
-    const m = manuts.find(x => x.id === id);
+function realizada(id){
+    const arr = load("manutencoes");
+    const m = arr.find(x=>x.id === id);
     if(!m) return;
 
-    const perfil = loadPerfil();
-    const kmAtual = Number(perfil.kmAtual || 0);
+    const perfil = load("perfilMotorista");
+    const kmAtual = Number(perfil.kmAtual||0);
 
-    const kmTroca = Number(prompt("KM da troca:", kmAtual));
-    if(!kmTroca) return;
+    const km = Number(prompt("KM da troca:", kmAtual));
+    if(!km) return;
 
-    const valor = Number(prompt("Valor pago:", m.custoEstimado)) || 0;
+    const valor = Number(prompt("Valor pago:", m.custoEstimado));
     const obs = prompt("Obs:", "") || "";
 
-    const hist = loadHist();
+    const hist = load("manutHistorico");
     hist.push({
         id:Date.now(),
         nome:m.nome,
-        kmTroca,
+        kmTroca:km,
         custoPago:valor,
-        data:nowISO(),
+        data:now(),
         obs
     });
-    saveHist(hist);
+    save("manutHistorico", hist);
 
-    m.kmUltimaTroca = kmTroca;
-    calcularProximas(m, kmAtual);
-    saveManuts(manuts);
+    m.kmUltimaTroca = km;
+    calc(m, kmAtual);
+    save("manutencoes", arr);
 
-    if(kmTroca > kmAtual){
-        perfil.kmAtual = kmTroca;
-        savePerfil(perfil);
+    if(km > kmAtual){
+        perfil.kmAtual = km;
+        save("perfilMotorista", perfil);
         renderPerfil();
     }
 
@@ -703,59 +614,78 @@ function marcarRealizada(id){
     alert("Manutenção registrada!");
 }
 
+/* ===================== HISTÓRICO ====================== */
+function renderHistorico(){
+    const hist = load("manutHistorico");
+    const tbody = document.querySelector("#histTable tbody");
+    tbody.innerHTML = "";
 
-/* =========================================================
-   EXPORTAÇÃO (WHATSAPP / PDF)
-   ========================================================= */
+    if(!hist.length){
+        tbody.innerHTML = `<tr><td colspan=5 class='smallNote'>Nenhum registro</td></tr>`;
+        return;
+    }
+
+    hist.slice().reverse().forEach(h=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${new Date(h.data).toLocaleString()}</td>
+            <td>${esc(h.nome)}</td>
+            <td>${h.kmTroca}</td>
+            <td>${currency(h.custoPago)}</td>
+            <td>${esc(h.obs)}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+/* ===================== EXPORTS ====================== */
 function exportWhats(){
-    const p = loadPerfil();
-    const manuts = loadManuts().sort((a,b)=>a.kmRestante-b.kmRestante);
+    const p = load("perfilMotorista");
+    const manuts = load("manutencoes").sort((a,b)=>a.kmRestante-b.kmRestante);
 
-    let msg = `Relatório de Manutenção (${new Date().toLocaleDateString()})\n\n`;
-    msg += `Veículo: ${p.carro||""} ${p.modelo||""} (${p.ano||""})\nPlaca: ${p.placa||""}\nKM Atual: ${p.kmAtual||0}\n\n`;
+    let msg = `Relatório de Manutenção - ${new Date().toLocaleDateString()}\n\n`;
+    msg += `Veículo: ${p.carro||""} ${p.modelo||""} • Placa: ${p.placa||""}\nKM Atual: ${p.kmAtual||0}\n\n`;
 
-    manuts.forEach(m => {
-        msg += `• ${m.nome}: Próxima ${m.kmProxima} km (${m.kmRestante} km restantes)\n`;
+    manuts.forEach(m=>{
+        msg += `• ${m.nome}: Próx ${m.kmProxima} (${m.kmRestante} km)\n`;
     });
 
-    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+    window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank");
 }
 
 async function exportPdf(){
     const el = document.querySelector(".container");
-    const canvas = await html2canvas(el,{scale:1.6});
+    const canvas = await html2canvas(el,{scale:2});
     const img = canvas.toDataURL("image/png");
     const pdf = new jspdf.jsPDF("p","mm","a4");
-
     const w = pdf.internal.pageSize.getWidth();
-    const h = (canvas.height * w) / canvas.width;
-
+    const h = canvas.height * (w / canvas.width);
     pdf.addImage(img,"PNG",0,0,w,h);
     pdf.save("manutencao.pdf");
 }
 
-
-/* =========================================================
-   UTIL
-   ========================================================= */
-function escape(s){ return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+/* ===================== UTIL ====================== */
 function limparFormManut(){
-    $('mNome').value = "";
-    $('mKmUltima').value = "";
-    $('mIntervalo').value = "";
-    $('mCusto').value = "";
-    $('mObs').value = "";
+    $("mNome").value="";
+    $("mKmUltima").value="";
+    $("mIntervalo").value="";
+    $("mCusto").value="";
+    $("mObs").value="";
 }
 
-/* =========================================================
-   BOOT
-   ========================================================= */
-(function boot(){
-    renderPerfil();
-    renderManutencoes();
-    renderHistorico();
-})();
-</script>
+/* ===================== BOOT ====================== */
+renderPerfil();
+renderManutencoes();
+renderHistorico();
 
+/* EVENTOS */
+$("salvarPerfil").onclick = salvarPerfil;
+$("limparPerfil").onclick = ()=>{renderPerfil();renderManutencoes();renderHistorico();}
+$("addManut").onclick = adicionar;
+$("limparFormManut").onclick = limparFormManut;
+$("exportWhats").onclick = exportWhats;
+$("exportPdf").onclick = exportPdf;
+
+</script>
 </body>
 </html>
