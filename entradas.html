@@ -4,318 +4,516 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Entradas e Saídas - Motorista App</title>
+
 <style>
-    :root{
-        --bg:#121212;
-        --card:#1E1E1E;
-        --muted:#bbb;
-        --accent:#1DB954;
-        --danger:#ff3b30;
-        --panel:#2A2A2A;
-    }
+/* ============================ */
+/*     PALETA CORPORATIVA       */
+/*     + MODO CLARO / ESCURO    */
+/* ============================ */
 
-    body{
-        margin:0;
-        font-family:Arial, sans-serif;
-        background:var(--bg);
-        color:#fff;
-        overflow-x:hidden;
-        padding-bottom:120px; /* espaço para menu inferior */
-    }
+:root{
+    /* MODO CLARO */
+    --bg: #ffffff;
+    --page-gap: #f3f5f8;
 
-    header{
-        background:var(--accent);
-        padding:18px;
-        font-size:22px;
-        font-weight:bold;
-        text-align:center;
-        color:#000;
-        position:relative;
-    }
+    --card: #fafbfc;
+    --card-strong: #f0f2f5;
+    --panel: #ffffff;
 
-    .container{ padding:16px; max-width:980px; margin:0 auto; box-sizing:border-box; }
+    --brand: #0b5bd7;
+    --brand-dark: #073f8a;
 
-    /* topo de abas */
-    .tabs {
-        display:flex;
-        gap:8px;
-        margin-bottom:16px;
-    }
-    .tab{
-        flex:1;
-        background:var(--card);
-        padding:10px;
-        text-align:center;
-        border-radius:10px;
-        cursor:pointer;
-        color:#ddd;
-        font-weight:600;
-        user-select:none;
-        box-shadow:0 2px 6px rgba(0,0,0,0.4);
-    }
-    .tab.active{
-        background:linear-gradient(180deg,var(--accent),#12a443);
-        color:#000;
-    }
+    --accent-success: #1DB954;
+    --accent-danger: #ff3b30;
 
-    .card{
-        background:var(--card);
-        padding:18px;
-        border-radius:14px;
-        margin-bottom:18px;
-        box-shadow:0 6px 18px rgba(0,0,0,0.4);
-    }
+    --text: #0b1115;
+    --muted: #65707a;
 
-    .form input, .form select{
-        width:100%;
-        padding:10px 12px;
-        margin-bottom:10px;
-        border-radius:8px;
-        border:1px solid #333;
-        background:var(--panel);
-        color:#fff;
-        box-sizing:border-box;
-    }
+    --shadow: 0 6px 16px rgba(13,30,45,0.07);
+    --shadow-strong: 0 10px 32px rgba(10,20,30,0.12);
 
-    button{
-        width:100%;
-        padding:12px;
-        background:var(--accent);
-        color:#000;
-        border:none;
-        border-radius:10px;
-        font-size:15px;
-        cursor:pointer;
-        font-weight:700;
-    }
+    --radius: 14px;
+}
 
-    .row{ display:flex; gap:10px; }
-    .col{ flex:1; }
+/* ============================ */
+/*       MODO ESCURO GLOBAL     */
+/* ============================ */
 
-    .lists{
-        display:flex;
-        gap:16px;
-        flex-wrap:wrap;
-    }
-    .list-panel{
-        flex:1 1 320px;
-        min-width:280px;
-    }
+.dark{
+    --bg: #0f1115;
+    --page-gap: #15171c;
 
-    .item{
-        background:#111;
-        padding:12px;
-        border-radius:10px;
-        margin-bottom:10px;
-        display:flex;
-        justify-content:space-between;
-        align-items:flex-start;
-        gap:10px;
-    }
-    .item small{ color:var(--muted); display:block; margin-top:6px; }
-    .item .vals{ text-align:right; min-width:110px; }
+    --card: #181a20;
+    --card-strong: #1d1f27;
+    --panel: #1b1d25;
 
-    .remove{
-        background:var(--danger);
-        padding:6px 9px;
-        border-radius:8px;
-        color:#fff;
-        border:none;
-        cursor:pointer;
-        font-weight:700;
-    }
+    --text: #e5e7eb;
+    --muted: #9ca3af;
 
-    .totals{ text-align:right; margin-bottom:10px; font-weight:700; color:var(--accent); }
+    --shadow: 0 6px 16px rgba(0,0,0,0.35);
+    --shadow-strong: 0 10px 32px rgba(0,0,0,0.45);
 
-    /* bottom menu (Uber style) */
-    .bottom-menu{
-        position:fixed;
-        bottom:15px;
-        left:50%;
-        transform:translateX(-50%);
-        width:88%;
-        background:#1B1B1B;
-        padding:10px 0;
-        border-radius:18px;
-        display:flex;
-        justify-content:space-around;
-        box-shadow:0 6px 25px rgba(0,0,0,0.6);
-        z-index:1000;
-    }
-    .bottom-menu .menu-item{
-        text-align:center;
-        color:#fff;
-        text-decoration:none;
-        font-size:13px;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-    }
-    .bottom-menu .menu-item .icon{ font-size:22px; margin-bottom:4px; }
-    .bottom-menu .menu-item.active{ color:var(--accent); }
+    --brand: #3b82f6;
+    --brand-dark: #2563eb;
 
-    /* modal */
-    #modalMaquineta .modalBox{ background:var(--card); margin:auto; padding:16px; width:92%; max-width:420px; border-radius:12px; }
-    #modalMaquineta{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:2000; padding-top:36px; box-sizing:border-box; }
+    --accent-success: #22c55e;
+    --accent-danger: #ef4444;
+}
 
-    @media (max-width:720px){
-        .row{ flex-direction:column; }
-    }
+/* ============================ */
+/*           BASE               */
+/* ============================ */
+
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background:linear-gradient(180deg, var(--page-gap), var(--bg) 50%);
+    color:var(--text);
+    padding-bottom:160px; /* espaço do menu inferior */
+}
+
+/* ============================ */
+/*          HEADER              */
+/* ============================ */
+
+header{
+    padding:18px 16px;
+    max-width:980px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+.brand .logo{
+    width:46px;
+    height:46px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    color:#fff;
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    box-shadow:var(--shadow);
+    font-size:18px;
+}
+
+/* botão modo escuro */
+#toggleTheme{
+    background:var(--card-strong);
+    padding:8px 12px;
+    border-radius:10px;
+    border:1px solid rgba(0,0,0,0.15);
+    font-weight:700;
+    cursor:pointer;
+    color:var(--text);
+}
+
+/* ============================ */
+/*          CONTAINER           */
+/* ============================ */
+
+.container{
+    max-width:980px;
+    margin:0 auto;
+    padding:0 16px;
+}
+
+/* ============================ */
+/*             TABS             */
+/* ============================ */
+
+.tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:16px;
+}
+
+.tab{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    background:var(--card);
+    border-radius:var(--radius);
+    font-weight:700;
+    cursor:pointer;
+    color:var(--muted);
+    border:1px solid #d7dce2;
+    transition:.25s;
+}
+
+.tab.active{
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    color:#fff;
+    border:none;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* ============================ */
+/*           CARDS              */
+/* ============================ */
+
+.card{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:20px;
+    margin-bottom:18px;
+    border:1px solid #d7dce2;
+    box-shadow:var(--shadow);
+}
+
+.card h3{
+    margin-top:0;
+    margin-bottom:12px;
+}
+
+/* ============================ */
+/*         FORM INPUTS          */
+/* ============================ */
+
+.form input,
+.form select{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #cfd4da;
+    background:var(--panel);
+    color:var(--text);
+    margin-bottom:12px;
+    font-size:15px;
+}
+
+.dark .form input,
+.dark .form select{
+    border-color:#2c2f36;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    border:none;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    color:#fff;
+}
+
+/* linhas lado a lado */
+.row{
+    display:flex;
+    gap:10px;
+}
+.col{ flex:1; }
+
+/* ============================ */
+/*         LISTA ITENS          */
+/* ============================ */
+
+.item{
+    background:var(--card-strong);
+    padding:14px;
+    border-radius:12px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+}
+
+.item small{
+    color:var(--muted);
+}
+
+.remove{
+    background:var(--accent-danger);
+    color:#fff;
+    border:none;
+    padding:6px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.totals{
+    text-align:right;
+    font-weight:800;
+    margin-bottom:10px;
+    color:var(--accent-success);
+}
+
+/* ============================ */
+/*      MODAL MAQUINETA         */
+/* ============================ */
+
+#modalMaquineta{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.55);
+    display:none;
+    z-index:2000;
+    padding-top:40px;
+}
+
+.modalBox{
+    background:var(--card);
+    width:92%;
+    max-width:420px;
+    padding:20px;
+    border-radius:14px;
+    margin:auto;
+    box-shadow:var(--shadow-strong);
+}
+
+/* ============================ */
+/*    BOTTOM MENU CORPORATIVO   */
+/* ============================ */
+
+.bottom-menu{
+    position:fixed;
+    bottom:18px; left:50%;
+    transform:translateX(-50%);
+    width:92%; max-width:980px;
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    padding:14px 12px;
+    border-radius:18px;
+    box-shadow:0 14px 36px rgba(0,0,0,0.25);
+    display:flex;
+    justify-content:space-around;
+    border:1px solid rgba(255,255,255,0.15);
+}
+
+.bottom-menu .menu-item{
+    text-decoration:none;
+    color:#fff;
+    font-weight:700;
+    font-size:13px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+}
+
+.bottom-menu .menu-item .icon{
+    font-size:22px;
+    opacity:0.9;
+}
+
+.bottom-menu .menu-item.active{
+    background:rgba(255,255,255,0.18);
+    padding:6px 8px;
+    border-radius:10px;
+}
 </style>
 </head>
+
 <body>
 
-<header>Entradas & Saídas</header>
+<header>
+    <div class="brand">
+        <div class="logo">RF</div>
+        <h2 style="margin:0;">Entradas & Saídas</h2>
+    </div>
+
+    <button id="toggleTheme">🌙</button>
+</header>
 
 <div class="container">
 
-    <!-- abas -->
-    <div class="tabs" role="tablist" aria-label="Seleção">
-        <div class="tab active" id="tab-corridas" data-tab="corridas">Entradas (Corridas)</div>
-        <div class="tab" id="tab-outras" data-tab="outras">Outras Entradas</div>
-        <div class="tab" id="tab-saidas" data-tab="saidas">Saídas (Despesas)</div>
-    </div>
+<!-- ============================ -->
+<!--          TABS                -->
+<!-- ============================ -->
 
-    <!-- FORMS -->
-    <div class="card" id="form-corridas">
-        <h3>Nova Entrada — Corrida</h3>
-        <div class="form">
-            <select id="categoriaEntrada">
-                <option value="">Selecione o tipo</option>
-                <option value="particular">Viagem Particular</option>
-                <option value="empresa">Viagem de Empresa</option>
-                <option value="app">Viagem de Aplicativo</option>
+<div class="tabs">
+    <div class="tab active" data-tab="corridas">Entradas (Corridas)</div>
+    <div class="tab" data-tab="outras">Outras Entradas</div>
+    <div class="tab" data-tab="saidas">Saídas (Despesas)</div>
+</div>
+
+<!-- ============================ -->
+<!--   FORM - ENTRADA CORRIDAS    -->
+<!-- ============================ -->
+
+<div class="card" id="form-corridas">
+    <h3>Nova Entrada — Corrida</h3>
+    <div class="form">
+
+        <select id="categoriaEntrada">
+            <option value="">Selecione o tipo</option>
+            <option value="particular">Viagem Particular</option>
+            <option value="empresa">Viagem de Empresa</option>
+            <option value="app">Viagem de Aplicativo</option>
+        </select>
+
+        <div id="subAppEntrada" style="display:none;">
+            <select id="appTipoEntrada">
+                <option value="">Selecione o Aplicativo</option>
+                <option value="uber">Uber</option>
+                <option value="99">99</option>
+                <option value="indriver">InDriver</option>
+                <option value="outros">Outros</option>
             </select>
 
-            <div id="subAppEntrada" style="display:none;">
-                <select id="appTipoEntrada">
-                    <option value="">Selecione o Aplicativo</option>
-                    <option value="uber">Uber</option>
-                    <option value="99">99</option>
-                    <option value="indriver">InDriver</option>
-                    <option value="outros">Outros</option>
-                </select>
+            <input id="taxaAppEntrada" type="number" placeholder="Taxa do App (%)">
+        </div>
 
-                <input id="taxaAppEntrada" type="number" placeholder="Taxa do App (%)">
-            </div>
+        <input id="descricaoEntrada" type="text" placeholder="Descrição da corrida">
 
-            <input id="descricaoEntrada" type="text" placeholder="Descrição da corrida">
-            <div class="row">
-                <div class="col"><input id="valorBrutoEntrada" type="number" placeholder="Valor bruto (R$)" step="0.01"></div>
-                <div class="col"><input id="valorLiquidoEntrada" type="number" placeholder="Valor líquido (R$)" step="0.01"></div>
-            </div>
+        <div class="row">
+            <div class="col"><input id="valorBrutoEntrada" type="number" placeholder="Valor bruto (R$)" step="0.01"></div>
+            <div class="col"><input id="valorLiquidoEntrada" type="number" placeholder="Valor líquido (R$)" step="0.01"></div>
+        </div>
 
-            <select id="formaPagEntrada">
-                <option value="">Forma de pagamento</option>
-                <option value="dinheiro">Dinheiro</option>
-                <option value="pix">PIX</option>
-                <option value="appMobile">Pagamento no App</option>
-                <option value="cartao">Cartão</option>
+        <select id="formaPagEntrada">
+            <option value="">Forma de pagamento</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="pix">PIX</option>
+            <option value="appMobile">Pagamento no App</option>
+            <option value="cartao">Cartão</option>
+        </select>
+
+        <div id="cartaoEntrada" style="display:none;">
+            <select id="maqEntrada"></select>
+            <select id="parcelaEntrada">
+                <option value="debito">Débito</option>
+                <option value="credito_avista">Crédito à vista</option>
+                <option value="2">2x</option>
+                <option value="3">3x</option>
+                <option value="4">4x</option>
+                <option value="5">5x</option>
             </select>
-
-            <div id="cartaoEntrada" style="display:none;">
-                <select id="maqEntrada"></select>
-                <select id="parcelaEntrada">
-                    <option value="debito">Débito</option>
-                    <option value="credito_avista">Crédito à vista</option>
-                    <option value="2">2x</option>
-                    <option value="3">3x</option>
-                    <option value="4">4x</option>
-                    <option value="5">5x</option>
-                </select>
-                <button type="button" onclick="abrirCadastroMaquineta()">+ Cadastrar Maquineta</button>
-            </div>
-
-            <button type="button" id="btnAdicionarCorrida">Adicionar Corrida</button>
+            <button type="button" onclick="abrirCadastroMaquineta()">+ Cadastrar Maquineta</button>
         </div>
+
+        <button type="button" id="btnAdicionarCorrida">Adicionar Corrida</button>
+
     </div>
+</div>
 
-    <div class="card" id="form-outras" style="display:none;">
-        <h3>Nova Entrada — Outras</h3>
-        <div class="form">
-            <input id="descricaoOutra" type="text" placeholder="Descrição (ex: reembolso, ajuda, aluguel recebido)">
-            <div class="row">
-                <div class="col"><input id="valorBrutoOutra" type="number" placeholder="Valor bruto (R$)" step="0.01"></div>
-                <div class="col"><input id="valorLiquidoOutra" type="number" placeholder="Valor líquido (R$)" step="0.01"></div>
+<!-- ============================ -->
+<!--   FORM - OUTRAS ENTRADAS     -->
+<!-- ============================ -->
+
+<div class="card" id="form-outras" style="display:none;">
+    <h3>Nova Entrada — Outras</h3>
+    <div class="form">
+
+        <input id="descricaoOutra" type="text" placeholder="Descrição">
+
+        <div class="row">
+            <div class="col">
+                <input id="valorBrutoOutra" type="number" placeholder="Valor bruto (R$)" step="0.01">
             </div>
+            <div class="col">
+                <input id="valorLiquidoOutra" type="number" placeholder="Valor líquido (R$)" step="0.01">
+            </div>
+        </div>
 
-            <select id="formaPagOutra">
-                <option value="">Forma de pagamento</option>
-                <option value="dinheiro">Dinheiro</option>
-                <option value="pix">PIX</option>
-                <option value="appMobile">Pagamento no App</option>
-                <option value="cartao">Cartão</option>
+        <select id="formaPagOutra">
+            <option value="">Forma de pagamento</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="pix">PIX</option>
+            <option value="appMobile">Pagamento no App</option>
+            <option value="cartao">Cartão</option>
+        </select>
+
+        <div id="cartaoOutra" style="display:none;">
+            <select id="maqOutra"></select>
+            <select id="parcelaOutra">
+                <option value="debito">Débito</option>
+                <option value="credito_avista">Crédito à vista</option>
+                <option value="2">2x</option>
+                <option value="3">3x</option>
+                <option value="4">4x</option>
+                <option value="5">5x</option>
             </select>
+            <button type="button" onclick="abrirCadastroMaquineta()">+ Cadastrar Maquineta</button>
+        </div>
 
-            <div id="cartaoOutra" style="display:none;">
-                <select id="maqOutra"></select>
-                <select id="parcelaOutra">
-                    <option value="debito">Débito</option>
-                    <option value="credito_avista">Crédito à vista</option>
-                    <option value="2">2x</option>
-                    <option value="3">3x</option>
-                    <option value="4">4x</option>
-                    <option value="5">5x</option>
-                </select>
-                <button type="button" onclick="abrirCadastroMaquineta()">+ Cadastrar Maquineta</button>
+        <button type="button" id="btnAdicionarOutra">Adicionar Entrada</button>
+
+    </div>
+</div>
+
+<!-- ============================ -->
+<!--       FORM - SAÍDAS         -->
+<!-- ============================ -->
+
+<div class="card" id="form-saidas" style="display:none;">
+    <h3>Nova Saída</h3>
+    <div class="form">
+
+        <input id="descricaoSaida" type="text" placeholder="Descrição da despesa">
+
+        <div class="row">
+            <div class="col">
+                <input id="valorBrutoSaida" type="number" placeholder="Valor (R$)" step="0.01">
             </div>
+            <div class="col">
+                <select id="formaPagSaida">
+                    <option value="">Forma de pagamento</option>
+                    <option value="dinheiro">Dinheiro</option>
+                    <option value="pix">PIX</option>
+                    <option value="cartao">Cartão</option>
+                </select>
+            </div>
+        </div>
 
-            <button type="button" id="btnAdicionarOutra">Adicionar Entrada</button>
+        <div id="cartaoSaida" style="display:none;">
+            <select id="tipoCartaoSaida">
+                <option value="debito">Débito</option>
+                <option value="credito">Crédito</option>
+            </select>
+        </div>
+
+        <button type="button" id="btnAdicionarSaida">Adicionar Saída</button>
+
+    </div>
+</div>
+<!-- ============================ -->
+<!--      LISTAS (ENTRADAS)       -->
+<!-- ============================ -->
+
+<div class="lists" style="display:flex; gap:16px; flex-wrap:wrap; margin-top:10px;">
+
+    <!-- ENTRADAS -->
+    <div class="list-panel" style="flex:1 1 320px; min-width:280px;">
+        <div class="card">
+            <h3>Entradas (Corridas + Outras)</h3>
+            <div id="totalEntradas" class="totals">R$ 0,00</div>
+            <div id="listaEntradas"></div>
         </div>
     </div>
 
-    <div class="card" id="form-saidas" style="display:none;">
-        <h3>Nova Saída</h3>
-        <div class="form">
-            <input id="descricaoSaida" type="text" placeholder="Descrição da despesa">
-            <div class="row">
-                <div class="col"><input id="valorBrutoSaida" type="number" placeholder="Valor (R$)" step="0.01"></div>
-                <div class="col">
-                    <select id="formaPagSaida">
-                        <option value="">Forma de pagamento</option>
-                        <option value="dinheiro">Dinheiro</option>
-                        <option value="pix">PIX</option>
-                        <option value="cartao">Cartão</option>
-                    </select>
-                </div>
-            </div>
-
-            <div id="cartaoSaida" style="display:none;">
-                <select id="tipoCartaoSaida">
-                    <option value="debito">Débito</option>
-                    <option value="credito">Crédito</option>
-                </select>
-            </div>
-
-            <button type="button" id="btnAdicionarSaida">Adicionar Saída</button>
-        </div>
-    </div>
-
-    <!-- LISTAS: duas colunas (Entradas + Saídas) -->
-    <div class="lists">
-        <div class="list-panel">
-            <div class="card">
-                <h3>Entradas (Corridas + Outras)</h3>
-                <div id="totalEntradas" class="totals">R$ 0,00</div>
-                <div id="listaEntradas"></div>
-            </div>
-        </div>
-
-        <div class="list-panel">
-            <div class="card">
-                <h3 class="tituloVermelho" style="color:var(--danger)">Saídas</h3>
-                <div id="totalSaidas" class="totals" style="color:var(--danger)">R$ 0,00</div>
-                <div id="listaSaidas"></div>
-            </div>
+    <!-- SAÍDAS -->
+    <div class="list-panel" style="flex:1 1 320px; min-width:280px;">
+        <div class="card">
+            <h3 style="color:var(--accent-danger)">Saídas</h3>
+            <div id="totalSaidas" class="totals" style="color:var(--accent-danger)">R$ 0,00</div>
+            <div id="listaSaidas"></div>
         </div>
     </div>
 
 </div>
 
-<!-- modal maquineta -->
-<div id="modalMaquineta" aria-hidden="true">
+</div> <!-- fecha container -->
+
+<!-- ============================ -->
+<!--      MODAL MAQUINETA        -->
+<!-- ============================ -->
+
+<div id="modalMaquineta">
     <div class="modalBox">
-        <h3 style="margin-top:0">Cadastrar Maquineta</h3>
+        <h3 style="margin-top:0;">Cadastrar Maquineta</h3>
+
         <input id="maqNome" type="text" placeholder="Nome da maquineta">
         <input id="maqDebito" type="number" placeholder="Taxa débito (%)">
         <input id="maqCreditoAvista" type="number" placeholder="Taxa crédito à vista (%)">
@@ -323,88 +521,143 @@
         <input id="maq3x" type="number" placeholder="Taxa 3x (%)">
         <input id="maq4x" type="number" placeholder="Taxa 4x (%)">
         <input id="maq5x" type="number" placeholder="Taxa 5x (%)">
-        <div style="display:flex;gap:8px;margin-top:12px;">
+
+        <div style="display:flex; gap:10px; margin-top:16px;">
             <button type="button" id="btnSalvarMaquineta">Salvar</button>
-            <button type="button" id="btnCancelarMaquineta" style="background:var(--danger);color:#fff">Cancelar</button>
+            <button type="button" id="btnCancelarMaquineta" style="background:var(--accent-danger);color:#fff;">Cancelar</button>
         </div>
     </div>
 </div>
 
-<!-- bottom menu -->
-<nav class="bottom-menu" aria-label="Menu">
-    <a href="index.html" class="menu-item" id="m-index"><span class="icon">🏠</span><span>Dashboard</span></a>
-    <a href="entradas.html" class="menu-item active" id="m-entradas"><span class="icon">💵</span><span>Entradas</span></a>
-    <a href="manutencao.html" class="menu-item" id="m-manut"><span class="icon">🛠️</span><span>Manutenção</span></a>
-    <a href="resumo.html" class="menu-item" id="m-resumo"><span class="icon">📊</span><span>Resumo</span></a>
-   <a href="perfil.html" class="menu-item">
-    <span class="icon">👤</span>
-    <span>Perfil</span>
-</a>
-    <a href="calculadora.html" class="menu-item" id="m-calc"><span class="icon">📟</span><span>Calc</span></a>
+<!-- ============================ -->
+<!--     MENU INFERIOR NOVO      -->
+<!-- ============================ -->
+
+<nav class="bottom-menu">
+
+    <a href="index.html" class="menu-item" id="m-index">
+        <span class="icon">🏠</span>
+        <span>Dashboard</span>
+    </a>
+
+    <a href="entradas.html" class="menu-item active" id="m-entradas">
+        <span class="icon">💵</span>
+        <span>Entradas</span>
+    </a>
+
+    <a href="manutencao.html" class="menu-item" id="m-manut">
+        <span class="icon">🛠️</span>
+        <span>Manutenção</span>
+    </a>
+
+    <a href="resumo.html" class="menu-item" id="m-resumo">
+        <span class="icon">📊</span>
+        <span>Resumo</span>
+    </a>
+
+    <a href="perfil.html" class="menu-item" id="m-perfil">
+        <span class="icon">👤</span>
+        <span>Perfil</span>
+    </a>
+
+    <a href="calculadora.html" class="menu-item" id="m-calc">
+        <span class="icon">📟</span>
+        <span>Calc</span>
+    </a>
+
 </nav>
+<!-- ============================ -->
+<!--  PARTE 3 — SCRIPTS FINAIS    -->
+<!-- ============================ -->
 
 <script>
-/* ------------------ STORAGE ------------------ */
-let registros = JSON.parse(localStorage.getItem("entradasSaidas") || "[]");
-let maquinetas = JSON.parse(localStorage.getItem("maquinetas") || "[]");
+/* ====================
+   THEMES (CLARO / ESCURO)
+   ==================== */
+function applyTheme(theme){
+    if(theme === 'dark'){
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme','dark');
+        const tbtn = document.getElementById('toggleTheme');
+        if(tbtn) tbtn.innerText = '☀️';
+    } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme','light');
+        const tbtn = document.getElementById('toggleTheme');
+        if(tbtn) tbtn.innerText = '🌙';
+    }
+}
+(function initTheme(){
+    const saved = localStorage.getItem('theme') || 'light';
+    applyTheme(saved);
+    const tbtn = document.getElementById('toggleTheme');
+    if(tbtn){
+        tbtn.addEventListener('click', ()=>{
+            const isDark = document.documentElement.classList.contains('dark');
+            applyTheme(isDark ? 'light' : 'dark');
+        });
+    }
+})();
 
-/* helpers */
+/* ====================
+   STORAGE & STATE
+   ==================== */
+let registros = JSON.parse(localStorage.getItem('entradasSaidas') || '[]');
+let maquinetas = JSON.parse(localStorage.getItem('maquinetas') || '[]');
+
 const $ = id => document.getElementById(id);
-const formatBRL = v => Number(v||0).toLocaleString("pt-BR",{style:'currency',currency:'BRL'});
+const formatBRL = v => Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 
-/* TAB SWITCHING */
+/* ====================
+   TABS
+   ==================== */
 function setActiveTab(name){
-    // hide all forms
-    ['corridas','outras','saidas'].forEach(t=>{
-        const tabEl = document.querySelector(`.tab[data-tab="${t}"]`);
-        tabEl.classList.toggle('active', t===name);
-        $('form-'+t)?.setAttribute?.('data-hidden',''); // noop safe
+    document.querySelectorAll('.tab').forEach(t=>{
+        t.classList.toggle('active', t.getAttribute('data-tab') === name);
     });
-
     $('form-corridas').style.display = name === 'corridas' ? 'block' : 'none';
     $('form-outras').style.display = name === 'outras' ? 'block' : 'none';
     $('form-saidas').style.display = name === 'saidas' ? 'block' : 'none';
 }
-
-/* connect tabs UI */
-document.querySelectorAll('.tab').forEach(t=>{
+document.querySelectorAll('.tab').forEach(t => {
     t.addEventListener('click', ()=> setActiveTab(t.getAttribute('data-tab')));
 });
-/* ensure initial */
 setActiveTab('corridas');
 
-/* ------------------ MAQUINETAS ------------------ */
-function abrirCadastroMaquineta(){ $('modalMaquineta').style.display = 'block'; $('modalMaquineta').setAttribute('aria-hidden','false'); }
-function fecharCadastroMaquineta(){ $('modalMaquineta').style.display = 'none'; $('modalMaquineta').setAttribute('aria-hidden','true'); }
+/* ====================
+   MAQUINETAS (modal)
+   ==================== */
+function abrirCadastroMaquineta(){ if($('modalMaquineta')){ $('modalMaquineta').style.display='block'; $('modalMaquineta').setAttribute('aria-hidden','false'); } }
+function fecharCadastroMaquineta(){ if($('modalMaquineta')){ $('modalMaquineta').style.display='none'; $('modalMaquineta').setAttribute('aria-hidden','true'); } }
 
 function persistMaquinetas(){ localStorage.setItem('maquinetas', JSON.stringify(maquinetas)); }
 function persist(){ localStorage.setItem('entradasSaidas', JSON.stringify(registros)); }
 
-/* atualizar selects */
 function atualizarMaquinetas(selectId){
     const sel = $(selectId);
     if(!sel) return;
     sel.innerHTML = '';
-    maquinetas.forEach((m,i)=>{
+    maqLoop: for(let i=0;i<maquinetas.length;i++){
+        const m = maquinetas[i];
         const opt = document.createElement('option');
         opt.value = i;
         opt.text = m.nome;
         sel.appendChild(opt);
-    });
+    }
 }
 
 /* salvar maquineta */
-$('btnSalvarMaquineta').addEventListener('click', ()=>{
-    const nome = $('maqNome').value.trim();
+$('btnSalvarMaquineta')?.addEventListener('click', ()=>{
+    const nome = $('maqNome')?.value?.trim();
     if(!nome){ alert('Informe o nome da maquineta'); return; }
     const m = {
         nome,
-        debito: Number($('maqDebito').value) || 0,
+        debito: Number($('maqDebito')?.value) || 0,
         credito_avista: Number($('maqCreditoAvista')?.value) || 0,
-        "2": Number($('maq2x').value) || 0,
-        "3": Number($('maq3x').value) || 0,
-        "4": Number($('maq4x').value) || 0,
-        "5": Number($('maq5x').value) || 0
+        "2": Number($('maq2x')?.value) || 0,
+        "3": Number($('maq3x')?.value) || 0,
+        "4": Number($('maq4x')?.value) || 0,
+        "5": Number($('maq5x')?.value) || 0
     };
     maquinetas.push(m);
     persistMaquinetas();
@@ -412,12 +665,13 @@ $('btnSalvarMaquineta').addEventListener('click', ()=>{
     atualizarMaquinetas('maqOutra');
     atualizarMaquinetas('maqSaida');
     fecharCadastroMaquineta();
-    // limpar modal
     ['maqNome','maqDebito','maqCreditoAvista','maq2x','maq3x','maq4x','maq5x'].forEach(id=>{ if($(id)) $(id).value = ''; });
 });
-$('btnCancelarMaquineta').addEventListener('click', ()=> fecharCadastroMaquineta());
+$('btnCancelarMaquineta')?.addEventListener('click', ()=> fecharCadastroMaquineta());
 
-/* ------------------ REUTILIZÁVEIS: cálculo líquido ------------------ */
+/* ====================
+   CÁLCULO LÍQUIDO / MAQUINETA
+   ==================== */
 function calcularLiquidoParaMaquineta(bruto, index, parcela){
     bruto = Number(bruto) || 0;
     if(index === null || index === undefined || index === '') return bruto;
@@ -430,53 +684,58 @@ function calcularLiquidoParaMaquineta(bruto, index, parcela){
     return +(bruto - (bruto * (taxa/100)));
 }
 
-/* ------------------ FORM CORRIDAS ------------------ */
-$('categoriaEntrada').addEventListener('change', ()=>{
+/* ====================
+   CORRIDA (form)
+   ==================== */
+$('categoriaEntrada')?.addEventListener('change', ()=> {
     const cat = $('categoriaEntrada').value;
-    $('subAppEntrada').style.display = cat === 'app' ? 'block' : 'none';
+    if($('subAppEntrada')) $('subAppEntrada').style.display = cat === 'app' ? 'block' : 'none';
+    recalcCorrida();
 });
-['taxaAppEntrada','valorBrutoEntrada','parcelaEntrada'].forEach(id=>{
-    const el = $(id); if(el) el.addEventListener('input', recalcCorrida);
-});
-$('formaPagEntrada').addEventListener('change', ()=>{
+
+$('formaPagEntrada')?.addEventListener('change', ()=>{
     const forma = $('formaPagEntrada').value;
-    $('cartaoEntrada').style.display = forma === 'cartao' ? 'block' : 'none';
-    if(forma === 'cartao'){ atualizarMaquinetas('maqEntrada'); }
+    if($('cartaoEntrada')) $('cartaoEntrada').style.display = forma === 'cartao' ? 'block' : 'none';
+    if(forma === 'cartao') atualizarMaquinetas('maqEntrada');
 });
 
 function recalcCorrida(){
-    const bruto = Number($('valorBrutoEntrada').value) || 0;
+    const bruto = Number($('valorBrutoEntrada')?.value) || 0;
     let liquido = bruto;
-    if($('categoriaEntrada').value === 'app'){
-        const taxa = Number($('taxaAppEntrada').value) || 0;
+    if($('categoriaEntrada') && $('categoriaEntrada').value === 'app'){
+        const taxa = Number($('taxaAppEntrada')?.value) || 0;
         liquido -= bruto * (taxa/100);
     }
-    if($('formaPagEntrada').value === 'cartao'){
-        const index = $('maqEntrada').value;
-        const par = $('parcelaEntrada').value;
+    if($('formaPagEntrada') && $('formaPagEntrada').value === 'cartao'){
+        const index = $('maqEntrada') ? $('maqEntrada').value : null;
+        const par = $('parcelaEntrada') ? $('parcelaEntrada').value : null;
         liquido = calcularLiquidoParaMaquineta(bruto, index, par);
     }
     if(!isFinite(liquido)) liquido = bruto;
-    $('valorLiquidoEntrada').value = liquido.toFixed(2);
+    if($('valorLiquidoEntrada')) $('valorLiquidoEntrada').value = liquido.toFixed(2);
 }
 
-$('btnAdicionarCorrida').addEventListener('click', ()=>{
-    const categoria = $('categoriaEntrada').value;
-    const descricao = ($('descricaoEntrada').value||'').trim();
-    const bruto = Number($('valorBrutoEntrada').value);
+$('valorBrutoEntrada')?.addEventListener('input', recalcCorrida);
+$('taxaAppEntrada')?.addEventListener('input', recalcCorrida);
+$('parcelaEntrada')?.addEventListener('change', recalcCorrida);
+
+$('btnAdicionarCorrida')?.addEventListener('click', ()=>{
+    const categoria = $('categoriaEntrada')?.value;
+    const descricao = ($('descricaoEntrada')?.value||'').trim();
+    const bruto = Number($('valorBrutoEntrada')?.value);
     if(!categoria){ alert('Selecione o tipo de entrada.'); return; }
     if(!descricao){ alert('Preencha a descrição.'); return; }
     if(!bruto || bruto <= 0){ alert('Informe um valor bruto válido.'); return; }
     recalcCorrida();
-    const liquido = Number($('valorLiquidoEntrada').value) || bruto;
+    const liquido = Number($('valorLiquidoEntrada')?.value) || bruto;
     const registro = {
         id: Date.now(),
         tipo: 'entrada',
         subtipo: 'corrida',
         categoria: categoria,
-        appTipo: $('appTipoEntrada').value || null,
-        formaPag: $('formaPagEntrada').value || null,
-        maquinetaIndex: ($('maqEntrada')?$('maqEntrada').value:null),
+        appTipo: $('appTipoEntrada')?.value || null,
+        formaPag: $('formaPagEntrada')?.value || null,
+        maquinetaIndex: ($('maqEntrada')? $('maqEntrada').value : null),
         valorBruto: bruto,
         valor: liquido,
         descricao,
@@ -488,54 +747,44 @@ $('btnAdicionarCorrida').addEventListener('click', ()=>{
     limparFormCorrida();
 });
 
-function limparFormCorrida(){
-    $('categoriaEntrada').value = '';
-    $('appTipoEntrada').value = '';
-    $('taxaAppEntrada').value = '';
-    $('descricaoEntrada').value = '';
-    $('valorBrutoEntrada').value = '';
-    $('valorLiquidoEntrada').value = '';
-    $('formaPagEntrada').value = '';
-    $('cartaoEntrada').style.display = 'none';
-}
-
-/* ------------------ FORM OUTRAS ------------------ */
-$('formaPagOutra').addEventListener('change', ()=>{
-    const forma = $('formaPagOutra').value;
-    $('cartaoOutra').style.display = forma === 'cartao' ? 'block' : 'none';
+/* ====================
+   OUTRAS (form)
+   ==================== */
+$('formaPagOutra')?.addEventListener('change', ()=>{
+    const forma = $('formaPagOutra')?.value;
+    if($('cartaoOutra')) $('cartaoOutra').style.display = forma === 'cartao' ? 'block' : 'none';
     if(forma === 'cartao') atualizarMaquinetas('maqOutra');
-});
-['valorBrutoOutra','parcelaOutra'].forEach(id=>{
-    const el = $(id); if(el) el.addEventListener('input', recalcOutra);
 });
 
 function recalcOutra(){
-    const bruto = Number($('valorBrutoOutra').value) || 0;
+    const bruto = Number($('valorBrutoOutra')?.value) || 0;
     let liquido = bruto;
-    if($('formaPagOutra').value === 'cartao'){
-        const index = $('maqOutra').value;
-        const par = $('parcelaOutra').value;
+    if($('formaPagOutra') && $('formaPagOutra').value === 'cartao'){
+        const index = $('maqOutra') ? $('maqOutra').value : null;
+        const par = $('parcelaOutra') ? $('parcelaOutra').value : null;
         liquido = calcularLiquidoParaMaquineta(bruto, index, par);
     }
     if(!isFinite(liquido)) liquido = bruto;
-    $('valorLiquidoOutra').value = liquido.toFixed(2);
+    if($('valorLiquidoOutra')) $('valorLiquidoOutra').value = liquido.toFixed(2);
 }
+$('valorBrutoOutra')?.addEventListener('input', recalcOutra);
+$('parcelaOutra')?.addEventListener('change', recalcOutra);
 
-$('btnAdicionarOutra').addEventListener('click', ()=>{
-    const descricao = ($('descricaoOutra').value||'').trim();
-    const bruto = Number($('valorBrutoOutra').value);
+$('btnAdicionarOutra')?.addEventListener('click', ()=>{
+    const descricao = ($('descricaoOutra')?.value||'').trim();
+    const bruto = Number($('valorBrutoOutra')?.value);
     if(!descricao){ alert('Preencha a descrição da entrada.'); return; }
     if(!bruto || bruto <= 0){ alert('Informe um valor bruto válido.'); return; }
     recalcOutra();
-    const liquido = Number($('valorLiquidoOutra').value) || bruto;
+    const liquido = Number($('valorLiquidoOutra')?.value) || bruto;
     const registro = {
         id: Date.now(),
         tipo: 'entrada',
         subtipo: 'outra',
         categoria: null,
         appTipo: null,
-        formaPag: $('formaPagOutra').value || null,
-        maquinetaIndex: ($('maqOutra')?$('maqOutra').value:null),
+        formaPag: $('formaPagOutra')?.value || null,
+        maquinetaIndex: ($('maqOutra')? $('maqOutra').value : null),
         valorBruto: bruto,
         valor: liquido,
         descricao,
@@ -547,23 +796,17 @@ $('btnAdicionarOutra').addEventListener('click', ()=>{
     limparFormOutra();
 });
 
-function limparFormOutra(){
-    $('descricaoOutra').value = '';
-    $('valorBrutoOutra').value = '';
-    $('valorLiquidoOutra').value = '';
-    $('formaPagOutra').value = '';
-    $('cartaoOutra').style.display = 'none';
-}
-
-/* ------------------ FORM SAIDAS ------------------ */
-$('formaPagSaida').addEventListener('change', ()=>{
-    const forma = $('formaPagSaida').value;
-    $('cartaoSaida').style.display = forma === 'cartao' ? 'block' : 'none';
+/* ====================
+   SAÍDAS (form)
+   ==================== */
+$('formaPagSaida')?.addEventListener('change', ()=>{
+    const forma = $('formaPagSaida')?.value;
+    if($('cartaoSaida')) $('cartaoSaida').style.display = forma === 'cartao' ? 'block' : 'none';
 });
 
-$('btnAdicionarSaida').addEventListener('click', ()=>{
-    const descricao = ($('descricaoSaida').value||'').trim();
-    const bruto = Number($('valorBrutoSaida').value);
+$('btnAdicionarSaida')?.addEventListener('click', ()=>{
+    const descricao = ($('descricaoSaida')?.value||'').trim();
+    const bruto = Number($('valorBrutoSaida')?.value);
     if(!descricao){ alert('Preencha a descrição da saída.'); return; }
     if(!bruto || bruto <= 0){ alert('Informe um valor válido para a saída.'); return; }
     const registro = {
@@ -571,8 +814,8 @@ $('btnAdicionarSaida').addEventListener('click', ()=>{
         tipo: 'saida',
         descricao,
         valor: bruto,
-        formaPag: $('formaPagSaida').value || null,
-        tipoCartao: ($('tipoCartaoSaida')?$('tipoCartaoSaida').value:null),
+        formaPag: $('formaPagSaida')?.value || null,
+        tipoCartao: ($('tipoCartaoSaida')? $('tipoCartaoSaida').value : null),
         criadoEm: new Date().toISOString()
     };
     registros.unshift(registro);
@@ -581,18 +824,18 @@ $('btnAdicionarSaida').addEventListener('click', ()=>{
     limparFormSaida();
 });
 
-function limparFormSaida(){
-    $('descricaoSaida').value = '';
-    $('valorBrutoSaida').value = '';
-    $('formaPagSaida').value = '';
-    $('cartaoSaida').style.display = 'none';
+/* ====================
+   LISTAGEM / RENDER
+   ==================== */
+function escapeHtml(text){
+    if(!text) return '';
+    return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,"&#039;");
 }
 
-/* ------------------ MOSTRAR LISTAS ------------------ */
-/* Observação: por sua escolha (opção 2) Entradas (corridas + outras) aparecem juntas no mesmo painel */
 function mostrarListas(){
     const listaE = $('listaEntradas');
     const listaS = $('listaSaidas');
+    if(!listaE || !listaS) return;
     listaE.innerHTML = '';
     listaS.innerHTML = '';
 
@@ -604,7 +847,6 @@ function mostrarListas(){
         div.className = 'item';
 
         if(r.tipo === 'entrada'){
-            // detalhe
             let detalhe = r.subtipo ? (r.subtipo === 'corrida' ? `Corrida • ${r.categoria || ''}` : 'Outra entrada') : '';
             if(r.appTipo) detalhe += ` • ${r.appTipo}`;
             if(r.formaPag) detalhe += ` • ${r.formaPag}`;
@@ -615,7 +857,7 @@ function mostrarListas(){
                     <small>${escapeHtml(detalhe)}</small>
                     <small>Bruto: ${formatBRL(r.valorBruto)} ${r.valor ? `• Líquido: ${formatBRL(r.valor)}` : ''}</small>
                 </div>
-                <div class="vals">
+                <div style="text-align:right; min-width:120px;">
                     <div style="margin-bottom:8px">${formatBRL(r.valorBruto)}</div>
                     <div><button class="remove" onclick="remover(${r.id})">Excluir</button></div>
                 </div>
@@ -623,7 +865,6 @@ function mostrarListas(){
             listaE.appendChild(div);
             totalBrutoEntradas += Number(r.valorBruto || 0);
         } else {
-            // saída
             let detalhe = r.formaPag ? `${r.formaPag}` : '';
             if(r.tipoCartao) detalhe += ` • ${r.tipoCartao}`;
             div.innerHTML = `
@@ -631,7 +872,7 @@ function mostrarListas(){
                     <strong style="display:block">${escapeHtml(r.descricao)}</strong>
                     <small>${escapeHtml(detalhe)}</small>
                 </div>
-                <div class="vals">
+                <div style="text-align:right; min-width:120px;">
                     <div style="margin-bottom:8px">${formatBRL(r.valor)}</div>
                     <div><button class="remove" onclick="remover(${r.id})">Excluir</button></div>
                 </div>
@@ -645,7 +886,9 @@ function mostrarListas(){
     $('totalSaidas').innerText = formatBRL(totalSaidas);
 }
 
-/* ------------------ REMOVER ------------------ */
+/* ====================
+   REMOVER
+   ==================== */
 function remover(id){
     if(!confirm('Excluir este registro?')) return;
     registros = registros.filter(r => r.id !== id);
@@ -653,26 +896,70 @@ function remover(id){
     mostrarListas();
 }
 
-/* ------------------ UTIL ------------------ */
-function escapeHtml(text){
-    if(!text) return '';
-    return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,"&#039;");
+/* ====================
+   LIMPA FORMULÁRIOS
+   ==================== */
+function limparFormCorrida(){
+    if($('categoriaEntrada')) $('categoriaEntrada').value = '';
+    if($('appTipoEntrada')) $('appTipoEntrada').value = '';
+    if($('taxaAppEntrada')) $('taxaAppEntrada').value = '';
+    if($('descricaoEntrada')) $('descricaoEntrada').value = '';
+    if($('valorBrutoEntrada')) $('valorBrutoEntrada').value = '';
+    if($('valorLiquidoEntrada')) $('valorLiquidoEntrada').value = '';
+    if($('formaPagEntrada')) $('formaPagEntrada').value = '';
+    if($('cartaoEntrada')) $('cartaoEntrada').style.display = 'none';
 }
 
-/* ------------------ BOOT ------------------ */
+function limparFormOutra(){
+    if($('descricaoOutra')) $('descricaoOutra').value = '';
+    if($('valorBrutoOutra')) $('valorBrutoOutra').value = '';
+    if($('valorLiquidoOutra')) $('valorLiquidoOutra').value = '';
+    if($('formaPagOutra')) $('formaPagOutra').value = '';
+    if($('cartaoOutra')) $('cartaoOutra').style.display = 'none';
+}
+
+function limparFormSaida(){
+    if($('descricaoSaida')) $('descricaoSaida').value = '';
+    if($('valorBrutoSaida')) $('valorBrutoSaida').value = '';
+    if($('formaPagSaida')) $('formaPagSaida').value = '';
+    if($('cartaoSaida')) $('cartaoSaida').style.display = 'none';
+}
+
+/* ====================
+   BOOT
+   ==================== */
 (function boot(){
-    // reload storage (in case modified elsewhere)
     registros = JSON.parse(localStorage.getItem('entradasSaidas') || '[]');
     maquinetas = JSON.parse(localStorage.getItem('maquinetas') || '[]');
+
     atualizarMaquinetas('maqEntrada');
     atualizarMaquinetas('maqOutra');
     atualizarMaquinetas('maqSaida');
+
     mostrarListas();
 
-    // ensure event binding for some dynamic inputs
+    // link inputs that may not have been bound earlier
     $('valorBrutoEntrada')?.addEventListener('input', recalcCorrida);
+    $('taxaAppEntrada')?.addEventListener('input', recalcCorrida);
+    $('parcelaEntrada')?.addEventListener('change', recalcCorrida);
+
     $('valorBrutoOutra')?.addEventListener('input', recalcOutra);
+    $('parcelaOutra')?.addEventListener('change', recalcOutra);
+
+    // Close modal when clicking outside modalBox
+    document.getElementById('modalMaquineta')?.addEventListener('click', (e)=>{
+        if(e.target && e.target.id === 'modalMaquineta') fecharCadastroMaquineta();
+    });
+
+    // ensure the active menu item is correct (for consistency)
+    document.querySelectorAll('.bottom-menu .menu-item').forEach(el=>{
+        el.classList.remove('active');
+        if(el.getAttribute('href') && el.getAttribute('href').includes('entradas.html')){
+            el.classList.add('active');
+        }
+    });
 })();
 </script>
+
 </body>
 </html>
