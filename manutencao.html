@@ -2,165 +2,176 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<title>Manutenção - Motorista App</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Revisões &amp; Manutenções - Motorista App</title>
 
 <!-- Fonte corporativa -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-/* =========================================================
-   VARIÁVEIS TEMA (CLARO / ESCURO)
-   ========================================================= */
+/* ============================ */
+/*     PALETA CORPORATIVA       */
+/*     + MODO CLARO / ESCURO    */
+/* ============================ */
+
 :root{
-    --bg:#f6f7fb;
-    --card:#ffffff;
-    --panel:#f1f4f9;
-    --text:#0b1115;
-    --muted:#768088;
-    --brand:#0b5bd7;
-    --brand-dark:#073f8a;
-    --accent-success:#1DB954;
-    --accent-danger:#ff3b30;
-    --warning:#f3b22a;
-    --shadow:0 4px 16px rgba(15,30,45,0.08);
-    --radius:14px;
+    /* MODO CLARO */
+    --bg: #ffffff;
+    --page-gap: #f3f5f8;
+
+    --card: #fafbfc;
+    --card-strong: #f0f2f5;
+    --panel: #ffffff;
+
+    --brand: #0b5bd7;
+    --brand-dark: #073f8a;
+
+    --accent-success: #1DB954;
+    --accent-danger: #ff3b30;
+
+    --text: #0b1115;
+    --muted: #65707a;
+
+    --shadow: 0 6px 16px rgba(13,30,45,0.07);
+    --shadow-strong: 0 10px 32px rgba(10,20,30,0.12);
+
+    --radius: 14px;
 }
 
-/* Tema escuro */
+/* ============================ */
+/*       MODO ESCURO GLOBAL     */
+/* ============================ */
+
 .dark{
-    --bg:#0e0f11;
-    --card:#1a1b1e;
-    --panel:#222326;
-    --text:#f1f1f1;
-    --muted:#889099;
-    --shadow:0 4px 22px rgba(0,0,0,0.6);
+    --bg: #0f1115;
+    --page-gap: #15171c;
+
+    --card: #181a20;
+    --card-strong: #1d1f27;
+    --panel: #1b1d25;
+
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+
+    --shadow: 0 6px 16px rgba(0,0,0,0.35);
+    --shadow-strong: 0 10px 32px rgba(0,0,0,0.45);
+
+    --brand: #3b82f6;
+    --brand-dark: #2563eb;
+
+    --accent-success: #22c55e;
+    --accent-danger: #ef4444;
 }
 
-/* =========================================================
-   BASE
-   ========================================================= */
-*{box-sizing:border-box; font-family:'Inter',sans-serif;}
+/* ============================ */
+/*           BASE               */
+/* ============================ */
+
+*{ box-sizing:border-box; font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
 body{
     margin:0;
-    background:var(--bg);
+    background:linear-gradient(180deg, var(--page-gap), var(--bg) 50%);
     color:var(--text);
-    padding-bottom:140px;
-    overflow-x:hidden;
+    padding-bottom:160px; /* espaço do menu inferior */
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
 }
 
-/* =========================================================
-   HEADER
-   ========================================================= */
+/* ============================ */
+/*          HEADER              */
+/* ============================ */
+
 header{
+    padding:18px 16px;
+    max-width:980px;
+    margin:0 auto 10px auto;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:18px 16px;
-    margin:0 auto 10px auto;
-    max-width:980px;
 }
 
 .brand{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:12px;
 }
-
-.logo{
-    width:42px;
-    height:42px;
-    border-radius:10px;
-    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+.brand .logo{
+    width:46px;
+    height:46px;
+    border-radius:12px;
     display:flex;
     align-items:center;
     justify-content:center;
+    font-weight:800;
     color:#fff;
-    font-weight:800;
-    font-size:18px;
-}
-
-.brand h1{
-    margin:0;
-    font-size:18px;
-    font-weight:800;
-}
-
-/* Botão modo escuro */
-#toggleDarkBtn{
-    width:44px;
-    height:44px;
-    border:none;
-    border-radius:12px;
-    font-size:19px;
-    background:var(--panel);
-    color:var(--text);
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
     box-shadow:var(--shadow);
-    cursor:pointer;
+    font-size:18px;
 }
 
-/* =========================================================
-   CONTAINER
-   ========================================================= */
+/* botão modo escuro */
+#toggleTheme{
+    background:var(--card-strong);
+    padding:8px 12px;
+    border-radius:10px;
+    border:1px solid rgba(0,0,0,0.08);
+    font-weight:700;
+    cursor:pointer;
+    color:var(--text);
+}
+
+/* ============================ */
+/*          CONTAINER           */
+/* ============================ */
+
 .container{
     max-width:980px;
     margin:0 auto;
     padding:0 16px;
 }
 
-/* =========================================================
-   CARDS
-   ========================================================= */
+/* ============================ */
+/*           CARDS              */
+/* ============================ */
+
 .card{
     background:var(--card);
-    padding:18px;
     border-radius:var(--radius);
-    box-shadow:var(--shadow);
+    padding:20px;
     margin-bottom:18px;
+    border:1px solid #d7dce2;
+    box-shadow:var(--shadow);
 }
 
-h3{
-    margin:0 0 14px 0;
-    font-size:17px;
-    font-weight:700;
+.card h3{
+    margin-top:0;
+    margin-bottom:12px;
 }
 
-.row{
-    display:flex;
-    gap:14px;
-    flex-wrap:wrap;
-}
+/* util text */
+.hint{ font-size:13px; color:var(--muted); }
 
-.col{
-    flex:1;
-    min-width:160px;
-}
+/* layout row/col */
+.row{ display:flex; gap:14px; flex-wrap:wrap; }
+.col{ flex:1; min-width:160px; }
 
-.label{
-    font-size:13px;
-    color:var(--muted);
-    margin-bottom:6px;
-}
-
-input{
+/* labels and inputs */
+.label{ font-size:13px; color:var(--muted); margin-bottom:6px; display:block; }
+input, select, textarea{
     width:100%;
-    padding:12px 14px;
+    padding:12px;
     border-radius:10px;
-    border:1px solid transparent;
+    border:1px solid #cfd4da;
     background:var(--panel);
     color:var(--text);
+    margin-bottom:12px;
     font-size:15px;
 }
 
-input:focus{
-    border-color:var(--brand);
-    outline:none;
-}
-
-/* Buttons */
+/* buttons */
 .btn{
-    background:var(--brand);
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
     color:#fff;
     padding:12px;
     border:none;
@@ -169,9 +180,8 @@ input:focus{
     font-weight:700;
     cursor:pointer;
 }
-
 .btnGhost{
-    background:var(--panel);
+    background:var(--card-strong);
     color:var(--text);
     padding:11px;
     border:none;
@@ -181,25 +191,19 @@ input:focus{
     cursor:pointer;
 }
 
-/* List items */
+/* list items */
 .listItem{
-    background:var(--panel);
+    background:var(--card-strong);
     padding:14px;
-    border-radius:14px;
+    border-radius:12px;
     margin-bottom:12px;
     display:flex;
     justify-content:space-between;
     gap:12px;
 }
 
-/* Status badges */
-.badge{
-    padding:6px 10px;
-    border-radius:10px;
-    font-size:13px;
-    font-weight:700;
-}
-
+/* status badges */
+.badge{ padding:6px 10px; border-radius:10px; font-size:13px; font-weight:700; display:inline-block; }
 .statusGreen{ background:#d7fbe3; color:#0b6620; }
 .statusWarn{ background:#fff4d6; color:#9d6700; }
 .statusRed{ background:#ffe3e3; color:#a00000; }
@@ -208,67 +212,40 @@ input:focus{
 .dark .statusWarn{ background:#6a4c09; color:#ffeab3; }
 .dark .statusRed{ background:#5a0a06; color:#ffb3b3; }
 
-/* Table */
-.table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:14px;
-}
+/* table */
+.table{ width:100%; border-collapse:collapse; font-size:14px; }
+.table th{ text-align:left; padding:8px; font-size:12px; color:var(--muted); }
+.table td{ padding:8px; }
 
-.table th{
-    text-align:left;
-    padding:8px;
-    font-size:12px;
-    color:var(--muted);
-}
+/* modal (shared with entradas template) */
+#modalMaquineta{ position:fixed; inset:0; background:rgba(0,0,0,0.55); display:none; z-index:2000; padding-top:40px; }
+.modalBox{ background:var(--card); width:92%; max-width:420px; padding:20px; border-radius:14px; margin:auto; box-shadow:var(--shadow-strong); }
 
-.table td{
-    padding:8px;
-}
-
-/* Table responsiveness */
-.table-wrapper{
-    width:100%;
-    overflow-x:auto;
-}
-
-/* =========================================================
-   BOTTOM MENU
-   ========================================================= */
+/* bottom menu */
 .bottom-menu{
     position:fixed;
-    bottom:18px;
-    left:50%;
+    bottom:18px; left:50%;
     transform:translateX(-50%);
-    width:92%;
-    max-width:980px;
+    width:92%; max-width:980px;
     background:linear-gradient(135deg,var(--brand),var(--brand-dark));
-    padding:10px 0;
+    padding:14px 12px;
     border-radius:18px;
+    box-shadow:0 14px 36px rgba(0,0,0,0.25);
     display:flex;
     justify-content:space-around;
-    color:#fff;
+    border:1px solid rgba(255,255,255,0.15);
     z-index:999;
-    box-shadow:0 10px 25px rgba(0,0,0,0.25);
 }
+.bottom-menu .menu-item{ text-decoration:none; color:#fff; font-weight:700; font-size:13px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+.bottom-menu .menu-item .icon{ font-size:22px; opacity:0.95; }
+.bottom-menu .menu-item.active{ background:rgba(255,255,255,0.18); padding:6px 8px; border-radius:10px; }
 
-.menu-item{
-    text-decoration:none;
-    text-align:center;
-    color:#fff;
-    font-size:13px;
-    font-weight:700;
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-}
-
-.menu-item .icon{
-    font-size:20px;
-}
-
-.menu-item.active{
-    transform:scale(1.05);
+/* responsive */
+@media (max-width:520px){
+    .row{ flex-direction:column; }
+    header{ padding:12px; }
+    .brand .logo{ width:40px; height:40px; font-size:16px; }
+    .container{ padding:0 12px; }
 }
 </style>
 </head>
@@ -277,9 +254,10 @@ input:focus{
 <header>
     <div class="brand">
         <div class="logo">RF</div>
-        <h1>Manutenção</h1>
+        <h2 style="margin:0;">Revisões &amp; Manutenções</h2>
     </div>
-    <button id="toggleDarkBtn">🌙</button>
+
+    <button id="toggleTheme">🌙</button>
 </header>
 
 <div class="container">
@@ -290,35 +268,35 @@ input:focus{
 
     <div class="row">
         <div class="col">
-            <div class="label">Nome / Proprietário</div>
-            <input id="perfilNome">
+            <label class="label">Nome / Proprietário</label>
+            <input id="perfilNome" type="text" placeholder="Nome do proprietário">
         </div>
 
         <div class="col">
-            <div class="label">Marca</div>
-            <input id="perfilMarca">
+            <label class="label">Marca</label>
+            <input id="perfilMarca" type="text" placeholder="Marca">
         </div>
 
         <div class="col">
-            <div class="label">Modelo</div>
-            <input id="perfilModelo">
+            <label class="label">Modelo</label>
+            <input id="perfilModelo" type="text" placeholder="Modelo">
         </div>
     </div>
 
     <div class="row">
         <div class="col">
-            <div class="label">Ano</div>
-            <input id="perfilAno">
+            <label class="label">Ano</label>
+            <input id="perfilAno" type="text" placeholder="Ano">
         </div>
 
         <div class="col">
-            <div class="label">Placa</div>
-            <input id="perfilPlaca">
+            <label class="label">Placa</label>
+            <input id="perfilPlaca" type="text" placeholder="Placa">
         </div>
 
         <div class="col">
-            <div class="label">KM atual</div>
-            <input id="kmAtual" type="number">
+            <label class="label">KM atual</label>
+            <input id="kmAtual" type="number" placeholder="KM atual">
         </div>
     </div>
 
@@ -338,30 +316,30 @@ input:focus{
 <div class="card">
     <h3>Cadastrar manutenção / item</h3>
 
-    <div class="label">Nome</div>
-    <input id="mNome">
+    <label class="label">Nome</label>
+    <input id="mNome" type="text" placeholder="Ex: Troca de óleo">
 
     <div class="row">
         <div class="col">
-            <div class="label">KM última troca</div>
-            <input id="mKmUltima" type="number">
+            <label class="label">KM última troca</label>
+            <input id="mKmUltima" type="number" placeholder="KM">
         </div>
 
         <div class="col">
-            <div class="label">Intervalo (km)</div>
-            <input id="mIntervalo" type="number">
+            <label class="label">Intervalo (km)</label>
+            <input id="mIntervalo" type="number" placeholder="Intervalo em km">
         </div>
     </div>
 
     <div class="row">
         <div class="col">
-            <div class="label">Custo estimado</div>
-            <input id="mCusto" type="number" step="0.01">
+            <label class="label">Custo estimado</label>
+            <input id="mCusto" type="number" step="0.01" placeholder="R$">
         </div>
 
         <div class="col">
-            <div class="label">Observação</div>
-            <input id="mObs">
+            <label class="label">Observação</label>
+            <input id="mObs" type="text" placeholder="Observações">
         </div>
     </div>
 
@@ -380,7 +358,7 @@ input:focus{
 <!-- HISTORICO -->
 <div class="card">
     <h3>Histórico</h3>
-    <div class="table-wrapper">
+    <div style="width:100%; overflow-x:auto;">
         <table class="table" id="histTable">
             <thead>
                 <tr>
@@ -396,47 +374,111 @@ input:focus{
     </div>
 </div>
 
+</div> <!-- fecha container -->
+
+<!-- Modal Maquineta (mantido para compatibilidade com template) -->
+<div id="modalMaquineta">
+    <div class="modalBox">
+        <h3 style="margin-top:0;">Cadastrar Maquineta</h3>
+
+        <input id="maqNome" type="text" placeholder="Nome da maquineta">
+        <input id="maqDebito" type="number" placeholder="Taxa débito (%)">
+        <input id="maqCreditoAvista" type="number" placeholder="Taxa crédito à vista (%)">
+        <input id="maq2x" type="number" placeholder="Taxa 2x (%)">
+        <input id="maq3x" type="number" placeholder="Taxa 3x (%)">
+        <input id="maq4x" type="number" placeholder="Taxa 4x (%)">
+        <input id="maq5x" type="number" placeholder="Taxa 5x (%)">
+
+        <div style="display:flex; gap:10px; margin-top:16px;">
+            <button type="button" id="btnSalvarMaquineta" class="btn">Salvar</button>
+            <button type="button" id="btnCancelarMaquineta" class="btnGhost" style="background:var(--accent-danger);color:#fff;">Cancelar</button>
+        </div>
+    </div>
 </div>
 
-<!-- MENU -->
+<!-- ============================ -->
+<!--     MENU INFERIOR           -->
+<!-- ============================ -->
+
 <nav class="bottom-menu">
-    <a href="index.html" class="menu-item"><span class="icon">🏠</span>Dashboard</a>
-    <a href="entradas.html" class="menu-item"><span class="icon">💵</span>Entradas</a>
-    <a href="manutencao.html" class="menu-item active"><span class="icon">🛠️</span>Manutenção</a>
-    <a href="resumo.html" class="menu-item"><span class="icon">📊</span>Resumo</a>
-    <a href="perfil.html" class="menu-item"><span class="icon">👤</span>Perfil</a>
-    <a href="calculadora.html" class="menu-item"><span class="icon">📟</span>Calc</a>
+    <a href="index.html" class="menu-item" id="m-index">
+        <span class="icon">🏠</span>
+        <span>Dashboard</span>
+    </a>
+
+    <a href="entradas.html" class="menu-item" id="m-entradas">
+        <span class="icon">💵</span>
+        <span>Entradas</span>
+    </a>
+
+    <a href="manutencao.html" class="menu-item active" id="m-manut">
+        <span class="icon">🛠️</span>
+        <span>Manutenção</span>
+    </a>
+
+    <a href="resumo.html" class="menu-item" id="m-resumo">
+        <span class="icon">📊</span>
+        <span>Resumo</span>
+    </a>
+
+    <a href="perfil.html" class="menu-item" id="m-perfil">
+        <span class="icon">👤</span>
+        <span>Perfil</span>
+    </a>
+
+    <a href="calculadora.html" class="menu-item" id="m-calc">
+        <span class="icon">📟</span>
+        <span>Calc</span>
+    </a>
 </nav>
+
+<!-- libs para export PDF (mantidos) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNa5m1sY6GqI1p1gZJ3Z5k9V2Gg8zmsmN1Vq+9zB6Q3y0R6vQn4Jg4k9w0+6U1Oajm0E2aKZb2k8bT8v8v4w2Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-L3pQo3kIeg0cNQ6Q0R9V4mVh6Kp6n5qv9bVt3Q5s1Zq9K+7y0uD2v1zV9z1Yp9u4Z8k3Wz8b4e1o3j2G5f4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
-/* ===================== THEME ====================== */
-function applyTheme(){
-    const t = localStorage.getItem("themeMode") || "light";
-    if(t === "dark"){
-        document.body.classList.add("dark");
-        toggleDarkBtn.textContent = "☀️";
+/* ====================
+   THEME (CLARO / ESCURO)
+   ==================== */
+function applyTheme(theme){
+    if(theme === 'dark'){
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme','dark');
+        const tbtn = document.getElementById('toggleTheme');
+        if(tbtn) tbtn.innerText = '☀️';
     } else {
-        document.body.classList.remove("dark");
-        toggleDarkBtn.textContent = "🌙";
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme','light');
+        const tbtn = document.getElementById('toggleTheme');
+        if(tbtn) tbtn.innerText = '🌙';
     }
 }
-toggleDarkBtn.onclick = () => {
-    const mode = document.body.classList.contains("dark") ? "light" : "dark";
-    localStorage.setItem("themeMode", mode);
-    applyTheme();
-};
-applyTheme();
+(function initTheme(){
+    const saved = localStorage.getItem('theme') || 'light';
+    applyTheme(saved);
+    const tbtn = document.getElementById('toggleTheme');
+    if(tbtn){
+        tbtn.addEventListener('click', ()=>{ const isDark = document.documentElement.classList.contains('dark'); applyTheme(isDark ? 'light' : 'dark'); });
+    }
+})();
 
-/* ===================== HELPERS ====================== */
-const $ = e => document.getElementById(e);
+/* ====================
+   HELPERS / STORAGE
+   ==================== */
+const $ = id => document.getElementById(id);
 const currency = v => Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const now = () => new Date().toISOString();
-const esc = t => t ? t.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])) : "";
+const esc = t => t ? String(t).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])) : "";
 
-/* ===================== STORAGE ====================== */
-const load = k => JSON.parse(localStorage.getItem(k) || (k==="manutencoes"?"[]":k==="manutHistorico"?"[]":"{}"));
+const load = k => {
+    try { return JSON.parse(localStorage.getItem(k) || (k==="manutencoes"?"[]":k==="manutHistorico"?"[]":"{}")); }
+    catch(e){ return (k==="manutencoes"||k==="manutHistorico")?[]:{}; }
+};
 const save = (k,v) => localStorage.setItem(k, JSON.stringify(v));
 
-/* ===================== PERFIL ====================== */
+/* ====================
+   PERFIL
+   ==================== */
 function renderPerfil(){
     const p = load("perfilMotorista");
     $("perfilNome").value = p.nome || "";
@@ -455,7 +497,7 @@ function salvarPerfil(){
     p.ano = $("perfilAno").value.trim();
     p.placa = $("perfilPlaca").value.trim();
     const km = Number($("kmAtual").value);
-    if(km){ p.kmAtual = km; }
+    if(km || km === 0) { p.kmAtual = km; }
     save("perfilMotorista", p);
 
     // recalc manutenções
@@ -467,10 +509,12 @@ function salvarPerfil(){
     alert("Dados salvos!");
 }
 
-/* ===================== MANUTENÇÕES ====================== */
+/* ====================
+   MANUTENÇÕES
+   ==================== */
 function calc(m, kmAtual){
     m.kmProxima = Number(m.kmUltimaTroca) + Number(m.intervaloKm);
-    m.kmRestante = m.kmProxima - kmAtual;
+    m.kmRestante = m.kmProxima - (Number(kmAtual) || 0);
     m.valorPorKm = (Number(m.custoEstimado)||0) / (Number(m.intervaloKm)||1);
 }
 
@@ -486,7 +530,7 @@ function renderManutencoes(){
     save("manutencoes", manuts);
 
     if(!manuts.length){
-        box.innerHTML = `<div class='smallNote'>Nenhuma manutenção cadastrada</div>`;
+        box.innerHTML = `<div class='hint'>Nenhuma manutenção cadastrada</div>`;
         return;
     }
 
@@ -501,9 +545,9 @@ function renderManutencoes(){
         div.innerHTML = `
             <div style="flex:1;">
                 <div style="font-weight:700;">${esc(m.nome)}</div>
-                <div class="smallNote">Última: ${m.kmUltimaTroca} • Próx: ${m.kmProxima}</div>
-                <div class="smallNote">Custo: ${currency(m.custoEstimado)}</div>
-                ${m.obs ? `<div class="smallNote">${esc(m.obs)}</div>` : ""}
+                <div class="hint">Última: ${esc(m.kmUltimaTroca)} • Próx: ${esc(m.kmProxima)}</div>
+                <div class="hint">Custo: ${currency(m.custoEstimado)}</div>
+                ${m.obs ? `<div class="hint">${esc(m.obs)}</div>` : ""}
             </div>
 
             <div style="text-align:right;">
@@ -527,7 +571,7 @@ function adicionar(){
     const custo = Number($("mCusto").value);
     const obs = $("mObs").value.trim();
 
-    if(!nome || !u || !int) return alert("Preencha nome, km e intervalo.");
+    if(!nome || !u || !int) return alert("Preencha nome, KM e intervalo.");
 
     const perfil = load("perfilMotorista");
     const kmAtual = Number(perfil.kmAtual||0);
@@ -583,9 +627,9 @@ function realizada(id){
     const kmAtual = Number(perfil.kmAtual||0);
 
     const km = Number(prompt("KM da troca:", kmAtual));
-    if(!km) return;
+    if(!km && km !== 0) return;
 
-    const valor = Number(prompt("Valor pago:", m.custoEstimado));
+    const valor = Number(prompt("Valor pago:", m.custoEstimado)) || 0;
     const obs = prompt("Obs:", "") || "";
 
     const hist = load("manutHistorico");
@@ -599,6 +643,7 @@ function realizada(id){
     });
     save("manutHistorico", hist);
 
+    // atualizar última troca
     m.kmUltimaTroca = km;
     calc(m, kmAtual);
     save("manutencoes", arr);
@@ -614,14 +659,16 @@ function realizada(id){
     alert("Manutenção registrada!");
 }
 
-/* ===================== HISTÓRICO ====================== */
+/* ====================
+   HISTÓRICO
+   ==================== */
 function renderHistorico(){
     const hist = load("manutHistorico");
     const tbody = document.querySelector("#histTable tbody");
     tbody.innerHTML = "";
 
     if(!hist.length){
-        tbody.innerHTML = `<tr><td colspan=5 class='smallNote'>Nenhum registro</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan=5 class='hint'>Nenhum registro</td></tr>`;
         return;
     }
 
@@ -638,10 +685,12 @@ function renderHistorico(){
     });
 }
 
-/* ===================== EXPORTS ====================== */
+/* ====================
+   EXPORTS
+   ==================== */
 function exportWhats(){
     const p = load("perfilMotorista");
-    const manuts = load("manutencoes").sort((a,b)=>a.kmRestante-b.kmRestante);
+    const manuts = load("manutencoes") || [];
 
     let msg = `Relatório de Manutenção - ${new Date().toLocaleDateString()}\n\n`;
     msg += `Veículo: ${p.carro||""} ${p.modelo||""} • Placa: ${p.placa||""}\nKM Atual: ${p.kmAtual||0}\n\n`;
@@ -654,17 +703,27 @@ function exportWhats(){
 }
 
 async function exportPdf(){
+    // usa html2canvas + jspdf (carregados via CDN)
     const el = document.querySelector(".container");
-    const canvas = await html2canvas(el,{scale:2});
-    const img = canvas.toDataURL("image/png");
-    const pdf = new jspdf.jsPDF("p","mm","a4");
-    const w = pdf.internal.pageSize.getWidth();
-    const h = canvas.height * (w / canvas.width);
-    pdf.addImage(img,"PNG",0,0,w,h);
-    pdf.save("manutencao.pdf");
+    if(!el) return alert("Erro ao gerar PDF.");
+    try{
+        const canvas = await html2canvas(el, {scale:2});
+        const img = canvas.toDataURL("image/png");
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p","mm","a4");
+        const w = pdf.internal.pageSize.getWidth();
+        const h = (canvas.height * (w / canvas.width));
+        pdf.addImage(img,"PNG",0,0,w,h);
+        pdf.save("manutencao.pdf");
+    } catch(e){
+        console.error(e);
+        alert("Falha ao exportar PDF.");
+    }
 }
 
-/* ===================== UTIL ====================== */
+/* ====================
+   UTIL
+   ==================== */
 function limparFormManut(){
     $("mNome").value="";
     $("mKmUltima").value="";
@@ -673,19 +732,61 @@ function limparFormManut(){
     $("mObs").value="";
 }
 
-/* ===================== BOOT ====================== */
-renderPerfil();
-renderManutencoes();
-renderHistorico();
+/* ====================
+   BOOT
+   ==================== */
+(function boot(){
+    // inicializa perfis e listas
+    renderPerfil();
+    renderManutencoes();
+    renderHistorico();
 
-/* EVENTOS */
-$("salvarPerfil").onclick = salvarPerfil;
-$("limparPerfil").onclick = ()=>{renderPerfil();renderManutencoes();renderHistorico();}
-$("addManut").onclick = adicionar;
-$("limparFormManut").onclick = limparFormManut;
-$("exportWhats").onclick = exportWhats;
-$("exportPdf").onclick = exportPdf;
+    // eventos
+    $("salvarPerfil").onclick = salvarPerfil;
+    $("limparPerfil").onclick = ()=>{ renderPerfil(); renderManutencoes(); renderHistorico(); };
+    $("addManut").onclick = adicionar;
+    $("limparFormManut").onclick = limparFormManut;
+    $("exportWhats").onclick = exportWhats;
+    $("exportPdf").onclick = exportPdf;
 
+    // modal maquineta handlers (compatibilidade)
+    $("btnSalvarMaquineta")?.addEventListener('click', ()=>{
+        // salva de forma simples no localStorage como antes se necessário
+        const nome = $("maqNome")?.value?.trim();
+        if(!nome){ alert('Informe o nome da maquineta'); return; }
+        let maquinetas = load('maquinetas') || [];
+        maquinetas.push({
+            nome,
+            debito: Number($("maqDebito")?.value)||0,
+            credito_avista: Number($("maqCreditoAvista")?.value)||0,
+            "2": Number($("maq2x")?.value)||0,
+            "3": Number($("maq3x")?.value)||0,
+            "4": Number($("maq4x")?.value)||0,
+            "5": Number($("maq5x")?.value)||0
+        });
+        save('maquinetas', maquinetas);
+        fecharCadastroMaquineta();
+        ['maqNome','maqDebito','maqCreditoAvista','maq2x','maq3x','maq4x','maq5x'].forEach(id=>{ if($(id)) $(id).value=''; });
+    });
+    $("btnCancelarMaquineta")?.addEventListener('click', ()=> fecharCadastroMaquineta());
+
+    // close modal when clicking outside
+    document.getElementById('modalMaquineta')?.addEventListener('click', (e)=>{
+        if(e.target && e.target.id === 'modalMaquineta') fecharCadastroMaquineta();
+    });
+
+    // set bottom menu active based on pathname (robusto)
+    document.querySelectorAll('.bottom-menu .menu-item').forEach(el=>{
+        el.classList.remove('active');
+        const href = el.getAttribute('href') || '';
+        if(location.pathname && location.pathname.indexOf(href) !== -1){
+            el.classList.add('active');
+        }
+        // fallback: if current file is manutencao.html, activate
+        if(!location.pathname && href.includes('manutencao.html')) el.classList.add('active');
+    });
+})();
 </script>
+
 </body>
 </html>
