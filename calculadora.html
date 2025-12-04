@@ -2,148 +2,243 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Calculadora de Viagens</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+<title>Calculadora de Viagens - RF Driver</title>
+
+<!-- Fonte -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
+/* =========================================================
+   VARIÁVEIS DO TEMA (padronizadas)
+========================================================= */
 :root{
-    --bg:#121212;
-    --card:#1E1E1E;
-    --panel:#2A2A2A;
-    --accent:#1DB954;
+    --bg:#f6f7fb;
+    --card:#ffffff;
+    --panel:#f1f4f9;
+
+    --text:#0b1115;
+    --muted:#768088;
+
+    --brand:#0b5bd7;
+    --brand-dark:#073f8a;
+
     --danger:#ff3b30;
-    --muted:#bbbbbb;
+
+    --shadow:0 4px 16px rgba(15,30,45,0.08);
+    --radius:14px;
 }
 
-*{box-sizing:border-box;}
+/* DARK MODE */
+.dark{
+    --bg:#0f0f11;
+    --card:#1a1b1e;
+    --panel:#222326;
+    --text:#f1f1f1;
+    --muted:#9099a3;
+    --shadow:0 4px 18px rgba(0,0,0,0.55);
+}
+
+/* BASE */
+*{ box-sizing:border-box; font-family:'Inter',sans-serif; }
+
 body{
     margin:0;
     background:var(--bg);
-    color:#fff;
-    font-family:Arial;
-    padding-bottom:200px;
-}
-header{
-    background:var(--accent);
-    color:#000;
-    padding:14px;
-    font-size:20px;
-    text-align:center;
-    font-weight:700;
+    color:var(--text);
+    padding-bottom:160px;
+    overflow-x:hidden;
 }
 
+/* HEADER */
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 16px;
+    max-width:980px;
+    margin:0 auto 8px auto;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo{
+    width:42px;
+    height:42px;
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:18px;
+    color:#fff;
+}
+
+.brand h1{
+    margin:0;
+    font-size:18px;
+    font-weight:800;
+}
+
+#toggleTheme{
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:12px;
+    background:var(--panel);
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    font-size:20px;
+    color:var(--text);
+}
+
+/* CONTAINER */
 .container{
-    max-width:900px;
-    margin:18px auto;
+    max-width:980px;
+    margin:0 auto;
     padding:0 16px;
 }
 
+/* CARDS */
 .card{
     background:var(--card);
-    border-radius:14px;
-    padding:16px;
-    margin-bottom:16px;
-    box-shadow:0 6px 18px rgba(0,0,0,.5);
+    padding:18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+}
+
+.card h2, .card h3{
+    margin:0 0 12px 0;
+    font-weight:700;
 }
 
 label{
-    display:block;
-    font-size:14px;
+    font-size:13px;
+    font-weight:600;
     color:var(--muted);
-    margin-top:12px;
+    margin-top:10px;
+    display:block;
 }
 
 input, select{
     width:100%;
-    padding:10px;
-    margin-top:6px;
+    padding:12px;
     border-radius:10px;
-    border:1px solid #333;
+    border:1px solid transparent;
     background:var(--panel);
-    color:#fff;
+    color:var(--text);
+    margin-top:4px;
+    font-size:15px;
+}
+
+input:focus, select:focus{
+    outline:none;
+    border-color:var(--brand);
 }
 
 button{
     width:100%;
-    padding:12px;
+    padding:14px;
     border:none;
-    margin-top:14px;
-    border-radius:10px;
-    background:var(--accent);
-    color:#000;
+    border-radius:12px;
+    background:var(--brand);
     font-weight:700;
+    color:#fff;
     cursor:pointer;
+    margin-top:16px;
 }
 
 #resultado{
-    background:#0f0f0f;
+    background:var(--panel);
     padding:14px;
-    border-radius:10px;
-    margin-top:16px;
+    border-radius:12px;
+    margin-top:10px;
     white-space:pre-wrap;
-    color:#1DB954;
     font-weight:700;
-    border:1px solid #222;
+    color:var(--brand-dark);
+    border-left:6px solid var(--brand-dark);
 }
 
-/* bottom menu */
+/* MENU INFERIOR PADRÃO */
 .bottom-menu{
     position:fixed;
-    bottom:15px;
+    bottom:18px;
     left:50%;
     transform:translateX(-50%);
-    width:88%;
-    background:#1B1B1B;
+    width:92%;
+    max-width:980px;
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
     padding:10px 0;
     border-radius:18px;
     display:flex;
     justify-content:space-around;
-    box-shadow:0 6px 25px rgba(0,0,0,0.6);
-    z-index:1000;
+    box-shadow:0 12px 28px rgba(0,0,0,0.35);
+    z-index:999;
 }
-.bottom-menu .menu-item{
+
+.menu-item{
+    text-decoration:none;
     text-align:center;
     color:#fff;
-    text-decoration:none;
     font-size:13px;
+    font-weight:700;
     display:flex;
     flex-direction:column;
-    align-items:center;
+    gap:4px;
 }
-.bottom-menu .menu-item .icon{
-    font-size:22px;
-    margin-bottom:4px;
+
+.menu-item .icon{
+    font-size:20px;
 }
-.bottom-menu .menu-item.active{
-    color:var(--accent);
+
+.menu-item.active{
+    transform:scale(1.06);
 }
+
 </style>
 </head>
 
 <body>
 
-<header>Calculadora de Viagens</header>
+<header>
+    <div class="brand">
+        <div class="logo">RF</div>
+        <h1>Calculadora</h1>
+    </div>
+    <button id="toggleTheme">🌙</button>
+</header>
 
 <div class="container">
 
+    <!-- CARD PERFIL -->
     <div class="card">
+        <h3>Informações do Motorista</h3>
+
         <label>Motorista</label>
-        <input id="motorista" type="text">
+        <input id="motorista">
 
         <label>CPF/CNPJ</label>
-        <input id="cpfCnpj" type="text">
+        <input id="cpfCnpj">
 
         <label>Carro / Modelo</label>
-        <input id="carro" type="text">
+        <input id="carro">
 
         <label>Placa</label>
-        <input id="placa" type="text">
+        <input id="placa">
 
         <label>Origem</label>
-        <input id="origem" type="text">
+        <input id="origem">
 
         <label>Destino</label>
-        <input id="destino" type="text">
+        <input id="destino">
 
         <label>Valor por KM</label>
         <input id="valorKm" type="number" step="0.01">
@@ -170,9 +265,9 @@ button{
         </select>
     </div>
 
-    <!-- GNV -->
+    <!-- CARD GNV -->
     <div class="card">
-        <h3 style="margin-top:0">Informações GNV</h3>
+        <h3>Informações GNV</h3>
 
         <label>Valor cilindro cheio</label>
         <input id="valorCilindro" type="number" step="0.01">
@@ -186,11 +281,11 @@ button{
         <button onclick="salvarGNV()">Salvar GNV</button>
     </div>
 
-    <!-- GASOLINA / ETANOL -->
+    <!-- CARD GASOLINA / ETANOL -->
     <div class="card">
-        <h3 style="margin-top:0">Informações Gasolina / Etanol</h3>
+        <h3>Gasolina / Etanol</h3>
 
-        <h4 style="margin-bottom:6px; color:#1DB954">Gasolina</h4>
+        <h4 style="margin-bottom:6px;">Gasolina</h4>
         <label>Valor tanque cheio</label>
         <input id="gasolinaValor" type="number" step="0.01">
 
@@ -200,7 +295,7 @@ button{
         <label>Autonomia Pista (km/l)</label>
         <input id="gasolinaPista" type="number">
 
-        <h4 style="margin-top:18px; margin-bottom:6px; color:#1DB954">Etanol</h4>
+        <h4 style="margin-top:18px;margin-bottom:6px;">Etanol</h4>
         <label>Valor tanque cheio</label>
         <input id="etanolValor" type="number" step="0.01">
 
@@ -213,9 +308,11 @@ button{
         <button onclick="salvarCombustiveis()">Salvar Gasolina/Etanol</button>
     </div>
 
+    <!-- BOTÕES -->
     <button onclick="calcularEstimativa()">Calcular Estimativa</button>
     <button onclick="enviarWhatsApp()">Enviar WhatsApp</button>
 
+    <!-- RESULTADO -->
     <div id="resultado"></div>
 
 </div>
@@ -230,7 +327,26 @@ button{
     <a href="calculadora.html" class="menu-item active"><span class="icon">📟</span>Calc</a>
 </nav>
 
+<!-- SCRIPT ORIGINAL (APENAS MOVIDO) -->
 <script>
+/*==== TEMA ====*/
+function applyTheme(){
+    const theme = localStorage.getItem("theme") || "light";
+    if(theme === "dark"){
+        document.body.classList.add("dark");
+        toggleTheme.textContent = "☀️";
+    } else {
+        document.body.classList.remove("dark");
+        toggleTheme.textContent = "🌙";
+    }
+}
+toggleTheme.onclick = ()=>{
+    let t = document.body.classList.contains("dark") ? "light" : "dark";
+    localStorage.setItem("theme", t);
+    applyTheme();
+};
+applyTheme();
+
 /* ===== FORMATADOR ===== */
 function fmt(valor){
     if(valor === Infinity || isNaN(valor)) return "N/D";
@@ -284,22 +400,18 @@ function salvarCombustiveis(){
         gasolinaValor: Number(gasolinaValor.value) || 0,
         gasolinaCidade: Number(gasolinaCidade.value) || 0,
         gasolinaPista: Number(gasolinaPista.value) || 0,
-
         etanolValor: Number(etanolValor.value) || 0,
         etanolCidade: Number(etanolCidade.value) || 0,
         etanolPista: Number(etanolPista.value) || 0
     };
-
     localStorage.setItem("combData", JSON.stringify(dados));
     alert("Gasolina / Etanol salvos!");
 }
 function carregarCombustiveis(){
     const c = JSON.parse(localStorage.getItem("combData") || "{}");
-
     if(c.gasolinaValor) gasolinaValor.value = c.gasolinaValor;
     if(c.gasolinaCidade) gasolinaCidade.value = c.gasolinaCidade;
     if(c.gasolinaPista) gasolinaPista.value = c.gasolinaPista;
-
     if(c.etanolValor) etanolValor.value = c.etanolValor;
     if(c.etanolCidade) etanolCidade.value = c.etanolCidade;
     if(c.etanolPista) etanolPista.value = c.etanolPista;
@@ -323,38 +435,21 @@ function calcularEstimativa(){
     const gnv = JSON.parse(localStorage.getItem("gnvData") || "{}");
     const comb = JSON.parse(localStorage.getItem("combData") || "{}");
 
-    /* ==========================
-         CÁLCULO BRUTO
-    =========================== */
     let bruto = valKm * km;
 
     switch(tipoViagem.value){
-        case "idaVolta":
-            bruto *= 2;
-            break;
-        case "idaVoltaEspera":
-            bruto = (valKm * km * 2) * 1.10;
-            break;
-        case "bateVolta":
-            bruto = (valKm * km * 2) / 1.25;
-            break;
+        case "idaVolta": bruto *= 2; break;
+        case "idaVoltaEspera": bruto = (valKm * km * 2) * 1.10; break;
+        case "bateVolta": bruto = (valKm * km * 2) / 1.25; break;
     }
 
     const uso = tipoUso.value;
 
-    /* ===== FUNÇÃO DE CUSTO ===== */
     function calcCusto(valorTanque, autoCidade, autoPista){
         const autonomia = uso === "cidade" ? autoCidade : autoPista;
-
         if(!valorTanque || !autonomia) return Infinity;
-
         let custo = (valorTanque / autonomia) * km;
-
-        // viagens de ida e volta dobram combustível
-        if(tipoViagem.value !== "soIdaSemVolta"){
-            custo *= 2;
-        }
-
+        if(tipoViagem.value !== "soIdaSemVolta") custo *= 2;
         return custo;
     }
 
@@ -362,23 +457,16 @@ function calcularEstimativa(){
     const custoGas = calcCusto(comb.gasolinaValor, comb.gasolinaCidade, comb.gasolinaPista);
     const custoEta = calcCusto(comb.etanolValor, comb.etanolCidade, comb.etanolPista);
 
-    /* ==========================
-         ESCOLHER O MAIS BARATO
-    =========================== */
     const menor = Math.min(custoGnv, custoGas, custoEta);
     const melhor =
         menor === custoGnv ? "GNV" :
-        menor === custoGas ? "Gasolina" :
-                             "Etanol";
+        menor === custoGas ? "Gasolina" : "Etanol";
 
     const liquido = bruto - menor;
 
     valorTotalBrutoGlobal = bruto;
     duracaoMinGlobal = dur;
 
-    /* ==========================
-           RESULTADO FINAL
-    =========================== */
     resultado.innerText =
 `Valor Bruto: ${fmt(bruto)}
 
