@@ -1,264 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Resumo - Motorista App</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-
-html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-    -webkit-text-size-adjust: 100%;
-}
-
-/* =========================================================
-   PALETA CORPORATIVA + DARK MODE
-   ========================================================= */
 :root{
-    /* LIGHT MODE */
-    --bg:#f3f6fb;
-    --card:#ffffff;
-    --panel:#f7f9fc;
+    --bg: #ffffff;
+    --page-gap: #f3f5f8;
 
-    --brand:#0b5bd7;
-    --brand-dark:#073f8a;
+    --card: #fafbfc;
+    --card-strong: #f0f2f5;
+    --panel: #ffffff;
 
-    --accent-success:#1DB954;
-    --accent-danger:#ff3b30;
+    --brand: #0b5bd7;
+    --brand-dark: #073f8a;
 
-    --muted:#65707a;
-    --text:#0b1115;
-    --shadow:0 6px 18px rgba(13,30,45,0.06);
-    --radius:14px;
+    --accent-success: #1DB954;
+    --accent-danger: #ff3b30;
 
-    /* BOTTOM MENU */
-    --menu-bg:var(--brand);
-    --menu-text:#ffffff;
+    --text: #0b1115;
+    --muted: #65707a;
+
+    --shadow: 0 6px 16px rgba(13,30,45,0.07);
+    --shadow-strong: 0 10px 32px rgba(10,20,30,0.12);
+
+    --radius: 14px;
+    --menu-bg: linear-gradient(135deg,var(--brand),var(--brand-dark));
+    --menu-text: #fff;
 }
 
-/* DARK MODE */
-body.dark{
-    --bg:#0d0f11;
-    --card:#14171a;
-    --panel:#1a1d21;
+.dark{
+    --bg: #0f1115;
+    --page-gap: #15171c;
 
-    --text:#e6e6e6;
-    --muted:#a9a9a9;
+    --card: #181a20;
+    --card-strong: #1d1f27;
+    --panel: #1b1d25;
 
-    --shadow:0 6px 18px rgba(0,0,0,0.6);
+    --text: #e5e7eb;
+    --muted: #9ca3af;
 
-    --menu-bg:#0a2f6d;
+    --shadow: 0 6px 16px rgba(0,0,0,0.35);
+    --shadow-strong: 0 10px 32px rgba(0,0,0,0.45);
+
+    --brand: #3b82f6;
+    --brand-dark: #2563eb;
+
+    --accent-success: #22c55e;
+    --accent-danger: #ef4444;
+
+    --menu-bg: linear-gradient(135deg,var(--brand),var(--brand-dark));
 }
 
-/* BASE */
+*{ box-sizing:border-box; font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
 body{
     margin:0;
-    background:var(--bg);
-    font-family:Inter, Roboto, Arial;
+    background:linear-gradient(180deg, var(--page-gap), var(--bg) 50%);
     color:var(--text);
-    padding-bottom:150px;
-    transition:background .3s, color .3s;
+    padding-bottom:160px;
+    -webkit-font-smoothing:antialiased;
 }
 
-/* HEADER */
+/* header */
 header{
-    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
-    padding:18px;
-    text-align:center;
-    color:#fff;
-    font-weight:700;
-    font-size:20px;
-    box-shadow:var(--shadow);
-}
-
-/* CONTAINER */
-.container{
-    max-width:900px;
-    margin:20px auto;
-    padding:0 16px;
-}
-
-/* TOP CARDS */
-.top-row{
-    display:flex;
-    gap:16px;
-    flex-wrap:wrap;
-    justify-content:center;
-}
-
-.cardTop{
-    flex:1;
-    min-width: 150px; /* previne estouro no mobile */
-}
-
-.cardTop:hover{
-    transform:translateY(-3px);
-}
-
-.cardTop h3{
-    margin:0;
-    font-size:14px;
-    color:var(--muted);
-}
-
-.cardTop .value{
-    font-size:32px;
-    font-weight:800;
-    margin-top:8px;
-    color:var(--text);
-}
-
-/* FILTER BUTTONS */
-.filters{
-    display:flex;
-    gap:10px;
-    margin-top:20px;
-}
-
-.filters button{
-    flex:1;
-    padding:12px;
-    border:none;
-    border-radius:12px;
-    background:var(--panel);
-    box-shadow:var(--shadow);
-    color:var(--text);
-    font-weight:700;
-    cursor:pointer;
-    transition:background .25s;
-}
-
-.filters button.active{
-    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
-    color:#fff;
-}
-
-/* SECTION CARD */
-.card{
-    margin-top:20px;
-    background:var(--card);
-    padding:18px;
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    transition:background .3s, color .3s;
-}
-
-.card h2{
-    margin:0 0 12px 0;
-    font-size:18px;
-    color:var(--text);
-    font-weight:800;
-}
-
-/* SUMMARY LINES */
-.line{
-    display:flex;
-    justify-content:space-between;
-    padding:12px 0;
-    border-bottom:1px solid rgba(0,0,0,0.05);
-    color:var(--text);
-    font-size:15px;
-}
-
-body.dark .line{
-    border-color:#222;
-}
-
-/* CHART */
-.chartRow{
-    width:100%;
-    overflow-x:hidden;
-}
-
-.bar{
-    flex:1;
-    min-width:80px;
-    background:var(--panel);
-    border-radius:14px 14px 0 0;
-    padding-top:6px;
-    height:140px;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-end;
-}
-
-.bar .inner{
-    width:70%;
-    margin:0 auto;
-    background:var(--brand);
-    border-radius:12px 12px 0 0;
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-    padding-bottom:6px;
-    font-weight:800;
-    color:#fff;
-    transition:height .4s ease;
-}
-
-.barLabel{
-    text-align:center;
-    margin-top:6px;
-    color:var(--muted);
-}
-
-/* BOTTOM MENU — CORPORATE STYLE */
-.bottom-menu{
-    position:fixed;
-    bottom:18px;
-    left:50%;
-    transform:translateX(-50%);
-    width:92%;
+    padding:18px 16px;
     max-width:980px;
-    background:var(--menu-bg);
-    padding:10px 0;
-    border-radius:18px;
+    margin:0 auto 10px auto;
     display:flex;
-    justify-content:space-around;
-    box-shadow:0 12px 30px rgba(11,30,45,0.5);
-    z-index:1000;
-    border:1px solid rgba(255,255,255,0.2);
-}
-
-.bottom-menu .menu-item{
-    text-align:center;
-    color:var(--menu-text);
-    text-decoration:none!important;
-    font-size:13px;
-    display:flex;
-    flex-direction:column;
     align-items:center;
-    font-weight:800;
+    justify-content:space-between;
 }
-
-.bottom-menu .menu-item .icon{
-    font-size:22px;
-    margin-bottom:4px;
+.brand{ display:flex; align-items:center; gap:12px; }
+.brand .logo{
+    width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-weight:800;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    box-shadow:var(--shadow);font-size:18px;
 }
+#toggleTheme{ background:var(--card-strong); padding:8px 12px; border-radius:10px; border:1px solid rgba(0,0,0,0.08); cursor:pointer; color:var(--text); font-weight:700; }
 
-.bottom-menu .active{
-    opacity:0.9;
-    scale:1.06;
+/* container */
+.container{ max-width:980px; margin:20px auto; padding:0 16px; }
+
+/* top cards */
+.top-row{ display:flex; gap:16px; flex-wrap:wrap; justify-content:space-between; }
+.cardTop{ flex:1; min-width:150px; background:var(--card); padding:18px; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid #d7dce2; }
+.cardTop h3{ margin:0; font-size:13px; color:var(--muted); font-weight:700; }
+.cardTop .value{ margin-top:8px; font-size:26px; font-weight:800; color:var(--text); }
+
+/* filters */
+.filters{ display:flex; gap:10px; margin-top:18px; }
+.filters button{ flex:1; padding:12px; border-radius:12px; border:1px solid transparent; background:var(--card); cursor:pointer; font-weight:700; color:var(--text); box-shadow:var(--shadow); }
+.filters button.active{ background:linear-gradient(135deg,var(--brand),var(--brand-dark)); color:#fff; border:none; }
+
+/* cards */
+.card{ margin-top:18px; background:var(--card); padding:18px; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid #d7dce2; }
+.card h2{ margin:0 0 12px 0; font-size:18px; color:var(--text); font-weight:800; }
+
+/* lines */
+.line{ display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(0,0,0,0.05); color:var(--text); font-size:15px; }
+.hint{ font-size:13px; color:var(--muted); }
+
+/* chart area (vertical bars style, compact) */
+.chartRow{ display:flex; gap:12px; align-items:end; padding-top:10px; }
+.chartCard{ flex:1; min-width:100px; background:var(--card-strong); padding:12px; border-radius:12px; display:flex; flex-direction:column; align-items:center; gap:8px; border:1px solid #e6eaef; }
+.barShell{ width:48px; height:140px; background:var(--panel); border-radius:12px; display:flex; align-items:flex-end; justify-content:center; overflow:hidden; border:1px solid rgba(0,0,0,0.03); }
+.barInner{ width:100%; display:flex; align-items:flex-end; justify-content:center; color:#fff; font-weight:800; border-radius:10px 10px 0 0; }
+
+/* bottom menu */
+.bottom-menu{
+    position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+    width:92%; max-width:980px; padding:14px 12px; border-radius:18px; display:flex; justify-content:space-around;
+    background:var(--menu-bg); box-shadow:0 14px 36px rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.15); z-index:999;
 }
+.bottom-menu .menu-item{ text-decoration:none; color:var(--menu-text); font-weight:700; display:flex; flex-direction:column; gap:4px; align-items:center; font-size:13px; }
+.bottom-menu .menu-item .icon{ font-size:22px; }
+.bottom-menu .menu-item.active{ background:rgba(255,255,255,0.14); padding:6px 8px; border-radius:10px; }
 
-/* RESPONSIVE */
-@media(max-width:780px){
-    .cardTop{ flex:1 1 100%; }
+/* responsive */
+@media (max-width:520px){
+    .top-row{ flex-direction:column; }
+    .chartRow{ gap:8px; }
+    .cardTop .value{ font-size:22px; }
 }
-
 </style>
+</head>
 <body>
 
-<!-- =========================================================
-     HEADER COM BOTÃO DE MODO ESCURO
-     ========================================================= -->
 <header>
-    Resumo
-    <button id="toggleDark" class="darkToggle">🌙</button>
+    <div class="brand">
+        <div class="logo">RF</div>
+        <h2 style="margin:0;">Resumo</h2>
+    </div>
+
+    <button id="toggleTheme">🌙</button>
 </header>
 
 <div class="container">
 
-    <!-- =========================================================
-         TOP CARDS
-         ========================================================= -->
+    <!-- Top cards -->
     <div class="top-row">
-
         <div class="cardTop">
             <h3>Faturamento</h3>
             <div id="valFaturamento" class="value">R$ 0,00</div>
@@ -273,26 +158,18 @@ body.dark .line{
             <h3>Lucro Líquido</h3>
             <div id="valLucro" class="value">R$ 0,00</div>
         </div>
-
     </div>
 
-
-    <!-- =========================================================
-         FILTROS
-         ========================================================= -->
+    <!-- Filters -->
     <div class="filters">
         <button id="fDia" class="active" onclick="setFiltro('dia')">Hoje</button>
         <button id="fSemana" onclick="setFiltro('semana')">Semana</button>
         <button id="fMes" onclick="setFiltro('mes')">Mês</button>
     </div>
 
-
-    <!-- =========================================================
-         RESUMO POR MÉTODO
-         ========================================================= -->
+    <!-- Resumo por método -->
     <div class="card">
         <h2>Resumo por Método</h2>
-
         <div class="line"><span>Dinheiro:</span> <strong id="mDinheiro">R$ 0,00</strong></div>
         <div class="line"><span>PIX:</span> <strong id="mPix">R$ 0,00</strong></div>
         <div class="line"><span>Cartão:</span> <strong id="mCartao">R$ 0,00</strong></div>
@@ -300,13 +177,9 @@ body.dark .line{
         <div class="line"><span>Outras entradas:</span> <strong id="mOutras">R$ 0,00</strong></div>
     </div>
 
-
-    <!-- =========================================================
-         RESUMO POR CATEGORIA
-         ========================================================= -->
+    <!-- Resumo por categoria -->
     <div class="card">
         <h2>Resumo por Categoria</h2>
-
         <div class="line"><span>Uber:</span> <strong id="cUber">R$ 0,00</strong></div>
         <div class="line"><span>99:</span> <strong id="c99">R$ 0,00</strong></div>
         <div class="line"><span>InDriver:</span> <strong id="cInDriver">R$ 0,00</strong></div>
@@ -314,250 +187,191 @@ body.dark .line{
         <div class="line"><span>Empresa:</span> <strong id="cEmpresa">R$ 0,00</strong></div>
     </div>
 
-
-    <!-- =========================================================
-         MINI CHART (FATURAMENTO / DESPESAS / LUCRO)
-         ========================================================= -->
+    <!-- Chart (vertical bars, compact) -->
     <div class="card">
         <h2>Desempenho</h2>
-
-        <div class="chartRow">
-
-            <div class="bar">
-                <div id="barFat" class="inner" style="height:10%;">0%</div>
-                <div class="barLabel">Faturamento</div>
+        <div class="chartRow" style="margin-top:8px;">
+            <div class="chartCard">
+                <div class="barShell" aria-hidden="true">
+                    <div id="barFat" class="barInner" style="height:10%; background:var(--brand);"></div>
+                </div>
+                <div class="hint">Faturamento</div>
+                <div id="barFatLabel" class="hint">0%</div>
             </div>
 
-            <div class="bar">
-                <div id="barDesp" class="inner" style="height:10%;">0%</div>
-                <div class="barLabel">Despesas</div>
+            <div class="chartCard">
+                <div class="barShell" aria-hidden="true">
+                    <div id="barDesp" class="barInner" style="height:10%; background:var(--accent-danger);"></div>
+                </div>
+                <div class="hint">Despesas</div>
+                <div id="barDespLabel" class="hint">0%</div>
             </div>
 
-            <div class="bar">
-                <div id="barLucro" class="inner" style="height:10%;">0%</div>
-                <div class="barLabel">Lucro</div>
+            <div class="chartCard">
+                <div class="barShell" aria-hidden="true">
+                    <div id="barLucro" class="barInner" style="height:10%; background:var(--accent-success);"></div>
+                </div>
+                <div class="hint">Lucro</div>
+                <div id="barLucroLabel" class="hint">0%</div>
             </div>
-
         </div>
     </div>
 
-</div>
+</div> <!-- container -->
 
-
-<!-- =========================================================
-     BOTTOM MENU CORPORATIVO
-     ========================================================= -->
+<!-- bottom menu -->
 <nav class="bottom-menu">
-    <a href="index.html" class="menu-item">
-        <span class="icon">🏠</span>
-        <span>Dashboard</span>
-    </a>
-
-    <a href="entradas.html" class="menu-item">
-        <span class="icon">💵</span>
-        <span>Entradas</span>
-    </a>
-
-    <a href="manutencao.html" class="menu-item">
-        <span class="icon">🛠️</span>
-        <span>Manutenção</span>
-    </a>
-
-    <a href="resumo.html" class="menu-item active">
-        <span class="icon">📊</span>
-        <span>Resumo</span>
-    </a>
-
-    <a href="perfil.html" class="menu-item">
-        <span class="icon">👤</span>
-        <span>Perfil</span>
-    </a>
-
-    <a href="calculadora.html" class="menu-item">
-        <span class="icon">📟</span>
-        <span>Calc</span>
-    </a>
+    <a href="index.html" class="menu-item" id="m-index"><span class="icon">🏠</span><span>Dashboard</span></a>
+    <a href="entradas.html" class="menu-item" id="m-entradas"><span class="icon">💵</span><span>Entradas</span></a>
+    <a href="manutencao.html" class="menu-item" id="m-manut"><span class="icon">🛠️</span><span>Manutenção</span></a>
+    <a href="resumo.html" class="menu-item active" id="m-resumo"><span class="icon">📊</span><span>Resumo</span></a>
+    <a href="perfil.html" class="menu-item" id="m-perfil"><span class="icon">👤</span><span>Perfil</span></a>
+    <a href="calculadora.html" class="menu-item" id="m-calc"><span class="icon">📟</span><span>Calc</span></a>
 </nav>
+
 <script>
-/* =========================================================
-   HELPERS BÁSICOS
-   ========================================================= */
+/* helpers */
 const $ = id => document.getElementById(id);
-const brl = v => Number(v || 0).toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL"
-});
+const brl = v => Number(v || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-
-/* =========================================================
-   MODO ESCURO GLOBAL (SINCRONIZADO)
-   ========================================================= */
-function aplicarTema(){
-    const tema = localStorage.getItem("tema") || "light";
-    if(tema === "dark"){
-        document.body.classList.add("dark");
-        $("toggleDark").innerText = "☀️";
+/* THEME (sync with other pages) */
+function applyTheme(theme){
+    if(theme === 'dark'){
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme','dark');
+        $('toggleTheme').innerText = '☀️';
     } else {
-        document.body.classList.remove("dark");
-        $("toggleDark").innerText = "🌙";
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme','light');
+        $('toggleTheme').innerText = '🌙';
     }
 }
+(function initTheme(){
+    const saved = localStorage.getItem('theme') || 'light';
+    applyTheme(saved);
+    $('toggleTheme').addEventListener('click', ()=>{ const isDark = document.documentElement.classList.contains('dark'); applyTheme(isDark ? 'light' : 'dark'); });
+})();
 
-$("toggleDark").addEventListener("click", () => {
-    const atual = localStorage.getItem("tema") || "light";
-    const novo = atual === "light" ? "dark" : "light";
-    localStorage.setItem("tema", novo);
-    aplicarTema();
-});
-
-aplicarTema();
-
-
-/* =========================================================
-   FILTROS DE DATA (DIA / SEMANA / MÊS)
-   ========================================================= */
-let filtro = "dia";
-
+/* Date filters */
+let filtro = 'dia';
 function setFiltro(f){
     filtro = f;
-
-    document.querySelectorAll(".filters button").forEach(b => {
-        b.classList.remove("active");
-    });
-
-    $("f" + f.charAt(0).toUpperCase() + f.slice(1)).classList.add("active");
-
+    document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+    const id = 'f' + f.charAt(0).toUpperCase() + f.slice(1);
+    const el = document.getElementById(id);
+    if(el) el.classList.add('active');
     atualizarResumo();
 }
 
-/* --- Funções de período --- */
+/* period helpers */
 function isToday(date){
     const n = new Date();
-    return date.getFullYear() === n.getFullYear()
-        && date.getMonth() === n.getMonth()
-        && date.getDate() === n.getDate();
+    return date.getFullYear() === n.getFullYear() && date.getMonth() === n.getMonth() && date.getDate() === n.getDate();
 }
-
 function isSameWeek(date){
     const now = new Date();
-    const first = now.getDate() - now.getDay() + 1;
-    const start = new Date(now.setDate(first));
-    const end = new Date(now.setDate(first + 6));
+    const start = new Date(now);
+    start.setDate(now.getDate() - now.getDay() + 1);
+    start.setHours(0,0,0,0);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    end.setHours(23,59,59,999);
     return date >= start && date <= end;
 }
-
 function isSameMonth(date){
     const now = new Date();
-    return date.getFullYear() === now.getFullYear()
-        && date.getMonth() === now.getMonth();
+    return date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth();
 }
-
 function filtrarData(d){
-    if(filtro === "dia") return isToday(d);
-    if(filtro === "semana") return isSameWeek(d);
+    if(filtro === 'dia') return isToday(d);
+    if(filtro === 'semana') return isSameWeek(d);
     return isSameMonth(d);
 }
 
-
-/* =========================================================
-   RESUMO FINAL (CÁLCULOS)
-   ========================================================= */
+/* main summary calc */
 function atualizarResumo(){
-
-    let registros = JSON.parse(localStorage.getItem("entradasSaidas") || "[]");
+    const registros = JSON.parse(localStorage.getItem('entradasSaidas') || '[]');
 
     let fat = 0, desp = 0;
-
     let mDin = 0, mPix = 0, mCar = 0, mApp = 0, mOut = 0;
     let cU = 0, c99 = 0, cInd = 0, cPar = 0, cEmp = 0;
 
-    registros.forEach(r => {
-        const d = new Date(r.criadoEm);
+    registros.forEach(r=>{
+        const d = new Date(r.criadoEm || r.createdAt || Date.now());
         if(!filtrarData(d)) return;
+        const v = Number(r.valor || r.valorBruto || 0);
 
-        const v = Number(r.valor || 0);
-
-        if(r.tipo === "entrada"){
-
+        if(r.tipo === 'entrada'){
             fat += v;
 
-            // Método
-            if(r.formaPag === "dinheiro") mDin += v;
-            else if(r.formaPag === "pix") mPix += v;
-            else if(r.formaPag === "cartao") mCar += v;
-            else if(r.formaPag === "appMobile") mApp += v;
+            if(r.formaPag === 'dinheiro') mDin += v;
+            else if(r.formaPag === 'pix') mPix += v;
+            else if(r.formaPag === 'cartao') mCar += v;
+            else if(r.formaPag === 'appMobile') mApp += v;
             else mOut += v;
 
-            // Categoria
-            if(r.appTipo === "uber") cU += v;
-            if(r.appTipo === "99") c99 += v;
-            if(r.appTipo === "indriver") cInd += v;
-
-            if(r.categoria === "particular") cPar += v;
-            if(r.categoria === "empresa") cEmp += v;
+            if(r.appTipo === 'uber') cU += v;
+            if(r.appTipo === '99') c99 += v;
+            if(r.appTipo === 'indriver') cInd += v;
+            if(r.categoria === 'particular') cPar += v;
+            if(r.categoria === 'empresa') cEmp += v;
 
         } else {
             desp += v;
 
-            // Reduzir método proporcionalmente
-            if(r.formaPag === "dinheiro") mDin -= v;
-            else if(r.formaPag === "pix") mPix -= v;
-            else if(r.formaPag === "cartao") mCar -= v;
+            if(r.formaPag === 'dinheiro') mDin -= v;
+            else if(r.formaPag === 'pix') mPix -= v;
+            else if(r.formaPag === 'cartao') mCar -= v;
         }
     });
 
     const lucro = fat - desp;
 
+    // display values
+    $('valFaturamento').innerText = brl(fat);
+    $('valDespesas').innerText = brl(desp);
+    $('valLucro').innerText = brl(lucro);
+    $('valLucro').style.color = lucro >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)';
 
-    /* =========================================================
-       EXIBIÇÃO DOS VALORES
-       ========================================================= */
-    $("valFaturamento").innerText = brl(fat);
-    $("valDespesas").innerText = brl(desp);
-    $("valLucro").innerText = brl(lucro);
+    $('mDinheiro').innerText = brl(mDin);
+    $('mPix').innerText = brl(mPix);
+    $('mCartao').innerText = brl(mCar);
+    $('mApp').innerText = brl(mApp);
+    $('mOutras').innerText = brl(mOut);
 
-    $("valLucro").style.color = lucro >= 0 ? "var(--accent-success)" : "var(--accent-danger)";
+    $('cUber').innerText = brl(cU);
+    $('c99').innerText = brl(c99);
+    $('cInDriver').innerText = brl(cInd);
+    $('cParticular').innerText = brl(cPar);
+    $('cEmpresa').innerText = brl(cEmp);
 
-    $("mDinheiro").innerText = brl(mDin);
-    $("mPix").innerText = brl(mPix);
-    $("mCartao").innerText = brl(mCar);
-    $("mApp").innerText = brl(mApp);
-    $("mOutras").innerText = brl(mOut);
-
-    $("cUber").innerText = brl(cU);
-    $("c99").innerText = brl(c99);
-    $("cInDriver").innerText = brl(cInd);
-    $("cParticular").innerText = brl(cPar);
-    $("cEmpresa").innerText = brl(cEmp);
-
-
-    /* =========================================================
-       GRÁFICO (FAT / DESP / LUCRO)
-       ========================================================= */
-    const max = Math.max(fat, desp, Math.abs(lucro), 10);
-
-    // faturamento
+    // chart heights (relative)
+    const max = Math.max(Math.abs(fat), Math.abs(desp), Math.abs(lucro), 1);
     const pctFat = Math.round(fat / max * 100);
-    $("barFat").style.height = pctFat + "%";
-    $("barFat").innerText = pctFat + "%";
-
-    // despesas
     const pctDesp = Math.round(desp / max * 100);
-    $("barDesp").style.height = pctDesp + "%";
-    $("barDesp").innerText = pctDesp + "%";
-
-    // lucro
     const pctLucro = Math.round(Math.abs(lucro) / max * 100);
-    $("barLucro").style.height = pctLucro + "%";
-    $("barLucro").innerText = pctLucro + "%";
 
-    $("barLucro").style.background =
-        lucro >= 0 ? "var(--accent-success)" : "var(--accent-danger)";
+    const barFat = $('barFat'), barDesp = $('barDesp'), barLucro = $('barLucro');
+    if(barFat) { barFat.style.height = Math.max(6, pctFat) + '%'; $('barFatLabel').innerText = pctFat + '%'; }
+    if(barDesp) { barDesp.style.height = Math.max(6, pctDesp) + '%'; $('barDespLabel').innerText = pctDesp + '%'; }
+    if(barLucro) { barLucro.style.height = Math.max(6, pctLucro) + '%'; $('barLucroLabel').innerText = pctLucro + '%'; }
+
+    // lucro color
+    if(barLucro) barLucro.style.background = lucro >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)';
 }
 
+/* init */
+window.addEventListener('load', ()=> {
+    atualizarResumo();
 
-/* =========================================================
-   INICIALIZAÇÃO
-   ========================================================= */
-window.onload = atualizarResumo;
+    // ensure bottom menu active item
+    document.querySelectorAll('.bottom-menu .menu-item').forEach(el=>{
+        el.classList.remove('active');
+        const href = el.getAttribute('href') || '';
+        if(location.pathname && location.pathname.indexOf(href) !== -1) el.classList.add('active');
+        if(!location.pathname && href.includes('resumo.html')) el.classList.add('active');
+    });
+});
 </script>
+</body>
+</html>
