@@ -1,3 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Manutenção - Motorista App</title>
+
+<!-- Fonte corporativa -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   VARIÁVEIS TEMA (CLARO / ESCURO)
+   ========================================================= */
+:root{
+    /* Claro corporativo */
+    --bg:#f6f7fb;
+    --card:#ffffff;
+    --panel:#f1f4f9;
+    --text:#0b1115;
+    --muted:#768088;
+    --brand:#0b5bd7;
+    --brand-dark:#073f8a;
+    --accent-success:#1DB954;
+    --accent-danger:#ff3b30;
+    --warning:#f3b22a;
+    --shadow:0 6px 20px rgba(15,30,45,0.08);
+    --radius:14px;
+}
+
+/* Tema escuro global */
+.dark{
+    --bg:#0e0f11;
+    --card:#1a1b1e;
+    --panel:#222326;
+    --text:#f1f1f1;
+    --muted:#889099;
+    --shadow:0 6px 26px rgba(0,0,0,0.55);
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding-bottom:140px;
+}
+
+/* =========================================================
+   HEADER CORPORATIVO
+   ========================================================= */
+header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 16px;
+    max-width:980px;
+    margin:0 auto 12px auto;
+}
+
+.brand{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.logo{
+    width:42px; height:42px;
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    font-weight:800; color:#fff;
+    box-shadow:var(--shadow);
+}
+
+.brand h1{
+    margin:0;
+    font-size:17px;
+    font-weight:800;
+}
+
+/* Botão modo escuro */
+#toggleDarkBtn{
+    width:44px; height:44px;
+    border-radius:12px;
+    border:none;
+    cursor:pointer;
+    font-size:20px;
+    background:var(--panel);
+    color:var(--text);
+    box-shadow:var(--shadow);
+}
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+.container{
+    max-width:980px;
+    margin:0 auto;
+    padding:0 16px;
+}
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+.card{
+    background:var(--card);
+    padding:18px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+}
+
+.row{ display:flex; gap:14px; flex-wrap:wrap; }
+.col{ flex:1; min-width:260px; }
+
+.label{
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:6px;
+}
+
+input, select{
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid transparent;
+    background:var(--panel);
+    color:var(--text);
+    font-size:15px;
+}
+
+input:focus, select:focus{
+    outline:none;
+    border-color:var(--brand);
+}
+
+.btn{
+    background:var(--brand);
+    color:#fff;
+    padding:12px;
+    border-radius:12px;
+    border:none;
+    font-weight:700;
+    cursor:pointer;
+    width:100%;
+    font-size:15px;
+}
+
+.btnGhost{
+    background:var(--panel);
+    color:var(--text);
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.smallNote{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:8px;
+}
+
+/* =========================================================
+   STATUS BADGES
+   ========================================================= */
+.badge{
+    padding:6px 10px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.statusGreen{ background:#d7fbe3; color:#0b6620; }
+.dark .statusGreen{ background:#114222; color:#9dffc1; }
+
+.statusWarn{ background:#fff4d6; color:#9d6700; }
+.dark .statusWarn{ background:#6a4c09; color:#ffeab3; }
+
+.statusRed{ background:#ffe3e3; color:#a00000; }
+.dark .statusRed{ background:#5a0a06; color:#ffb3b3; }
+
+/* =========================================================
+   LIST ITEM
+   ========================================================= */
+.listItem{
+    background:var(--panel);
+    padding:14px;
+    border-radius:14px;
+    margin-bottom:12px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+}
+
+/* =========================================================
+   BOTTOM MENU CORPORATIVO
+   ========================================================= */
+.bottom-menu{
+    position:fixed;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    width:92%;
+    max-width:980px;
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    padding:10px 0;
+    border-radius:18px;
+    display:flex;
+    justify-content:space-around;
+    box-shadow:0 12px 26px rgba(0,0,0,0.25);
+    z-index:999;
+}
+
+.bottom-menu .menu-item{
+    color:#fff;
+    text-decoration:none;
+    font-size:13px;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    font-weight:700;
+}
+
+.bottom-menu .menu-item .icon{
+    font-size:20px;
+}
+
+.bottom-menu .menu-item.active{
+    opacity:1;
+    transform:scale(1.04);
+}
+
+/* RESPONSIVO */
+@media(max-width:720px){
+    .row{ flex-direction:column; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">
+        <div class="logo">RF</div>
+        <h1>Manutenção</h1>
+    </div>
+
+    <!-- Toggle modo escuro -->
+    <button id="toggleDarkBtn">🌙</button>
+</header>
+
+<div class="container">
+<!-- =========================================================
+     CARD: DADOS DO VEÍCULO / KM ATUAL
+     ========================================================= -->
+<div class="card">
+    <h3 style="margin-top:0; font-size:17px; font-weight:700;">Dados do Veículo / KM Atual</h3>
+
+    <div class="row">
+        <div class="col">
+            <div class="label">Nome / Proprietário</div>
+            <input id="perfilNome" placeholder="Nome completo">
+        </div>
+
+        <div class="col">
+            <div class="label">Marca</div>
+            <input id="perfilMarca" placeholder="Marca do veículo">
+        </div>
+
+        <div class="col">
+            <div class="label">Modelo</div>
+            <input id="perfilModelo" placeholder="Modelo do veículo">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="label">Ano</div>
+            <input id="perfilAno" placeholder="Ex: 2018">
+        </div>
+
+        <div class="col">
+            <div class="label">Placa</div>
+            <input id="perfilPlaca" placeholder="Ex: ABC1D23">
+        </div>
+
+        <div class="col">
+            <div class="label">KM atual (registrar diariamente)</div>
+            <input id="kmAtual" type="number" placeholder="Ex: 123456">
+        </div>
+    </div>
+
+    <div style="display:flex; gap:10px; margin-top:12px;">
+        <button id="salvarPerfil" class="btn" style="flex:2;">Salvar dados e atualizar KM</button>
+        <button id="limparPerfil" class="btnGhost" style="flex:1;">Recarregar</button>
+    </div>
+
+    <div style="display:flex; gap:10px; margin-top:12px;">
+        <button id="exportWhats" class="btnGhost" style="flex:1;">Enviar WhatsApp</button>
+        <button id="exportPdf" class="btnGhost" style="flex:1;">Gerar PDF</button>
+    </div>
+
+    <div class="smallNote">
+        Ao salvar o KM atual, todos os registros de manutenção serão recalculados automaticamente.
+    </div>
+</div>
+
+<!-- =========================================================
+     CARD: CADASTRAR MANUTENÇÃO / ITEM
+     ========================================================= -->
+<div class="card">
+    <h3 style="margin-top:0; font-size:17px; font-weight:700;">Cadastrar manutenção / item</h3>
+
+    <div class="label">Nome da manutenção</div>
+    <input id="mNome" placeholder="Ex: Troca de óleo">
+
+    <div class="row">
+        <div class="col">
+            <div class="label">KM da última troca</div>
+            <input id="mKmUltima" type="number" placeholder="Ex: 45000">
+        </div>
+
+        <div class="col">
+            <div class="label">Intervalo para próxima troca (km)</div>
+            <input id="mIntervalo" type="number" placeholder="Ex: 10000">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="label">Custo estimado da manutenção</div>
+            <input id="mCusto" type="number" step="0.01" placeholder="R$">
+        </div>
+
+        <div class="col">
+            <div class="label">Observações (opcional)</div>
+            <input id="mObs" placeholder="Ex: usar óleo sintético...">
+        </div>
+    </div>
+
+    <div style="display:flex; gap:10px; margin-top:12px;">
+        <button id="addManut" class="btn" style="flex:2;">Adicionar / Salvar manutenção</button>
+        <button id="limparFormManut" class="btnGhost" style="flex:1;">Limpar</button>
+    </div>
+</div>
+
+<!-- =========================================================
+     CARD: LISTA DE MANUTENÇÕES
+     ========================================================= -->
+<div class="card">
+    <h3 style="margin-top:0; font-size:17px; font-weight:700;">Manutenções cadastradas</h3>
+
+    <div id="listaManutencoes"></div>
+
+    <div class="smallNote" style="margin-top:14px;">
+        • Vermelho: ≤ 800 km<br>
+        • Amarelo: ≤ 2000 km<br>
+        • Verde: > 2000 km
+    </div>
+</div>
+
+<!-- =========================================================
+     CARD: HISTÓRICO DE MANUTENÇÕES
+     ========================================================= -->
+<div class="card">
+    <h3 style="margin-top:0; font-size:17px; font-weight:700;">Histórico de manutenções realizadas</h3>
+
+    <table class="table" id="histTable" style="width:100%; margin-top:10px; border-collapse:collapse;">
+        <thead>
+            <tr>
+                <th style="padding:8px; font-size:13px;">Data</th>
+                <th style="padding:8px; font-size:13px;">Nome</th>
+                <th style="padding:8px; font-size:13px;">KM</th>
+                <th style="padding:8px; font-size:13px;">Valor</th>
+                <th style="padding:8px; font-size:13px;">Obs</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 <!-- =========================================================
      MENU INFERIOR CORPORATIVO
      ========================================================= -->
