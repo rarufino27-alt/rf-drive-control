@@ -28,6 +28,9 @@
     --shadow-strong: 0 10px 32px rgba(10,20,30,0.12);
 
     --radius: 14px;
+
+    /* === MENU PADRÃO ENTRADAS === */
+    --menu-bg: linear-gradient(135deg,var(--brand),var(--brand-dark));
 }
 
 /* ========= MODO ESCURO ========= */
@@ -44,12 +47,6 @@
 
     --shadow: 0 6px 16px rgba(0,0,0,0.35);
     --shadow-strong: 0 10px 32px rgba(0,0,0,0.45);
-
-    --brand: #3b82f6;
-    --brand-dark: #2563eb;
-
-    --accent-success: #22c55e;
-    --accent-danger: #ef4444;
 }
 
 /* BASE */
@@ -141,39 +138,30 @@ header{
     font-weight:800;
 }
 
-/* CIRCULO - 100% FIXO */
+/* CIRCULO */
 .circular{
     width:140px;
     height:140px;
     border-radius:50%;
     background:#fff;
-    position:relative;     /* FIXA O TAMANHO */
-    overflow:hidden;       /* NÃO VAZA MAIS */
+    position:relative;
+    overflow:hidden;
     box-shadow:inset 0 0 25px rgba(13,35,68,0.10), var(--shadow);
 }
 
-/* SVG NÃO MOVE NADA */
+/* CÍRCULO SVG */
 .circular svg{
-    position:absolute;
-    top:0; left:0;
-    width:100%; height:100%;
+    position:absolute; top:0; left:0; width:100%; height:100%;
 }
 
-/* LABEL INTERNA */
 .circular .label{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    pointer-events:none;
+    position:absolute; inset:0;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
 }
-.circular .pct{
-    font-size:20px; font-weight:900; color:var(--brand);
-}
+.circular .pct{ font-size:20px; font-weight:900; color:var(--brand); }
 
-/* MINICHART */
+/* BARRAS */
 .chartRow{
     display:flex; gap:14px; padding:12px 0;
 }
@@ -184,8 +172,7 @@ header{
     display:flex; align-items:flex-end; justify-content:center;
 }
 .bar .inner{
-    width:70%;
-    border-radius:8px 8px 0 0;
+    width:70%; border-radius:8px 8px 0 0;
     color:#fff; padding-bottom:6px;
     font-weight:700;
 }
@@ -217,48 +204,46 @@ header{
     display:none;
 }
 
-/* ===== MENU INFERIOR CORPORATIVO AZUL ===== */
+/* =====================================================
+      MENU INFERIOR — PADRÃO EXATO DA PÁGINA ENTRADAS
+===================================================== */
 .bottom-menu{
     position:fixed;
-    bottom:18px; left:50%;
+    bottom:18px;
+    left:50%;
     transform:translateX(-50%);
-    width:92%; max-width:980px;
-    background:linear-gradient(135deg, var(--brand), var(--brand-dark)); /* azul corporativo */
-    padding:14px 12px;
+    width:92%;
+    max-width:980px;
+    background:var(--menu-bg);
+    padding:10px 0;
     border-radius:18px;
-    box-shadow:0 14px 36px rgba(0,0,0,0.25);
     display:flex;
     justify-content:space-around;
-    border:1px solid rgba(255,255,255,0.15);
+    box-shadow:0 12px 30px rgba(11,30,45,0.5);
+    z-index:1000;
+    border:1px solid rgba(255,255,255,0.2);
 }
 
-/* Itens */
 .bottom-menu .menu-item{
     text-align:center;
-    text-decoration:none !important; /* sem underline */
-    color:#fff;                      /* texto branco */
-    font-weight:700;                 /* NEGRITO */
+    color:#fff;
+    text-decoration:none!important;
     font-size:13px;
+    font-weight:800;
     display:flex;
     flex-direction:column;
     align-items:center;
     gap:4px;
-    padding:6px 8px;
 }
 
-/* Ícones estilo outline */
 .bottom-menu .menu-item .icon{
     font-size:22px;
-    font-weight:900;
-    opacity:0.9;
+    margin-bottom:4px;
 }
 
-/* Ativo – mantém branco, mas adiciona brilho */
 .bottom-menu .menu-item.active{
-    color:#fff;
-    background:rgba(255,255,255,0.20);
-    border-radius:10px;
-    box-shadow:inset 0 0 8px rgba(255,255,255,0.18);
+    opacity:0.9;
+    scale:1.06;
 }
 
 /* FAB */
@@ -363,6 +348,7 @@ header{
 
 <button class="fab">+</button>
 
+<!-- MENU INFERIOR PADRÃO ENTRADAS -->
 <nav class="bottom-menu">
     <a href="index.html" class="menu-item active">
         <span class="icon">🏠</span>
@@ -464,11 +450,12 @@ function renderCircle(pct){
             style="transition:.6s"/>
     </svg>`;
 
-    $("circularWrap").innerHTML = svg +
-    `<div class="label">
-        <div class="pct">${pct}%</div>
-        <div style="font-size:12px;color:var(--muted)">da meta</div>
-    </div>`;
+    $("circularWrap").innerHTML =
+        svg +
+        `<div class="label">
+            <div class="pct">${pct}%</div>
+            <div style="font-size:12px;color:var(--muted)">da meta</div>
+        </div>`;
 }
 
 /* Atualizar dashboard */
@@ -560,5 +547,6 @@ document.getElementById("toggleTheme").addEventListener("click", ()=>{
     applyTheme(isDark ? "light" : "dark");
 });
 </script>
+
 </body>
 </html>
