@@ -1,355 +1,586 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Calculadora de Viagens Premium</title>
-  <style>
-    :root{ --bg:#f6f7fb; --card:#ffffff; --accent:#0f6cf2; --muted:#6b7280; --glass: rgba(15,108,242,0.08); }
-    *{box-sizing:border-box;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,#f2f6ff 0%,#f6f7fb 100%);color:#0b1220}
-    .wrap{max-width:960px;margin:28px auto;padding:18px}
-    header{display:flex;align-items:center;gap:16px;margin-bottom:12px}
-    header h1{font-size:20px;margin:0}
-    .grid{display:grid;grid-template-columns:1fr 420px;gap:16px}
-    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(12,18,40,0.06)}
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-    input[type=text],input[type=number],select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;font-size:14px}
-    .row{display:flex;gap:12px}
-    .row > *{flex:1}
-    .small{max-width:160px}
-    .btn{background:var(--accent);color:white;padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
-    .mutebtn{background:transparent;border:1px solid #e6e9ef;padding:8px;border-radius:10px;cursor:pointer}
-    .results{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
-    .metric{background:var(--glass);padding:10px;border-radius:10px}
-    .metric b{display:block;font-size:18px}
-    .indicator{padding:8px;border-radius:8px;font-weight:700;margin-top:8px;text-align:center}
-    .good{background:#e6fbef;color:#056e3a}
-    .bad{background:#fff0f0;color:#9b1c1c}
-    .compare{margin-top:8px}
-    small{color:var(--muted)}
-    .history{max-height:320px;overflow:auto;margin-top:8px}
-    table{width:100%;border-collapse:collapse;font-size:13px}
-    th,td{padding:6px;border-bottom:1px solid #eef1f6;text-align:left}
-    th{font-weight:700;color:#0b1220}
-    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-    footer{margin-top:14px;text-align:center;color:var(--muted);font-size:13px}
-    @media(max-width:880px){.grid{grid-template-columns:1fr}.small{max-width:none}}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Calculadora Integrada - RF Driver</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ---------------------------- TEMA E BASE ---------------------------- */
+:root{
+    --bg:#f6f7fb; 
+    --card:#ffffff; 
+    --panel:#f1f4f9;
+    --text:#0b1115; 
+    --muted:#768088;
+    --brand:#0b5bd7; 
+    --brand-dark:#073f8a;
+    --danger:#ff3b30;
+    --radius:14px; 
+    --shadow:0 4px 16px rgba(15,30,45,0.08);
+}
+
+.dark{
+    --bg:#0f0f11; 
+    --card:#1a1b1e; 
+    --panel:#222326;
+    --text:#f1f1f1; 
+    --muted:#9099a3;
+    --shadow:0 4px 18px rgba(0,0,0,0.55);
+}
+
+*{
+    box-sizing:border-box;
+    font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;
+}
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    padding-bottom:140px;
+}
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px;
+    max-width:980px;
+    margin:0 auto;
+}
+
+.logo{
+    width:42px;height:42px;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:800;font-size:18px;
+}
+
+.container{
+    max-width:980px;margin:0 auto;padding:0 16px;
+}
+
+.card{
+    background:var(--card);
+    padding:16px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    margin-bottom:16px;
+}
+
+.tab-bar{
+    display:flex;background:var(--panel);
+    border-radius:12px;overflow:hidden;margin-bottom:16px;
+}
+.tab-button{
+    flex:1;text-align:center;padding:12px 0;
+    cursor:pointer;font-weight:700;color:var(--muted);
+}
+.tab-button.active{
+    background:var(--brand);color:#fff;
+}
+
+label{
+    display:block;margin-top:10px;font-size:13px;color:var(--muted);font-weight:700;
+}
+input,select{
+    width:100%;padding:10px;border-radius:10px;
+    border:1px solid transparent;background:var(--panel);
+    margin-top:6px;color:var(--text);
+}
+button{
+    padding:12px;border:0;border-radius:10px;
+    background:var(--brand);color:#fff;
+    font-weight:700;cursor:pointer;margin-top:12px;
+}
+
+.resultado{
+    background:var(--panel);padding:10px;border-radius:10px;margin-top:8px;font-weight:700;
+}
+
+/* Menu inferior */
+.bottom-menu{
+    position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+    width:92%;max-width:980px;
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    padding:10px 0;border-radius:18px;
+    display:flex;justify-content:space-around;
+    box-shadow:0 12px 28px rgba(0,0,0,0.35);
+    z-index:999
+}
+
+.menu-item{
+    text-decoration:none;text-align:center;color:#fff;
+    font-size:13px;font-weight:700;
+    display:flex;flex-direction:column;gap:4px;
+}
+.menu-item.active{ transform:scale(1.06); }
+.menu-item .icon{ font-size:18px; }
+
+/* Tabela */
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{
+    padding:8px;border-bottom:1px solid rgba(0,0,0,0.05);
+    text-align:left;font-size:14px
+}
+
+/* Responsivo */
+@media(max-width:880px){
+    header{padding:12px}
+    .tab-button{font-size:14px}
+}
+</style>
+
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='42' height='42'><rect rx='10' width='42' height='42' fill='%230f6cf2'/><text x='50%' y='55%' font-size='20' fill='white' font-family='Arial' text-anchor='middle' dominant-baseline='middle'>ƒ</text></svg>" alt="logo" style="width:42px;height:42px;border-radius:10px;"/>
-      <div>
-        <h1>Calculadora de Viagens Premium</h1>
-        <small>Decida rápido — calcule custo real, lucro e compare plataformas</small>
-      </div>
-    </header>
 
-    <div class="grid">
-      <!-- Left: Inputs & Results -->
-      <div>
-        <div class="card">
-          <h3>Dados do veículo & custos</h3>
-          <div style="margin-top:8px">
-            <label>Preço do combustível (R$/L)</label>
-            <input id="precoComb" type="number" step="0.01" value="4.99" />
-          </div>
-          <div style="margin-top:8px" class="row">
-            <div>
-              <label>Consumo médio (km/L)</label>
-              <input id="consumo" type="number" step="0.1" value="10" />
-            </div>
-            <div>
-              <label>Km rodados por dia (média)</label>
-              <input id="kmDia" type="number" step="1" value="200" />
-            </div>
-          </div>
+<header>
+    <div class="brand" style="display:flex;align-items:center;gap:10px;">
+        <div class="logo">RF</div>
+        <h1 style="margin:0;font-size:18px;font-weight:800">Calculadora</h1>
+    </div>
+    <button id="toggleTheme" style="border:none;background:transparent;font-size:22px;cursor:pointer">🌙</button>
+</header>
 
-          <div style="margin-top:8px" class="row">
-            <div>
-              <label>Custo variável (R$/km) — óleo, pneus, manutenção</label>
-              <input id="custoVarKm" type="number" step="0.01" value="0.15" />
-            </div>
-            <div>
-              <label>Depreciação estimada (R$/dia)</label>
-              <input id="depreciacao" type="number" step="0.1" value="10" />
-            </div>
-          </div>
+<main class="container">
 
-          <hr style="margin:12px 0;border:none;border-top:1px solid #eef1f6"/>
-
-          <h3>Dados da corrida</h3>
-          <div class="row" style="margin-top:8px">
-            <div>
-              <label>Distância até passageiro (km)</label>
-              <input id="kmIda" type="number" step="0.1" value="1.2" />
-            </div>
-            <div>
-              <label>Distância da corrida (km)</label>
-              <input id="kmViagem" type="number" step="0.1" value="10" />
-            </div>
-          </div>
-
-          <div class="row" style="margin-top:8px">
-            <div>
-              <label>Tempo estimado (min)</label>
-              <input id="tempoMin" type="number" step="1" value="25" />
-            </div>
-            <div>
-              <label>Valor recebido (R$)</label>
-              <input id="valorRecebido" type="number" step="0.01" value="28.50" />
-            </div>
-          </div>
-
-          <div style="margin-top:8px">
-            <label>Taxas/plataformas (em %)</label>
-            <div class="row">
-              <input id="taxUber" type="number" step="0.1" value="25" />
-              <input id="tax99" type="number" step="0.1" value="24" />
-              <input id="taxIndriver" type="number" step="0.1" value="10" />
-            </div>
-            <div style="display:flex;gap:10px;margin-top:8px">
-              <button class="btn" id="calcBtn">CALCULAR VIAGEM PREMIUM</button>
-              <button class="mutebtn" id="limparBtn">Limpar histórico</button>
-            </div>
-          </div>
-
-          <div class="results" id="resultArea" aria-live="polite" style="margin-top:12px">
-            <div class="metric">
-              <small>Custo real por km</small>
-              <b id="cck">R$ 0,00</b>
-            </div>
-            <div class="metric">
-              <small>Lucro líquido previsto</small>
-              <b id="lucro">R$ 0,00</b>
-              <div id="indAccept" class="indicator" style="display:none"></div>
-            </div>
-
-            <div class="metric">
-              <small>Ganho bruto (corrida)</small>
-              <b id="ganhoBruto">R$ 0,00</b>
-            </div>
-            <div class="metric">
-              <small>Custo operacional (corrida)</small>
-              <b id="custoOp">R$ 0,00</b>
-            </div>
-          </div>
-
-          <div class="card" style="margin-top:12px">
-            <small>Comparativo entre plataformas</small>
-            <div id="comparativos" class="compare"></div>
-          </div>
-
-        </div>
-
-        <div class="card" style="margin-top:12px">
-          <h3>Exportar / Relatório</h3>
-          <p style="margin:6px 0;color:var(--muted)">Gere um resumo da avaliação atual ou baixe o histórico.</p>
-          <div class="actions">
-            <button class="btn" id="exportPdf">Gerar relatório (imprimir)</button>
-            <button class="mutebtn" id="exportCsv">Baixar histórico CSV</button>
-            <button class="mutebtn" id="exportJson">Baixar histórico JSON</button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Right: Summary & History -->
-      <div>
-        <div class="card">
-          <h3>Resumo rápido</h3>
-          <p style="margin:6px 0;color:var(--muted)">Indicadores baseados nos inputs — ideal para decisão instantânea.</p>
-          <div style="margin-top:10px">
-            <div class="metric"><small>Meta diária (R$)</small><b id="metaDiaria">R$ 200,00</b></div>
-          </div>
-
-          <div style="margin-top:12px">
-            <label>Meta diária (R$)</label>
-            <input id="metaInput" type="number" step="1" value="200" />
-          </div>
-
-          <div style="margin-top:12px">
-            <h4>Histórico de viagens avaliadas (Premium)</h4>
-            <div class="history card" id="historyBox">
-              <table id="historyTable">
-                <thead><tr><th>Hora</th><th>Km</th><th>Lucro</th><th>Plataforma</th></tr></thead>
-                <tbody></tbody>
-              </table>
-            </div>
-            <small style="display:block;margin-top:6px;color:var(--muted)">As avaliações ficam salvas localmente no dispositivo.</small>
-          </div>
-
-        </div>
-
-        <div class="card" style="margin-top:12px">
-          <h4>Dicas rápidas</h4>
-          <ul style="margin:6px 0 0 18px;color:var(--muted)">
-            <li>Prefira corridas com lucro líquido >= 20% da sua média.</li>
-            <li>Evite longas idas sem passageiro (km de deslocamento alto).</li>
-            <li>Use o histórico para identificar horários mais lucrativos.</li>
-          </ul>
-        </div>
-
-      </div>
+    <!-- ABAS -->
+    <div class="tab-bar">
+        <div id="tabSimples" class="tab-button active">Simples</div>
+        <div id="tabPremium" class="tab-button">Premium ⭐</div>
     </div>
 
-    <footer>
-      Versão Premium — Personalize com suas taxas. Dados salvos localmente.
-    </footer>
-  </div>
+    <!-- -------------------- ABA SIMPLES -------------------- -->
+    <section id="abaSimples" class="card" style="display:block">
+        <h2>Calculadora Simples</h2>
 
-  <script>
-    // Helpers
-    const $ = id => document.getElementById(id);
-    const format = v => (typeof v === 'number' ? 'R$ ' + v.toFixed(2) : v);
+        <label>Motorista</label><input id="motorista">
+        <label>CPF/CNPJ</label><input id="cpfCnpj">
+        <label>Carro / Modelo</label><input id="carro">
+        <label>Placa</label><input id="placa">
+        <label>Origem</label><input id="origem">
+        <label>Destino</label><input id="destino">
 
-    // Load history from localStorage
-    const HISTORY_KEY = 'calc_premium_history_v1';
-    function loadHistory(){
-      try{ return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }catch(e){return []}
-    }
-    function saveHistory(h){ localStorage.setItem(HISTORY_KEY, JSON.stringify(h)); }
+        <label>Valor por KM</label><input id="valorKm" type="number" step="0.01">
+        <label>KM Rodado</label><input id="kmRodado" type="number" step="0.01">
+        <label>Duração (minutos)</label><input id="duracaoMin" type="number">
 
-    function renderHistory(){
-      const tbody = document.querySelector('#historyTable tbody'); tbody.innerHTML='';
-      const hist = loadHistory();
-      hist.slice().reverse().forEach(item => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${new Date(item.t).toLocaleString()}</td><td>${(item.km || 0).toFixed(1)}</td><td>${format(item.lucro)}</td><td>${item.platform || ''}</td>`;
-        tbody.appendChild(tr);
-      });
-    }
+        <label>Tipo de uso</label>
+        <select id="tipoUso">
+            <option value="cidade">Cidade</option>
+            <option value="pista">Pista</option>
+        </select>
 
-    function calcAndRender(){
-      // read inputs
-      const precoComb = parseFloat($('precoComb').value) || 0;
-      const consumo = parseFloat($('consumo').value) || 1;
-      const kmDia = parseFloat($('kmDia').value) || 0;
-      const custoVarKm = parseFloat($('custoVarKm').value) || 0;
-      const depreciacao = parseFloat($('depreciacao').value) || 0;
+        <label>Tipo de viagem</label>
+        <select id="tipoViagem">
+            <option value="soIdaComVolta">Só ida (com volta)</option>
+            <option value="soIdaSemVolta">Só ida (sem volta)</option>
+            <option value="idaVoltaEspera">Ida e volta + espera</option>
+            <option value="idaVolta">Ida e volta</option>
+            <option value="bateVolta">Bate e volta</option>
+        </select>
 
-      const kmIda = parseFloat($('kmIda').value) || 0;
-      const kmViagem = parseFloat($('kmViagem').value) || 0;
-      const tempoMin = parseFloat($('tempoMin').value) || 0;
-      const valorRecebido = parseFloat($('valorRecebido').value) || 0;
+        <button id="btnCalcularSimples">Calcular Estimativa</button>
+        <button id="btnEnviarWhatsSimples" style="background:#128c7e">Enviar WhatsApp</button>
 
-      const taxUber = parseFloat($('taxUber').value) || 0;
-      const tax99 = parseFloat($('tax99').value) || 0;
-      const taxIndriver = parseFloat($('taxIndriver').value) || 0;
+        <div id="resultadoSimples" class="resultado"></div>
+    </section>
 
-      // Custo combustível por km
-      const custoCombKm = precoComb / consumo; // R$/km
-      // Custo operacional por km (comb + variáveis)
-      const custoOpKm = custoCombKm + custoVarKm;
-      // Custo do deslocamento (ida + viagem) em km
-      const kmTotal = +(kmIda + kmViagem);
-      // Custo operacional total da corrida
-      const custoOpCorrida = custoOpKm * kmTotal + (depreciacao / Math.max(1, kmDia)) * kmTotal; // aproximação
+    <!-- -------------------- ABA PREMIUM -------------------- -->
+    <section id="abaPremium" class="card" style="display:none">
+        <h2>Calculadora Premium ⭐</h2>
+        <p class="small">Cálculos avançados: combustíveis, plataformas, lucro, gráfico e histórico.</p>
 
-      // Taxas (ex.: aplicar sobre ganho bruto)
-      const taxaUberVal = valorRecebido * (taxUber/100);
-      const taxa99Val = valorRecebido * (tax99/100);
-      const taxaIndriverVal = valorRecebido * (taxIndriver/100);
+        <!-- Combustíveis -->
+        <div class="card">
+            <h3>Gasolina / Etanol</h3>
+            <label>Preço Gasolina (R$/L)</label><input id="gasolinaPreco" type="number" step="0.01">
+            <label>Consumo Gasolina (km/L)</label><input id="gasolinaConsumo" type="number" step="0.1">
+            <label>Preço Etanol (R$/L)</label><input id="etanolPreco" type="number" step="0.01">
+            <label>Consumo Etanol (km/L)</label><input id="etanolConsumo" type="number" step="0.1">
+            <button id="btnSalvarComb">Salvar Combustíveis</button>
+        </div>
 
-      // Lucro líquido por plataforma
-      const lucroUber = valorRecebido - custoOpCorrida - taxaUberVal;
-      const lucro99 = valorRecebido - custoOpCorrida - taxa99Val;
-      const lucroIndriver = valorRecebido - custoOpCorrida - taxaIndriverVal;
+        <!-- GNV -->
+        <div class="card">
+            <h3>GNV</h3>
+            <label>Preço do Cilindro Cheio (R$)</label><input id="gnvPrecoCilindro" type="number">
 
-      // Custo real por km (considerando custo operacional apenas nesta corrida)
-      const cckReal = custoOpCorrida / (kmTotal || 1);
+            <label>Autonomia Total (km)</label><input id="gnvAutonomiaKm" type="number">
 
-      // Determine recommendation
-      const lucroEscolhido = Math.max(lucroUber, lucro99, lucroIndriver);
-      const platform = lucroEscolhido === lucroUber ? 'Uber' : (lucroEscolhido === lucro99 ? '99' : 'InDriver');
+            <label>Capacidade (m³)</label><input id="gnvCapacidade" type="number">
 
-      const lucroPercent = (lucroEscolhido / Math.max(0.0001, valorRecebido)) * 100;
+            <hr>
 
-      // Meta
-      const meta = parseFloat($('metaInput').value) || 0;
+            <label>Preço por m³ (auto)</label><input id="gnvPrecoPorM3" readonly>
 
-      // Update UI
-      $('cck').textContent = format(cckReal);
-      $('ganhoBruto').textContent = format(valorRecebido);
-      $('custoOp').textContent = format(custoOpCorrida);
-      $('lucro').textContent = format(lucroEscolhido);
+            <label>Autonomia por m³ (km/m³)</label><input id="gnvAutonomiaPorM3" readonly>
 
-      const ind = $('indAccept');
-      ind.style.display = 'block';
-      if(lucroPercent >= 15){ ind.className = 'indicator good'; ind.textContent = 'ACEITE — lucro ≈ ' + lucroPercent.toFixed(0) + '%'; }
-      else { ind.className = 'indicator bad'; ind.textContent = 'NÃO VALE A PENA — lucro ≈ ' + lucroPercent.toFixed(0) + '%'; }
+            <button id="btnSalvarGnv">Salvar GNV</button>
+        </div>
 
-      // Comparativos
-      const comp = $('comparativos'); comp.innerHTML = '';
-      const comps = [
-        {name:'Uber', taxa:taxUberVal, lucro:lucroUber},
-        {name:'99', taxa:tax99Val, lucro:lucro99},
-        {name:'InDriver', taxa:taxaIndriverVal, lucro:lucroIndriver}
-      ];
-      comps.forEach(c => {
-        const el = document.createElement('div');
-        el.style.padding='8px 0';
-        el.innerHTML = `<b>${c.name}</b> — Lucro: ${format(c.lucro)} <small style='margin-left:8px;color:var(--muted)'>Taxa: ${format(c.taxa)}</small>`;
-        comp.appendChild(el);
-      });
+        <!-- Dados da corrida -->
+        <div class="card">
+            <h3>Dados da Corrida</h3>
 
-      // Save to history
-      const hist = loadHistory();
-      hist.push({t:Date.now(), km:kmTotal, lucro: +(lucroEscolhido||0).toFixed(2), platform, inputs:{precoComb,consumo,kmIda,kmViagem,valorRecebido}});
-      // keep last 500
-      while(hist.length>500) hist.shift();
-      saveHistory(hist);
-      renderHistory();
+            <label>Km até passageiro</label><input id="kmIda" type="number" value="1">
 
-      return {cckReal, custoOpCorrida, lucroEscolhido, platform, lucroPercent};
-    }
+            <label>Km da corrida</label><input id="kmViagem" type="number" value="8">
 
-    // Events
-    $('calcBtn').addEventListener('click', () => { calcAndRender(); });
+            <label>Valor recebido (R$)</label><input id="valorRecebido" type="number" value="18.50">
 
-    // Export functions
-    $('exportPdf').addEventListener('click', ()=>{
-      // build simple printable layout
-      const res = calcAndRender();
-      const html = `
-        <html><head><meta charset='utf-8'><title>Relatório de Viagem</title>
-        <style>body{font-family:Arial;padding:20px}h2{color:#0f6cf2}</style></head><body>
-        <h2>Relatório: Avaliação de Viagem</h2>
-        <p>Hora: ${new Date().toLocaleString()}</p>
-        <ul>
-          <li>Custo real por km: ${format(res.cckReal)}</li>
-          <li>Custo operacional total: ${format(res.custoOpCorrida || 0)}</li>
-          <li>Lucro previsto: ${format(res.lucroEscolhido || 0)}</li>
-          <li>Plataforma recomendada: ${res.platform}</li>
-        </ul>
-        <p>Gerado por Calculadora Premium.</p>
-        </body></html>`;
-      const w = window.open('','_blank');
-      w.document.write(html); w.document.close();
-      w.print();
-    });
+            <label>Taxas das plataformas (%)</label>
+            <div style="display:flex;gap:8px">
+                <input id="taxUber" type="number" value="25" placeholder="Uber">
+                <input id="tax99" type="number" value="24" placeholder="99">
+                <input id="taxIndriver" type="number" value="10" placeholder="InDriver">
+            </div>
 
-    $('exportCsv').addEventListener('click', ()=>{
-      const hist = loadHistory();
-      const rows = ['hora,km,lucro,plataforma'];
-      hist.forEach(h=> rows.push(`${new Date(h.t).toISOString()},${h.km},${h.lucro},${h.platform || ''}`));
-      const blob = new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8;'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = 'historico_viagens.csv'; a.click(); URL.revokeObjectURL(url);
-    });
+            <label>Combustível</label>
+            <select id="tipoCombustivel">
+                <option value="gasolina">Gasolina</option>
+                <option value="etanol">Etanol</option>
+                <option value="gnv">GNV</option>
+                <option value="auto">Automático (mais barato)</option>
+            </select>
 
-    $('exportJson').addEventListener('click', ()=>{
-      const hist = loadHistory();
-      const blob = new Blob([JSON.stringify(hist, null, 2)],{type:'application/json'});
-      const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'historico_viagens.json'; a.click(); URL.revokeObjectURL(url);
-    });
+            <button id="btnCalcPremium">Calcular Premium</button>
+            <button id="btnExportPdf" style="background:#0b5bd7">Exportar PDF</button>
 
-    $('limparBtn').addEventListener('click', ()=>{ if(confirm('Limpar todo o histórico?')){ localStorage.removeItem(HISTORY_KEY); renderHistory(); }});
+            <button id="btnWhatsPremium" style="background:#128c7e">Enviar WhatsApp</button>
+            <button id="btnLimparHist" style="background:#ff6b6b">Limpar Histórico</button>
+        </div>
 
-    // Initialize
-    renderHistory();
-  </script>
+        <div class="card"><h3>Resultados</h3>
+            <label>Custo por KM</label><div id="r_cck" class="resultado"></div>
+            <label>Lucro Líquido</label><div id="r_lucro" class="resultado"></div>
+            <label>Comb. mais barato</label><div id="r_combustivelMaisBarato" class="resultado"></div>
+            <label>Melhor plataforma</label><div id="r_melhorPlataforma" class="resultado"></div>
+            <label>Recomendação</label><div id="r_indicacao" class="resultado"></div>
+            <div id="r_comp" style="margin-top:10px"></div>
+        </div>
+
+        <div id="graficoPremium" class="card"></div>
+        <div id="historicoPremium" class="card"></div>
+
+    </section>
+
+</main>
+
+<div style="height:120px"></div>
+
+<nav class="bottom-menu">
+  <a href="index.html" class="menu-item"><span class="icon">🏠</span>Dashboard</a>
+  <a href="entradas.html" class="menu-item"><span class="icon">💵</span>Entradas</a>
+  <a href="manutencao.html" class="menu-item"><span class="icon">🛠️</span>Manutenção</a>
+  <a href="resumo.html" class="menu-item"><span class="icon">📊</span>Resumo</a>
+  <a href="perfil.html" class="menu-item"><span class="icon">👤</span>Perfil</a>
+  <a href="calculadora.html" class="menu-item active"><span class="icon">📟</span>Calc</a>
+</nav>
+
+<!-- ---------------------------- JS CORRIGIDO ---------------------------- -->
+<script>
+
+/* === VARIÁVEIS === */
+const PERFIL_KEY = 'perfilCalc_v2', COMB_KEY='combPremium_v2', GNV_KEY='gnvPremium_v2', HIST_KEY='premiumHist_v2';
+
+/* === TEMA === */
+const toggleTheme = document.getElementById('toggleTheme');
+function applyTheme(){
+  const t = localStorage.getItem('theme') || 'light';
+  if(t === 'dark'){ document.body.classList.add('dark'); toggleTheme.textContent = '☀️'; }
+  else { document.body.classList.remove('dark'); toggleTheme.textContent = '🌙'; }
+}
+toggleTheme.onclick = ()=>{ 
+    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'light' : 'dark'); 
+    applyTheme(); 
+};
+applyTheme();
+
+/* === ABAS === */
+const tabSimples = document.getElementById('tabSimples'),
+      tabPremium = document.getElementById('tabPremium'),
+      abaSimples = document.getElementById('abaSimples'),
+      abaPremium = document.getElementById('abaPremium');
+
+tabSimples.onclick = ()=>{ 
+    tabSimples.classList.add('active'); 
+    tabPremium.classList.remove('active'); 
+    abaSimples.style.display='block'; 
+    abaPremium.style.display='none'; 
+};
+
+tabPremium.onclick = ()=>{ 
+    tabPremium.classList.add('active'); 
+    tabSimples.classList.remove('active'); 
+    abaPremium.style.display='block'; 
+    abaSimples.style.display='none'; 
+};
+
+/* === UTILITÁRIOS === */
+function fmt(v){ if(v===Infinity||isNaN(v)) return 'N/D'; return 'R$ '+Number(v).toFixed(2); }
+function formatReal(v){ return 'R$ '+Number(v).toFixed(2); }
+
+/* === PERFIL LOCAL === */
+function salvarPerfilLocal(){
+  const p={
+    motorista:document.getElementById('motorista').value,
+    cpfCnpj:document.getElementById('cpfCnpj').value,
+    carro:document.getElementById('carro').value,
+    placa:document.getElementById('placa').value
+  };
+  localStorage.setItem(PERFIL_KEY, JSON.stringify(p));
+}
+function carregarPerfilLocal(){
+  const p = JSON.parse(localStorage.getItem(PERFIL_KEY) || '{}');
+  if(p.motorista) motorista.value = p.motorista;
+  if(p.cpfCnpj) cpfCnpj.value = p.cpfCnpj;
+  if(p.carro) carro.value = p.carro;
+  if(p.placa) placa.value = p.placa;
+}
+['motorista','cpfCnpj','carro','placa'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', salvarPerfilLocal);
+});
+carregarPerfilLocal();
+
+/* === GNV AUTOMÁTICO === */
+function atualizarGnvAutomatico(){
+  const preco = Number(gnvPrecoCilindro.value)||0;
+  const autonomiaKm = Number(gnvAutonomiaKm.value)||0;
+  const capacidade = Number(gnvCapacidade.value)||0;
+
+  if(capacidade>0){
+    gnvPrecoPorM3.value = (preco/capacidade).toFixed(2);
+    gnvAutonomiaPorM3.value = (autonomiaKm/capacidade).toFixed(2);
+  } else {
+    gnvPrecoPorM3.value = '';
+    gnvAutonomiaPorM3.value = '';
+  }
+}
+
+['gnvPrecoCilindro','gnvAutonomiaKm','gnvCapacidade'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', atualizarGnvAutomatico);
+});
+
+/* === SALVAR COMBUSTÍVEIS === */
+document.getElementById('btnSalvarComb').onclick = ()=>{
+  const c={
+    gasolinaPreco:Number(gasolinaPreco.value)||0,
+    gasolinaConsumo:Number(gasolinaConsumo.value)||0,
+    etanolPreco:Number(etanolPreco.value)||0,
+    etanolConsumo:Number(etanolConsumo.value)||0
+  };
+  localStorage.setItem(COMB_KEY, JSON.stringify(c));
+  alert('Combustíveis salvos!');
+};
+
+/* === SALVAR GNV === */
+document.getElementById('btnSalvarGnv').onclick = ()=>{
+  const g={
+    precoCilindro:Number(gnvPrecoCilindro.value)||0,
+    autonomiaKm:Number(gnvAutonomiaKm.value)||0,
+    capacidade:Number(gnvCapacidade.value)||0,
+    precoPorM3:Number(gnvPrecoPorM3.value)||0,
+    autonomiaPorM3:Number(gnvAutonomiaPorM3.value)||0
+  };
+  localStorage.setItem(GNV_KEY, JSON.stringify(g));
+  alert('GNV salvo!');
+};
+
+/* === CARREGAR CONFIG SALVA === */
+function renderCombValues(){
+  const c = JSON.parse(localStorage.getItem(COMB_KEY) || '{}');
+  gasolinaPreco.value = c.gasolinaPreco || '';
+  gasolinaConsumo.value = c.gasolinaConsumo || '';
+  etanolPreco.value = c.etanolPreco || '';
+  etanolConsumo.value = c.etanolConsumo || '';
+
+  const g = JSON.parse(localStorage.getItem(GNV_KEY) || '{}');
+  gnvPrecoCilindro.value = g.precoCilindro || '';
+  gnvAutonomiaKm.value = g.autonomiaKm || '';
+  gnvCapacidade.value = g.capacidade || '';
+  gnvPrecoPorM3.value = g.precoPorM3 || '';
+  gnvAutonomiaPorM3.value = g.autonomiaPorM3 || '';
+
+  atualizarGnvAutomatico();
+}
+renderCombValues();
+
+/* === CALCULAR SIMPLES === */
+btnCalcularSimples.onclick = ()=>{
+  const km = Number(kmRodado.value)||0;
+  const valKm = Number(valorKm.value)||0;
+  const dur = Number(duracaoMin.value)||0;
+
+  if(!km||!valKm){ alert("Preencha todos os campos!"); return; }
+
+  const comb = JSON.parse(localStorage.getItem(COMB_KEY) || '{}');
+  const g = JSON.parse(localStorage.getItem(GNV_KEY) || '{}');
+
+  const custos=[];
+  if(comb.gasolinaPreco && comb.gasolinaConsumo) custos.push({name:'Gasolina', cost: comb.gasolinaPreco/comb.gasolinaConsumo});
+  if(comb.etanolPreco && comb.etanolConsumo) custos.push({name:'Etanol', cost: comb.etanolPreco/comb.etanolConsumo});
+  if(g.precoCilindro && g.autonomiaKm) custos.push({name:'GNV', cost: g.precoCilindro/g.autonomiaKm});
+
+  let menor = custos.length ? custos.reduce((a,b)=>a.cost<b.cost?a:b) : null;
+
+  const bruto = km*valKm;
+  const custo = menor ? km*menor.cost : 0;
+  const liquido = bruto - custo;
+
+  resultadoSimples.innerText =
+      `Valor Bruto: ${fmt(bruto)}\nCusto Estimado: ${menor?fmt(custo)+' ('+menor.name+')':'N/D'}\nLucro Estimado: ${fmt(liquido)}\nDuração: ${dur} min`;
+};
+
+/* === PREMIUM CALCULOS === */
+function calcularCustosCombustiveis(){
+  const c = JSON.parse(localStorage.getItem(COMB_KEY)||'{}');
+  const g = JSON.parse(localStorage.getItem(GNV_KEY)||'{}');
+
+  return {
+    gasCost: c.gasolinaPreco&&c.gasolinaConsumo ? c.gasolinaPreco/c.gasolinaConsumo : Infinity,
+    etaCost: c.etanolPreco&&c.etanolConsumo ? c.etanolPreco/c.etanolConsumo : Infinity,
+    gnvCost: g.precoCilindro&&g.autonomiaKm ? g.precoCilindro/g.autonomiaKm : Infinity
+  };
+}
+
+function calcularPlataformas(valor,custo){
+  return {
+    uber: valor - custo - (valor*(taxUber.value/100)),
+    novenove: valor - custo - (valor*(tax99.value/100)),
+    indriver: valor - custo - (valor*(taxIndriver.value/100))
+  };
+}
+
+btnCalcPremium.onclick = ()=>{
+
+  const kmTotal = Number(kmIda.value)+Number(kmViagem.value);
+  const valor = Number(valorRecebido.value);
+  const tipo = tipoCombustivel.value;
+
+  const {gasCost,etaCost,gnvCost} = calcularCustosCombustiveis();
+  let custoEscolhido=Infinity, nome='N/D';
+
+  if(tipo==='gasolina'){ custoEscolhido=gasCost; nome='Gasolina'; }
+  else if(tipo==='etanol'){ custoEscolhido=etaCost; nome='Etanol'; }
+  else if(tipo==='gnv'){ custoEscolhido=gnvCost; nome='GNV'; }
+  else {
+    const menor = Math.min(gasCost,etaCost,gnvCost);
+    custoEscolhido = menor;
+    nome = (menor===gasCost?'Gasolina':menor===etaCost?'Etanol':'GNV');
+  }
+
+  const custoTotal = kmTotal*custoEscolhido;
+  const {uber,novenove,indriver} = calcularPlataformas(valor,custoTotal);
+
+  const melhor = Math.max(uber,novenove,indriver);
+  const melhorPlataforma = melhor===uber?'Uber':melhor===novenove?'99':'InDriver';
+
+  r_cck.innerText = fmt(custoEscolhido);
+  r_combustivelMaisBarato.innerText = nome;
+  r_melhorPlataforma.innerText = `${melhorPlataforma} (${fmt(melhor)})`;
+
+  r_lucro.innerHTML = fmt(melhor);
+
+  r_indicacao.innerText = melhor>0?'ACEITE':'NÃO VALE A PENA';
+
+  r_comp.innerHTML =
+      `<div style="padding:10px;background:var(--panel);border-radius:10px">
+        <b>Comparativo combustíveis</b><br>
+        Gasolina: ${fmt(gasCost)} — Etanol: ${fmt(etaCost)} — GNV: ${fmt(gnvCost)}
+       </div>`;
+
+  salvarHistorico({t:Date.now(), km:kmTotal, lucro:melhor, comb:nome, platform:melhorPlataforma});
+  renderHistorico(); 
+  renderGrafico();
+};
+
+/* === HISTÓRICO === */
+function salvarHistorico(item){
+  const arr = JSON.parse(localStorage.getItem(HIST_KEY)||'[]');
+  arr.push(item);
+  if(arr.length>300) arr.shift();
+  localStorage.setItem(HIST_KEY, JSON.stringify(arr));
+}
+
+function renderHistorico(){
+  const arr = JSON.parse(localStorage.getItem(HIST_KEY)||'[]');
+  if(!arr.length){
+    historicoPremium.innerHTML="<h3>Histórico</h3><p class='small'>Nenhum dado.</p>";
+    return;
+  }
+
+  let html = "<h3>Histórico Premium</h3><table class='table'><tr><th>Data</th><th>KMs</th><th>Lucro</th><th>Comb</th><th>Plat</th></tr>";
+
+  arr.slice().reverse().forEach(r=>{
+    html+=`<tr>
+      <td>${new Date(r.t).toLocaleString()}</td>
+      <td>${r.km}</td>
+      <td>${fmt(r.lucro)}</td>
+      <td>${r.comb}</td>
+      <td>${r.platform}</td>
+    </tr>`;
+  });
+
+  html+="</table>";
+  historicoPremium.innerHTML = html;
+}
+renderHistorico();
+
+/* === GRÁFICO === */
+function renderGrafico(){
+  const arr = JSON.parse(localStorage.getItem(HIST_KEY)||'[]');
+  if(!arr.length){
+    graficoPremium.innerHTML="<h3>Gráfico</h3><p class='small'>Nenhum dado.</p>";
+    return;
+  }
+
+  let html="<h3>Lucro (Últimos)</h3>";
+  arr.slice(-12).forEach(r=>{
+    const w = Math.min(300, Math.abs(r.lucro)*3);
+    const cor = r.lucro>=0?'#0a7d26':'#c50000';
+    html += `<div style="margin-bottom:6px">
+      <div style="display:inline-block;height:12px;background:${cor};width:${w}px;border-radius:6px"></div>
+      <small> ${fmt(r.lucro)}</small>
+    </div>`;
+  });
+
+  graficoPremium.innerHTML = html;
+}
+renderGrafico();
+
+/* === EXPORTAR PDF SIMPLES === */
+btnExportPdf.onclick = ()=>{
+  const html = `
+  <html><body>
+  <h2>Relatório Premium - RF Driver</h2>
+  <p>${r_cck.innerText}</p>
+  <p>${r_lucro.innerText}</p>
+  <p>${r_melhorPlataforma.innerText}</p>
+  </body></html>
+  `;
+  const w = window.open();
+  w.document.write(html); w.print();
+};
+
+/* === WHATS PREMIUM === */
+btnWhatsPremium.onclick = ()=>{
+  const msg = `📟 Relatório Premium\nCusto/KM: ${r_cck.innerText}\nLucro: ${r_lucro.innerText}\nPlataforma: ${r_melhorPlataforma.innerText}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+};
+
+btnLimparHist.onclick = ()=>{
+  if(confirm("Limpar histórico?")){
+    localStorage.removeItem(HIST_KEY);
+    renderHistorico();
+    renderGrafico();
+  }
+};
+
+</script>
+
 </body>
 </html>
