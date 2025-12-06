@@ -249,35 +249,60 @@ li span.icon{font-size:14px;margin-top:1px;}
   </div>
 </div>
 
+<!-- =============== MENU INFERIOR ================= -->
 <nav class="neo-menu">
-  <a href="planos.html" class="menu-item active"><span class="icon">⭐</span><span>Planos</span></a>
-  <a href="index.html" class="menu-item"><span class="icon">🏠</span>Dashboard</a>
-  <a href="entradas.html" class="menu-item"><span class="icon">💵</span>Entradas</a>
-  <a href="recibo.html" class="menu-item"><span class="icon">🧾</span>Recibo</a>
-  <a href="manutencao.html" class="menu-item"><span class="icon">🛠️</span>Manut.</a>
-  <a href="resumo.html" class="menu-item"><span class="icon">📊</span>Resumo</a>
-  <a href="perfil.html" class="menu-item"><span class="icon">👤</span>Perfil</a>
-  <a href="calculadora.html" class="menu-item"><span class="icon">📟</span>Calc</span></a>
+  <a href="planos.html" class="menu-item active">
+    <span class="icon">⭐</span><span>Planos</span>
+  </a>
+  <a href="index.html" class="menu-item">
+    <span class="icon">🏠</span><span>Dashboard</span>
+  </a>
+  <a href="entradas.html" class="menu-item">
+    <span class="icon">💵</span><span>Entradas</span>
+  </a>
+  <a href="recibo_empresa.html" class="menu-item">
+    <span class="icon">🏢</span><span>Empresa</span>
+  </a>
+  <a href="recibo_particular.html" class="menu-item">
+    <span class="icon">🚗</span><span>Particular</span>
+  </a>
+  <a href="manutencao.html" class="menu-item">
+    <span class="icon">🛠</span><span>Manut.</span>
+  </a>
+  <a href="resumo.html" class="menu-item">
+    <span class="icon">📊</span><span>Resumo</span>
+  </a>
+  <a href="perfil.html" class="menu-item">
+    <span class="icon">👤</span><span>Perfil</span>
+  </a>
+  <a href="calculadora.html" class="menu-item">
+    <span class="icon">📟</span><span>Calc</span>
+  </a>
 </nav>
 
 <script src="planos.js"></script>
 <script>
 /* mostrar plano atual */
 function renderPlanoAtual(){
-  const plano=getPlanoAtivo();
-  currentPlanInfo.innerText="Plano atual: "+plano.nome;
+  const plano=getPlano();
+  currentPlanInfo.innerText="Plano atual: "+plano;
+
   ['Basico','Premium','Pro'].forEach(n=>{
     document.getElementById('flag'+n).style.display='none';
   });
-  if(plano.id==='basico')flagBasico.style.display='block';
-  if(plano.id==='premium')flagPremium.style.display='block';
-  if(plano.id==='pro')flagPro.style.display='block';
+
+  if(plano==='basic') flagBasico.style.display='block';
+  if(plano==='premium') flagPremium.style.display='block';
+  if(plano==='pro') flagPro.style.display='block';
 }
+
 function ativarPlano(id){
-  setPlanoAtivo(id);
+  setPlano(id);
   alert("Plano atualizado no dispositivo!");
   renderPlanoAtual();
 }
+
+// inicia
 renderPlanoAtual();
 
 /* tema */
