@@ -748,7 +748,13 @@ function gerarPdf(dados, perfil, derived){
     'Tempo de viagem: ' + derived.tempoViagemStr
   ]);
 
-  // SEÇÃO 5 - ASSINATURAS
+  // SEÇÃO 5 - RESUMO FINANCEIRO
+  drawSection('Resumo Financeiro', [
+    'Valor total da viagem: R$ ' + (dados.valor || '-'),
+    'Data da viagem: ' + formatDateBr(dados.dataViagem)
+  ]);
+
+  // SEÇÃO 6 - ASSINATURAS
   y += 6;
   doc.setFontSize(10);
   doc.text('____________________________________', marginX, y);
