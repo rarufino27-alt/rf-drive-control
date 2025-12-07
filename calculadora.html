@@ -52,7 +52,7 @@ header{
 }
 
 .logo{
-    width:100px;height:42px;
+    width:100px;height:100px;
     border-radius:12px;
     background:linear-gradient(135deg,var(--brand),var(--brand-dark));
     display:flex;align-items:center;justify-content:center;
@@ -104,7 +104,7 @@ button{
 .menu-button{
   position:fixed;
   top:10px;
-  left:250px;
+  left:200px;
   background:var(--brand);
   color:#fff;
   padding:8px 12px;
@@ -133,10 +133,10 @@ button{
   display:block;font-size:24px;cursor:pointer;
   margin-bottom:6px;text-align:right;
 }
-.menu-title{font-weight:700;font-size:14px;margin-bottom:10px;}
+.menu-title{font-weight:700;font-size:35px;margin-bottom:10px;}
 .menu-item{
-  padding:8px 0;font-size:13px;cursor:pointer;
-  display:flex;align-items:center;gap:6px;
+  padding:15px 0;font-size:20px;cursor:pointer;
+  display:flex;align-items:center;gap:10px;
 }
 .submenu{padding-left:18px;margin-bottom:4px;}
 .submenu-item{
@@ -195,7 +195,7 @@ body.dark .neo-menu{background:rgba(25,25,30,0.65);}
     <div class="brand" style="display:flex;align-items:center;gap:15px;">
         <div class="logo">RF Driver</div>
 
-        <h1 style="margin:0;font-size:18px;font-weight:800">Calculadora</h1>
+        <h1 style="margin:0;font-size:30px;font-weight:800">Calculadora</h1>
     </div>
 
 <div class="wrap">
@@ -343,23 +343,15 @@ body.dark .neo-menu{background:rgba(25,25,30,0.65);}
 <div id="sidebar" class="sidebar">
   <span class="menu-close" onclick="closeMenu()">×</span>
   <div class="menu-title">Navegação</div>
-
+  <div class="menu-item" onclick="location.href='planos.html'">💎 Planos</div>
   <div class="menu-item" onclick="location.href='index.html'">🏠 Dashboard</div>
-
-  <div class="menu-item">💵 Entradas</div>
-  <div class="submenu">
-    <div class="submenu-item" onclick="location.href='entradas.html'">💵 Entradas</div>
-    <div class="submenu-item" onclick="location.href='entradas_outras.html'">🤑 Outras entradas</div>
-    <div class="submenu-item" onclick="location.href='entradas_saidas.html'">💸 Saídas</div>
-  </div>
-
+  <div class="menu-item" onclick="location.href='entradas.html'">💵 Entradas</div>
   <div class="menu-item" onclick="location.href='recibo_empresa.html'">🏭 Empresa</div>
   <div class="menu-item" onclick="location.href='recibo_particular.html'">🚘 Particular</div>
   <div class="menu-item" onclick="location.href='manutencao.html'">🛠 Manutenção</div>
   <div class="menu-item" onclick="location.href='resumo.html'">🧮 Resumo</div>
   <div class="menu-item" onclick="location.href='perfil.html'">👤 Perfil</div>
   <div class="menu-item" onclick="location.href='calculadora.html'">📟 Calculadora</div>
-  <div class="menu-item" onclick="location.href='planos.html'">💎 Planos</div>
 </div>
 
 <script src="planos.js"></script>
