@@ -448,9 +448,9 @@ function init(){
   // meta
   $('metaMensal').value = meta.valor || '';
 
-  // saldo
-  $('saldoInicial').value = saldoInitial.valor || '';
-  $('saldoAtualDisplay').innerText = brl(saldoInitial.valor || 0);
+// saldo
+$('saldoInicial').value = saldoInicialObj.valor || '';
+$('saldoAtualDisplay').innerText = brl(saldoInicialObj.valor || 0);
 
   // tutorial
   if(!localStorage.getItem(KEY_TUTORIAL)) {
