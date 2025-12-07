@@ -4,341 +4,605 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Planos - Fluxo Driver</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
 <style>
-/* ============================ */
-/*      PALETA & DARK MODE      */
-/* ============================ */
 :root{
-    --bg:#ffffff;
-    --page-gap:#f3f5f8;
-
-    --card:#fafbfc;
-    --panel:#ffffff;
-    --card-strong:#f0f2f5;
-
-    --brand:#0b5bd7;
-    --brand-dark:#073f8a;
-
-    --text:#0b1115;
-    --muted:#65707a;
-
-    --shadow:0 6px 16px rgba(13,30,45,0.07);
-
-    --radius:16px;
+  --bg:#ffffff;
+  --page-bg: #f3f5f8;
+  --card:#fafbfc;
+  --panel:#ffffff;
+  --card-strong:#f0f2f5;
+  --brand:#0b5bd7;
+  --brand-dark:#073f8a;
+  --accent:#22c55e;
+  --text:#0b1115;
+  --muted:#65707a;
+  --shadow:0 10px 30px rgba(15,23,42,0.12);
+  --radius:18px;
 }
 
 .dark{
-    --bg:#0f1115;
-    --page-gap:#15171c;
-
-    --card:#181a20;
-    --panel:#1b1d25;
-    --card-strong:#1d1f27;
-
-    --brand:#3b82f6;
-    --brand-dark:#2563eb;
-
-    --text:#e5e7eb;
-    --muted:#9ca3af;
-
-    --shadow:0 6px 16px rgba(0,0,0,0.4);
+  --bg:#020617;
+  --page-bg:#0f172a;
+  --card:#0f172a;
+  --panel:#0f172a;
+  --card-strong:#1e293b;
+  --brand:#3b82f6;
+  --brand-dark:#1d4ed8;
+  --accent:#22c55e;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --shadow:0 14px 45px rgba(0,0,0,0.55);
 }
 
-/* ============================ */
-/* BASE                         */
-/* ============================ */
 *{box-sizing:border-box;font-family:Inter,system-ui,Arial;}
 body{
-    margin:0;
-    background:linear-gradient(180deg,var(--page-gap),var(--bg) 50%);
-    color:var(--text);
-    padding-bottom:160px;
+  margin:0;
+  background:var(--page-bg);
+  color:var(--text);
 }
+body.menu-open{overflow:hidden;}
 
-/* ============================ */
 .wrap{
-    max-width:980px;
-    margin:24px auto;
-    padding:0 16px;
+  max-width:980px;
+  margin:24px auto 40px auto;
+  padding:0 16px 40px 16px;
 }
-h1{margin:0 0 8px;font-size:22px;}
-.subtitle{color:var(--muted);font-size:14px;margin-bottom:16px;}
+h1{margin:0 0 4px;font-size:24px;font-weight:800;}
+.subtitle{
+  color:var(--muted);
+  font-size:14px;
+  margin-bottom:16px;
+}
 
-/* btn tema */
+/* header */
 header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:16px;
-    max-width:980px;
-    margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 16px 8px 16px;
+  max-width:980px;
+  margin:0 auto;
 }
 #toggleTheme{
-    background:var(--card-strong);
-    padding:8px 12px;
-    border-radius:10px;
-    border:1px solid rgba(0,0,0,0.15);
-    font-weight:700;
-    cursor:pointer;
-    color:var(--text);
+  background:var(--card-strong);
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(15,23,42,0.12);
+  font-weight:700;
+  cursor:pointer;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+}
+#toggleTheme span.icon{
+  font-size:16px;
 }
 
-/* ============================ */
+/* highlight bar */
+.top-highlight{
+  max-width:980px;
+  margin:0 auto 12px auto;
+  padding:0 16px;
+}
+.badge-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:999px;
+  background:rgba(37,99,235,0.08);
+  color:var(--brand-dark);
+  border:1px solid rgba(37,99,235,0.3);
+}
+
+/* cards */
 .cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
+  margin-top:10px;
 }
-
-/* mantendo o estilo original dos cards */
 .card{
   background:var(--card);
   border-radius:var(--radius);
-  padding:18px;
+  padding:18px 18px 16px 18px;
   border:1px solid rgba(148,163,184,0.25);
   box-shadow:var(--shadow);
   position:relative;
+  transition:.25s transform,.25s box-shadow,.25s border-color;
 }
-
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 40px rgba(15,23,42,0.18);
+  border-color:rgba(37,99,235,0.35);
+}
 .card.highlight{
   border-color:var(--brand);
-  box-shadow:0 0 0 2px rgba(56,189,248,0.4),var(--shadow);
+  box-shadow:0 0 0 2px rgba(37,99,235,0.45),var(--shadow);
 }
-
-.dark .card{
-    background:var(--card-strong);
-    border-color:rgba(255,255,255,0.15);
-}
-
 .badge{
-  position:absolute;top:14px;right:14px;
+  position:absolute;
+  top:14px;right:14px;
   background:var(--panel);
   border-radius:999px;
   padding:4px 10px;
   font-size:11px;
   color:var(--text);
   border:1px solid rgba(148,163,184,0.4);
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.plan-name{font-size:18px;font-weight:800;margin-bottom:2px;}
+.plan-desc{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.price{
+  font-size:22px;
+  font-weight:900;
+  margin:6px 0 0 0;
+}
+.price span{
+  font-size:13px;
+  font-weight:500;
+  color:var(--muted);
+}
+.price-vita{
+  margin-top:4px;
+  font-size:12px;
+  font-weight:600;
+  color:var(--accent);
+}
+.price-vita small{
+  display:block;
+  font-size:11px;
+  font-weight:500;
+  color:var(--muted);
+  margin-top:2px;
 }
 
-.plan-name{font-size:18px;font-weight:800;margin-bottom:4px;}
-.plan-desc{font-size:13px;color:var(--muted);margin-bottom:10px;}
-.price{font-size:22px;font-weight:900;margin:6px 0;}
-.price span{font-size:13px;font-weight:500;color:var(--muted);}
-.price-vita{font-size:14px;font-weight:600;margin-top:4px;color:var(--brand);}
+/* feature list */
+.features{
+  list-style:none;
+  padding:0;
+  margin:12px 0 0 0;
+}
+.features li{
+  font-size:12px;
+  margin-bottom:6px;
+  color:var(--muted);
+  display:flex;
+  gap:6px;
+  align-items:flex-start;
+}
+.features li span.icon{
+  font-size:14px;
+  margin-top:1px;
+}
 
-ul{list-style:none;padding:0;margin:10px 0 0;}
-li{font-size:13px;margin-bottom:6px;color:var(--muted);display:flex;gap:6px;align-items:flex-start;}
-
+/* buttons */
 .btn{
-  margin-top:14px;
+  margin-top:12px;
   width:100%;
-  padding:12px 16px;
+  padding:10px 14px;
   border-radius:10px;
   border:0;
   cursor:pointer;
   font-weight:700;
-  font-size:14px;
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
 }
-
 .btn-primary{
   background:linear-gradient(135deg,var(--brand),var(--brand-dark));
   color:#fff;
 }
-
+.btn-primary:hover{
+  filter:brightness(1.05);
+}
 .btn-outline{
   background:transparent;
   color:var(--text);
-  border:1px solid rgba(148,163,184,0.4);
+  border:1px solid rgba(148,163,184,0.6);
+}
+.btn-outline:hover{
+  border-color:rgba(37,99,235,0.7);
 }
 
+/* plano atual */
 .current{
   margin-top:8px;
-  font-size:12px;
+  font-size:11px;
   color:var(--brand);
   font-weight:600;
+  text-align:center;
 }
 
-.back-link{
-  font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:12px;display:inline-block;
-}
-
-/* === bottom menu moderno === */
-.neo-menu{
-  backdrop-filter: blur(10px);
-  background: rgba(10,20,35,0.55);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:18px;
-  padding:12px 0;
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  width:92%;
-  max-width:980px;
-  display:flex;
-  justify-content:space-around;
-  z-index:2000;
-}
-.neo-menu .menu-item{
-  text-decoration:none;
-  color:#fff;
-  font-weight:700;
+/* seção mensagem */
+.info-section{
+  margin-top:18px;
   font-size:12px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:3px;
-  opacity:.75;
-  transition:.25s;
+  color:var(--muted);
+  line-height:1.5;
 }
-.neo-menu .menu-item .icon{font-size:20px;}
-.neo-menu .menu-item.active{opacity:1;transform:scale(1.15);}
-.dark .neo-menu{background:rgba(25,25,30,0.65);}
+.info-section strong{color:var(--text);}
 
+/* MENU LATERAL */
+.sidebar{
+  position:fixed;top:0;left:-260px;
+  width:260px;height:100%;
+  background:var(--panel);
+  padding:20px;
+  box-shadow:2px 0 18px rgba(15,23,42,.35);
+  transition:.3s;
+  z-index:9999;
+  overflow-y:auto;
+}
+.sidebar.open{left:0;}
 
+.menu-button{
+  position:fixed;
+  top:8px;
+  left:15px;
+  background:var(--brand);
+  color:#fff;
+  padding:8px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  z-index:9999;
+  font-weight:700;
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  box-shadow:0 8px 16px rgba(15,23,42,0.25);
+}
+.menu-button span.icon{font-size:16px;}
+
+.menu-close{
+  display:block;
+  font-size:24px;
+  cursor:pointer;
+  margin-bottom:6px;
+  text-align:right;
+}
+.menu-title{
+  font-weight:700;
+  font-size:35px;
+  margin-bottom:10px;
+}
+.menu-item{
+  padding:15px 0;
+  font-size:20px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.menu-item-label{
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.menu-item span.icon-flag{
+  width:18px;
+}
+.submenu{
+  padding-left:18px;
+  margin-bottom:4px;
+}
+.submenu-item{
+  padding:4px 0;
+  font-size:12px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.submenu-item span.icon-flag{
+  width:18px;
+}
 </style>
 </head>
 
 <body>
 
+<div class="menu-button" onclick="openMenu()">
+  <span class="icon">☰</span>
+  <span>Menu</span>
+</div>
+
 <header>
-  <h1 style="margin:0;">Planos</h1>
-  <button id="toggleTheme">🌙</button>
-</header>
 
 <div class="wrap">
-  <a href="index.html" class="back-link">← Voltar ao dashboard</a>
 
-  <div id="currentPlanInfo" class="subtitle"></div>
+  <div>
+    <h1>Planos Fluxo Driver</h1>
+    <div class="subtitle">Escolha o plano que acompanha o seu ritmo e cresce junto com suas corridas.</div>
+  </div>
+  <button id="toggleTheme">
+    <span class="icon">🌙</span>
+    <span>Escuro/Claro</span>
+  </button>
+</header>
+
+  <!-- Botão comparar planos -->
+  <div style="display:flex;justify-content:flex-end;margin-bottom:20px;">
+    <button class="btn btn-outline" style="max-width:1000px;" onclick="abrirComparacao()">
+      📊 Comparar planos
+    </button>
+  </div>
+
+  <div id="currentPlanInfo" class="subtitle" style="margin-top:0;"></div>
 
   <div class="cards">
 
-    <!-- Básico -->
-    <div class="card" id="cardBasico">
-      <div class="badge">Para iniciantes</div>
-      <div class="plan-name">Básico</div>
-      <div class="plan-desc">Controle diário essencial.</div>
+    <!-- Free -->
+    <div class="card" id="cardFree">
+      <div class="badge"><span>🆓</span><span>Plano grátis</span></div>
+      <div class="plan-name">Free</div>
+      <div class="plan-desc">Ideal para testar o app registrando apenas as corridas.</div>
 
-      <ul>
-        <li>Dashboard</li>
-        <li>Entradas (exceto "Outras Entradas")</li>
-        <li>Perfil</li>
+      <div class="price">R$ 0,00 <span>/ mês</span></div>
+
+      <ul class="features">
+        <li><span class="icon">✅</span><span>Entradas corridas liberadas</span></li>
+        <li><span class="icon">🔒</span><span>Outras entradas, saídas e relatórios bloqueados</span></li>
+        <li><span class="icon">🔒</span><span>Sem recibos e calculadora avançada</span></li>
       </ul>
 
-      <div class="price">R$ 14,90 <span>/ mês</span></div>
-      <div class="price-vita">Vitalício: R$ 149,00</div>
+      <button class="btn btn-outline" onclick="ativarPlano('free')">
+        Usar plano Free
+      </button>
+      <div id="flagFree" class="current" style="display:none;">Plano atual</div>
+    </div>
 
-      <button class="btn btn-outline" onclick="ativarPlano('basico')">Usar plano Básico</button>
+    <!-- Básico -->
+    <div class="card" id="cardBasico">
+      <div class="badge"><span>🚀</span><span>Para iniciantes</span></div>
+      <div class="plan-name">Básico</div>
+      <div class="plan-desc">Controle diário essencial para quem está começando a organizar as finanças.</div>
+
+      <div class="price">R$ 14,90 <span>/ mês</span></div>
+      <div class="price-vita">
+        Vitalício: R$ 149,00
+        <small>Equivalente a ~10 meses de assinatura. Após isso, é como se o app “se pagasse”.</small>
+      </div>
+
+      <ul class="features">
+        <li><span class="icon">✅</span><span>Dashboard com visão simples do dia</span></li>
+        <li><span class="icon">✅</span><span>Entradas de corridas e saídas liberadas</span></li>
+        <li><span class="icon">🔒</span><span>“Outras entradas” bloqueadas</span></li>
+        <li><span class="icon">✅</span><span>Perfil para configurações básicas</span></li>
+      </ul>
+
+      <button class="btn btn-outline" onclick="ativarPlano('basico')">
+        Ativar Básico
+      </button>
       <div id="flagBasico" class="current" style="display:none;">Plano atual</div>
     </div>
 
     <!-- Premium -->
     <div class="card highlight" id="cardPremium">
-      <div class="badge">Recomendado</div>
+      <div class="badge"><span>🌟</span><span>Mais escolhido</span></div>
       <div class="plan-name">Premium</div>
-      <div class="plan-desc">Recursos avançados para motoristas profissionais.</div>
-
-      <ul>
-        <li>Dashboard</li>
-        <li>Entradas (todas)</li>
-        <li>Recibo Particular (envio via WhatsApp)</li>
-        <li>Calculadora Simples e Premium</li>
-        <li>Perfil</li>
-      </ul>
+      <div class="plan-desc">Para motoristas que querem controle completo do fluxo diário e ferramentas extras.</div>
 
       <div class="price">R$ 29,90 <span>/ mês</span></div>
-      <div class="price-vita">Vitalício: R$ 249,00</div>
+      <div class="price-vita">
+        Vitalício: R$ 249,00
+        <small>Equivalente a ~8 meses de assinatura, com acesso permanente às funções atuais.</small>
+      </div>
 
-      <button class="btn btn-primary" onclick="ativarPlano('premium')">Ativar Premium</button>
+      <ul class="features">
+        <li><span class="icon">✅</span><span>Dashboard completo</span></li>
+        <li><span class="icon">✅</span><span>Entradas (corridas, outras entradas e saídas)</span></li>
+        <li><span class="icon">🔑</span><span>Recibo Particular com envio via WhatsApp</span></li>
+        <li><span class="icon">✅</span><span>Calculadora Simples e Premium para planejar o dia</span></li>
+        <li><span class="icon">✅</span><span>Perfil com ajustes mais completos</span></li>
+      </ul>
+
+      <button class="btn btn-primary" onclick="ativarPlano('premium')">
+        <span>Ativar Premium</span> <span>✨</span>
+      </button>
       <div id="flagPremium" class="current" style="display:none;">Plano atual</div>
     </div>
 
     <!-- Pro -->
     <div class="card" id="cardPro">
-      <div class="badge">Para frotas</div>
+      <div class="badge"><span>🏁</span><span>Para frotas</span></div>
       <div class="plan-name">Pro</div>
-      <div class="plan-desc">Todas as funções liberadas.</div>
-
-      <ul>
-        <li>Todas as funções liberadas</li>
-      </ul>
+      <div class="plan-desc">Tudo liberado para quem gerencia vários veículos ou leva o fluxo ao máximo.</div>
 
       <div class="price">R$ 39,90 <span>/ mês</span></div>
-      <div class="price-vita">Vitalício: R$ 399,00</div>
+      <div class="price-vita">
+        Vitalício: R$ 399,00
+        <small>Equivalente a ~10 meses. Ideal para uso por muito tempo ou frotas.</small>
+      </div>
 
-      <button class="btn btn-outline" onclick="ativarPlano('pro')">Ativar Pro</button>
+      <ul class="features">
+        <li><span class="icon">✅</span><span>Dashboard completo e detalhado</span></li>
+        <li><span class="icon">✅</span><span>Todas as entradas e saídas liberadas</span></li>
+        <li><span class="icon">✅</span><span>Recibos para empresas e particulares</span></li>
+        <li><span class="icon">✅</span><span>Manutenção e resumo geral completos</span></li>
+        <li><span class="icon">✅</span><span>Calculadora com todos os recursos</span></li>
+      </ul>
+
+      <button class="btn btn-outline" onclick="ativarPlano('pro')">
+        Ativar Pro
+      </button>
       <div id="flagPro" class="current" style="display:none;">Plano atual</div>
     </div>
 
   </div>
 
-  <!-- FRASE -->
-  <p style="font-size:12px;color:var(--muted);margin-top:16px;">
-    Assinaturas incluem todas as futuras atualizações dentro da categoria escolhida,
-    sem custo adicional. Usuários que adquirirem o plano vitalício possuem acesso
-    vitalício às funcionalidades atuais e poderão obter futuras atualizações
-    separadamente, mesmo que com valor simbólico.
-  </p>
+  <div class="info-section">
+    <p>
+      <strong>Assinaturas:</strong> incluem todas as futuras atualizações dentro da categoria escolhida
+      (Básico, Premium ou Pro), sem custo adicional durante o período ativo.
+    </p>
+    <p>
+      <strong>Vitalício:</strong> garante acesso vitalício às funcionalidades atuais do plano escolhido.
+      Futuras atualizações poderão ser adquiridas separadamente, mesmo que com valor simbólico.
+    </p>
+  </div>
 
 </div>
 
-<!-- MENU -->
-<nav class="neo-menu">
-  <a href="planos.html" class="menu-item active"><span class="icon">⭐</span><span>Planos</span></a>
-  <a href="index.html" class="menu-item"><span class="icon">🏠</span><span>Dashboard</span></a>
-  <a href="entradas.html" class="menu-item"><span class="icon">💵</span><span>Entradas</span></a>
-  <a href="recibo_empresa.html" class="menu-item"><span class="icon">🏢</span><span>Empresa</span></a>
-  <a href="recibo_particular.html" class="menu-item"><span class="icon">🚗</span><span>Particular</span></a>
-  <a href="manutencao.html" class="menu-item"><span class="icon">🛠</span><span>Manut.</span></a>
-  <a href="resumo.html" class="menu-item"><span class="icon">📊</span><span>Resumo</span></a>
-  <a href="perfil.html" class="menu-item"><span class="icon">👤</span><span>Perfil</span></a>
-  <a href="calculadora.html" class="menu-item"><span class="icon">📟</span><span>Calc</span></a>
-</nav>
+<!-- MENU LATERAL COMPLETO -->
+<div id="sidebar" class="sidebar">
+  <span class="menu-close" onclick="closeMenu()">×</span>
+  <div class="menu-title">Navegação</div>
+  <div class="menu-item" onclick="location.href='planos.html'">💎 Planos</div>
+  <div class="menu-item" onclick="location.href='index.html'">🏠 Dashboard</div>
+  <div class="menu-item" onclick="location.href='entradas.html'">💵 Entradas</div>
+  <div class="menu-item" onclick="location.href='recibo_empresa.html'">🏭 Empresa</div>
+  <div class="menu-item" onclick="location.href='recibo_particular.html'">🚘 Particular</div>
+  <div class="menu-item" onclick="location.href='manutencao.html'">🛠 Manutenção</div>
+  <div class="menu-item" onclick="location.href='resumo.html'">🧮 Resumo</div>
+  <div class="menu-item" onclick="location.href='perfil.html'">👤 Perfil</div>
+  <div class="menu-item" onclick="location.href='calculadora.html'">📟 Calculadora</div>
+</div>
 
-<script src="planos.js"></script>
 <script>
-function renderPlanoAtual(){
-  const plano=getPlano();
-  currentPlanInfo.innerText="Plano atual: "+plano;
-
-  ['Basico','Premium','Pro'].forEach(n=>{
-    document.getElementById('flag'+n).style.display='none';
-  });
-
-  if(plano==='basic') flagBasico.style.display='block';
-  if(plano==='premium') flagPremium.style.display='block';
-  if(plano==='pro') flagPro.style.display='block';
-}
-
-function ativarPlano(id){
-  setPlano(id);
-  alert("Plano atualizado no dispositivo!");
-  renderPlanoAtual();
-}
-
-renderPlanoAtual();
-
-/* tema */
-function applyTheme(theme){
-  if(theme==='dark'){
+/* ===== Tema ===== */
+function applyTheme(t){
+  if(t === 'dark'){
     document.documentElement.classList.add('dark');
     localStorage.setItem('theme','dark');
-    toggleTheme.innerText='☀️';
+    document.getElementById('toggleTheme').querySelector('.icon').textContent = '☀️';
   }else{
     document.documentElement.classList.remove('dark');
     localStorage.setItem('theme','light');
-    toggleTheme.innerText='🌙';
+    document.getElementById('toggleTheme').querySelector('.icon').textContent = '🌙';
   }
 }
-const saved=localStorage.getItem('theme')||'light';
-applyTheme(saved);
-toggleTheme.addEventListener('click',()=>{
-  const isDark=document.documentElement.classList.contains('dark');
-  applyTheme(isDark?'light':'dark');
+
+// quando carregar
+document.addEventListener('DOMContentLoaded', ()=>{
+
+  const toggle = document.getElementById('toggleTheme');
+  if(!toggle) return;
+
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  applyTheme(savedTheme);
+
+  toggle.addEventListener('click',()=>{
+    const isDark = document.documentElement.classList.contains('dark');
+    applyTheme(isDark ? 'light' : 'dark');
+  });
+
 });
+
+/* ===== Plano ===== */
+function setPlano(p){ localStorage.setItem("planoAtual",p); }
+function getPlano(){ return localStorage.getItem("planoAtual") || "free"; }
+
+// pegamos permissões do planos.js
+function getPermissao(feature){
+  return permissoes[planoAtivo()][feature];
+}
+
+function icon(level){
+  if(level==="full") return "✅";
+  if(level==="partial") return "🔑";
+  return "🔒";
+}
+
+
+/* MENU */
+function openMenu(){
+  document.getElementById('sidebar').classList.add('open');
+  document.body.classList.add('menu-open');
+}
+function closeMenu(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.body.classList.remove('menu-open');
+}
+
+function navegar(pagina,feature){
+  const level = getPermissao(feature);
+
+  if(level === "locked"){
+    alert("Atualize o plano para desbloquear esta função.");
+    return;
+  }
+  window.location.href = pagina + ".html";
+}
+
+function renderMenu(){
+  const plano = planoAtivo();
+  for(const key in permissoes[plano]){
+    const el = document.getElementById(`icon-${key.replaceAll("_","-")}`);
+    if(el){
+      el.innerText = icon(getPermissao(key));
+    }
+  }
+}
+
+
+/* UI plano atual */
+function renderPlanoAtual(){
+  const planoReal = getPlano();
+
+  const nomesBonitos = {
+    free:"Free",
+    basico:"Básico",
+    premium:"Premium",
+    pro:"Pro"
+  };
+
+  const label = nomesBonitos[planoReal] || planoReal;
+
+  const info = document.getElementById('currentPlanInfo');
+  if(info){
+    info.textContent = "Plano atual: " + label;
+  }
+
+  document.querySelectorAll('.current').forEach(el=>el.style.display='none');
+
+  if(planoReal === 'free') document.getElementById('flagFree').style.display='block';
+  if(planoReal === 'basico') document.getElementById('flagBasico').style.display='block';
+  if(planoReal === 'premium') document.getElementById('flagPremium').style.display='block';
+  if(planoReal === 'pro') document.getElementById('flagPro').style.display='block';
+}
+
+
+/* ===== Botão ativar plano ===== */
+function ativarPlano(p){
+
+  // basico / premium → trial 24h PRO
+  if(p==="basico" || p==="premium"){
+    setPlano(p);             // salva plano REAL
+    iniciarTrial24h(p);      // libera pro 24h
+    renderPlanoAtual();
+    renderMenu();
+    return;
+  }
+
+  // free / pro → normal
+  setPlano(p);
+  renderPlanoAtual();
+  renderMenu();
+  alert("Plano atualizado para " + p.toUpperCase());
+}
 </script>
+
+
+<!-- mantém -->
+<script src="planos.js"></script>
+
+<script>
+  checarTrial();
+  iniciarTrialSePrimeiraVez();
+  renderPlanoAtual();
+  renderMenu();
+</script>
+
 </body>
 </html>
