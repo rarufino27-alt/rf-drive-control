@@ -58,7 +58,7 @@ header{
 }
 .brand{display:flex; align-items:center; gap:12px;}
 .brand .logo{
-    width:100px;height:46px;
+    width:100px;height:100px;
     border-radius:12px;
     display:flex;align-items:center;justify-content:center;
     font-weight:800;font-size:18px;color:#fff;
@@ -125,7 +125,7 @@ header{
 .menu-button{
   position:fixed;
   top:8px;
-  left:250px;
+  left:200px;
   background:var(--brand);
   color:#fff;
   padding:8px 12px;
@@ -150,25 +150,16 @@ header{
 }
 .menu-title{
   font-weight:700;
-  font-size:14px;
+  font-size:35px;
   margin-bottom:10px;
 }
 .menu-item{
-  padding:8px 0;
-  font-size:13px;
+  padding:15px 0;
+  font-size:20px;
   cursor:pointer;
   display:flex;
   align-items:center;
-  gap:6px;
-}
-.submenu{padding-left:18px;margin-bottom:4px;}
-.submenu-item{
-  padding:4px 0;
-  font-size:12px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:6px;
+  gap:10px;
 }
 </style>
 </head>
@@ -224,25 +215,16 @@ header{
 <div id="sidebar" class="sidebar">
   <span class="menu-close" onclick="closeMenu()">×</span>
   <div class="menu-title">Navegação</div>
-
+  <div class="menu-item" onclick="location.href='planos.html'">💎 Planos</div>
   <div class="menu-item" onclick="location.href='index.html'">🏠 Dashboard</div>
-
-  <div class="menu-item">💵 Entradas</div>
-  <div class="submenu">
-    <div class="submenu-item" onclick="location.href='entradas.html'">💵 Entradas</div>
-    <div class="submenu-item" onclick="location.href='entradas_outras.html'">🤑 Outras entradas</div>
-    <div class="submenu-item" onclick="location.href='entradas_saidas.html'">💸 Saídas</div>
-  </div>
-
+  <div class="menu-item" onclick="location.href='entradas.html'">💵 Entradas</div>
   <div class="menu-item" onclick="location.href='recibo_empresa.html'">🏭 Empresa</div>
   <div class="menu-item" onclick="location.href='recibo_particular.html'">🚘 Particular</div>
   <div class="menu-item" onclick="location.href='manutencao.html'">🛠 Manutenção</div>
   <div class="menu-item" onclick="location.href='resumo.html'">🧮 Resumo</div>
   <div class="menu-item" onclick="location.href='perfil.html'">👤 Perfil</div>
   <div class="menu-item" onclick="location.href='calculadora.html'">📟 Calculadora</div>
-  <div class="menu-item" onclick="location.href='planos.html'">💎 Planos</div>
 </div>
-
 
 <script>
 /* ====== MENU ====== */
