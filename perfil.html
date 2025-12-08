@@ -4,6 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Perfil - Motorista App</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -20,7 +21,6 @@
   --text:#0b1115;
   --muted:#65707a;
   --shadow:0 6px 16px rgba(13,30,45,0.07);
-  --shadow-strong:0 10px 32px rgba(10,20,30,0.12);
   --radius:14px;
 }
 
@@ -32,51 +32,72 @@
   --panel:#1b1d25;
   --text:#e5e7eb;
   --muted:#9ca3af;
-  --shadow:0 6px 16px rgba(0,0,0,0.35);
-  --shadow-strong:0 10px 32px rgba(0,0,0,0.45);
   --brand:#3b82f6;
   --brand-dark:#2563eb;
-  --accent-success:#22c55e;
-  --accent-danger:#ef4444;
 }
 
-*{box-sizing:border-box; font-family:Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;}
+/* remove antigos */
+.sidebar, .menu-button { display:none!important; }
+
+*{ box-sizing:border-box; font-family:Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
 body{
   margin:0;
-  background:var(--bg);
+  background:linear-gradient(180deg, var(--page-gap), var(--bg) 50%);
   color:var(--text);
   padding-bottom:160px;
-  -webkit-font-smoothing:antialiased;
-  background-image:url('fluxo-driver.png');
-  background-repeat:no-repeat;
-  background-position:center 65%;
-  background-size:450px;
-  background-attachment:fixed;
-  opacity:0.98;
+  padding-top:70px; /* espaço para o menu */
+}
+
+/* MENU SUPERIOR */
+.top-menu{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    background:var(--panel);
+    display:flex;
+    padding:8px;
+    gap:8px;
+    align-items:center;
+    z-index:9999;
+    overflow-x:auto;
+    box-shadow:var(--shadow);
+}
+.top-menu button{
+    padding:10px 14px;
+    background:var(--card);
+    border:1px solid rgba(0,0,0,0.08);
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+    flex-shrink:0;
+    color:var(--text);
 }
 
 /* header */
 header{
   padding:18px 16px;
   max-width:980px;
-  margin:0 auto 10px auto;
+  margin:0 auto;
   display:flex;
   align-items:center;
   justify-content:space-between;
 }
-.brand{ display:flex; align-items:center; gap:12px; }
-.brand .logo{
-  width:80px;height:20px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-  font-weight:800;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand-dark));
-  box-shadow:var(--shadow);font-size:13px;
+.brand{
+  display:flex; align-items:center; gap:12px;
 }
-.brand h1{
-  font-size:30px;
-  font-weight:800;
-  margin:10px 0;
+
+.brand h1{ font-size:30px; font-weight:800; margin:10px 0; }
+
+#toggleTheme{
+  background:var(--card-strong);
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  color:var(--text);
+  font-weight:700;
 }
-#toggleTheme{ background:var(--card-strong); padding:8px 12px; border-radius:10px; border:1px solid rgba(0,0,0,0.08); cursor:pointer; color:var(--text); font-weight:700; }
 
 /* container */
 .container{ max-width:980px; margin:16px auto; padding:0 16px; }
@@ -98,20 +119,26 @@ header{
 /* foto + inputs */
 .foto{
   width:180px; height:180px; border-radius:50%; object-fit:cover;
-  border:3px solid var(--brand); display:block; margin:10px auto; background:var(--panel);
+  border:3px solid var(--brand);
+  display:block; margin:10px auto;
+  background:var(--panel);
 }
 .input, input, select, textarea{
-  width:100%; padding:12px; border-radius:10px; border:1px solid #cfd4da;
-  background:var(--panel); color:var(--text); margin-bottom:10px; font-size:15px;
+  width:100%; padding:12px; border-radius:10px;
+  border:1px solid #cfd4da;
+  background:var(--panel); color:var(--text);
+  margin-bottom:10px; font-size:15px;
 }
 
 /* buttons */
 .btn{
   background:linear-gradient(135deg,var(--brand),var(--brand-dark));
-  color:#fff; padding:12px; border:none; width:100%; border-radius:12px; font-weight:700; cursor:pointer;
+  color:#fff; padding:12px; border:none;
+  width:100%; border-radius:12px; font-weight:700; cursor:pointer;
 }
 .btnGhost{
-  background:var(--card-strong); color:var(--text); padding:10px; border:none; border-radius:10px; cursor:pointer;
+  background:var(--card-strong); color:var(--text);
+  padding:10px; border:none; border-radius:10px; cursor:pointer;
 }
 
 /* small */
@@ -119,17 +146,28 @@ header{
 .valorLinha{ display:flex; justify-content:space-between; margin-top:6px; color:var(--muted); font-size:14px; }
 
 /* progress */
-.progressBar{ width:100%; height:14px; background:var(--card-strong); border-radius:10px; overflow:hidden; border:1px solid rgba(0,0,0,0.04); }
-.fill{ height:100%; background:linear-gradient(90deg,var(--brand),var(--brand-dark)); width:0%; transition:width .6s ease; }
+.progressBar{
+  width:100%; height:14px;
+  background:var(--card-strong); border-radius:10px;
+  overflow:hidden; border:1px solid rgba(0,0,0,0.04);
+}
+.fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--brand),var(--brand-dark));
+  width:0%; transition:width .6s ease;
+}
 
 /* chart */
 .chartRow{ display:flex; gap:12px; align-items:end; margin-top:12px; }
 .chartCard{
-  flex:1; min-width:90px; background:var(--card-strong); padding:12px; border-radius:12px;
-  display:flex; flex-direction:column; align-items:center; gap:8px; border:1px solid #e6eaef;
+  flex:1; min-width:90px; background:var(--card-strong);
+  padding:12px; border-radius:12px;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  border:1px solid #e6eaef;
 }
 .barShell{
-  width:48px; height:140px; background:var(--panel); border-radius:12px;
+  width:48px; height:140px;
+  background:var(--panel); border-radius:12px;
   display:flex; align-items:flex-end; justify-content:center;
   overflow:hidden; border:1px solid rgba(0,0,0,0.03);
 }
@@ -137,31 +175,22 @@ header{
   width:100%; display:flex; align-items:flex-end; justify-content:center;
   color:#fff; font-weight:800; border-radius:10px 10px 0 0;
 }
-
-/* sidebar */
-.sidebar{
-  position:fixed; top:0; left:-260px; width:260px; height:100%;
-  background:var(--panel); padding:20px; box-shadow:2px 0 18px rgba(15,23,42,.35);
-  transition:.3s; z-index:9999; overflow-y:auto;
-}
-.sidebar.open{ left:0; }
-.menu-button{
-  position:fixed; top:5px; left:12px; background:var(--brand); color:#fff;
-  padding:4px 10px; border-radius:999px; cursor:pointer; z-index:9999;
-  font-weight:700; font-size:14px; display:flex; align-items:center; gap:10px;
-  box-shadow:0 8px 16px rgba(15,23,42,0.25);
-}
-.menu-item{ padding:15px 0; font-size:20px; cursor:pointer; display:flex; gap:10px; align-items:center; }
-.menu-close{display:block; font-size:24px; cursor:pointer; margin-bottom:6px; text-align:right;}
-.menu-title{ font-weight:700; font-size:35px; margin-bottom:10px;}
 </style>
 </head>
 
 <body>
 
-<div class="menu-button" onclick="openMenu()">
-  <span class="icon">☰</span>
-  <span>Menu</span>
+<!-- MENU SUPERIOR -->
+<div class="top-menu">
+  <button onclick="location.href='planos.html'">💎 Planos</button>
+  <button onclick="location.href='perfil.html'">👤 Perfil</button>
+  <button onclick="location.href='index.html'">🏠 Dashboard</button>
+  <button onclick="location.href='entradas.html'">💵 Entradas</button>
+  <button onclick="location.href='resumo.html'">🧮 Resumo</button>
+  <button onclick="location.href='recibo_empresa.html'">🏭 Empresa</button>
+  <button onclick="location.href='recibo_particular.html'">🚘 Particular</button>
+  <button onclick="location.href='manutencao.html'">🛠 Manutenção</button>
+  <button onclick="location.href='calculadora.html'">📟 Calculadora</button>
 </div>
 
 <header>
@@ -170,9 +199,7 @@ header{
     <h1>Perfil</h1>
   </div>
 
-  <button id="toggleTheme">
-    🌙 Escuro/Claro
-  </button>
+  <button id="toggleTheme">🌙</button>
 </header>
 
 <div class="container">
