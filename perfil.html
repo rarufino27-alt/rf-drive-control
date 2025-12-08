@@ -3,497 +3,759 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Perfil - Motorista App</title>
+<title>Perfil - RF Driver</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+/* ==============================
+   GOLD THEME + DARK/LIGHT
+=================================*/
 :root{
-  --bg:#ffffff;
-  --page-gap:#f3f5f8;
-  --card:#fafbfc;
-  --card-strong:#f0f2f5;
-  --panel:#ffffff;
-  --brand:#0b5bd7;
-  --brand-dark:#073f8a;
-  --accent-success:#1DB954;
-  --accent-danger:#ff3b30;
-  --text:#0b1115;
-  --muted:#65707a;
-  --shadow:0 6px 16px rgba(13,30,45,0.07);
+  --gold-dark:#d6b25f;
+  --gold-dark2:#e8d08a;
+
+  --gold-light:#90731b;
+  --gold-light2:#b08c2e;
+
+  --bg-dark:#0d0d0d;
+  --text-dark:#f4f4f4;
+  --card-dark:#161616;
+  --border-dark:#242424;
+
+  --bg-light:#f7f7f7;
+  --text-light:#222;
+  --card-light:#ffffff;
+  --border-light:#d6d6d6;
+
   --radius:14px;
 }
 
-.dark{
-  --bg:#0f1115;
-  --page-gap:#15171c;
-  --card:#181a20;
-  --card-strong:#1d1f27;
-  --panel:#1b1d25;
-  --text:#e5e7eb;
-  --muted:#9ca3af;
-  --brand:#3b82f6;
-  --brand-dark:#2563eb;
+body.dark{
+  --bg:var(--bg-dark);
+  --text:var(--text-dark);
+  --card:var(--card-dark);
+  --border:var(--border-dark);
+  --gold-main:var(--gold-dark);
+  --gold-main2:var(--gold-dark2);
+}
+body.light{
+  --bg:var(--bg-light);
+  --text:var(--text-light);
+  --card:var(--card-light);
+  --border:var(--border-light);
+  --gold-main:var(--gold-light);
+  --gold-main2:var(--gold-light2);
 }
 
-/* remove antigos */
-.sidebar, .menu-button { display:none!important; }
-
-*{ box-sizing:border-box; font-family:Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+*{ box-sizing:border-box; font-family:Inter,system-ui; }
 
 body{
-  margin:0;
-  background:linear-gradient(180deg, var(--page-gap), var(--bg) 50%);
-  color:var(--text);
-  padding-bottom:160px;
-  padding-top:70px; /* espaço para o menu */
+  margin:0; background:var(--bg); color:var(--text);
+  padding-top:70px; padding-bottom:100px; transition:.3s;
 }
 
-/* MENU SUPERIOR */
-.top-menu{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    background:var(--panel);
-    display:flex;
-    padding:8px;
-    gap:8px;
-    align-items:center;
-    z-index:9999;
-    overflow-x:auto;
-    box-shadow:var(--shadow);
-}
-.top-menu button{
-    padding:10px 14px;
-    background:var(--card);
-    border:1px solid rgba(0,0,0,0.08);
-    border-radius:10px;
-    font-weight:700;
-    cursor:pointer;
-    flex-shrink:0;
-    color:var(--text);
-}
-
-/* header */
-header{
-  padding:18px 16px;
-  max-width:980px;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.brand{
-  display:flex; align-items:center; gap:12px;
-}
-
-.brand h1{ font-size:30px; font-weight:800; margin:10px 0; }
-
-#toggleTheme{
-  background:var(--card-strong);
-  padding:8px 12px;
-  border-radius:10px;
-  cursor:pointer;
-  color:var(--text);
-  font-weight:700;
-}
-
-/* container */
-.container{ max-width:980px; margin:16px auto; padding:0 16px; }
-.row{ display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start; }
-.col-1{ flex:0 0 320px; min-width:260px; }
-.col-2{ flex:1 1 560px; min-width:280px; }
-
-/* cards */
-.card{
+/*********************************
+ DRAWER
+**********************************/
+.drawer{
+  position:fixed; top:0; left:-260px;
+  width:260px; height:100%;
   background:var(--card);
-  border-radius:var(--radius);
-  padding:18px;
-  box-shadow:var(--shadow);
-  margin-bottom:16px;
-  border:1px solid #d7dce2;
+  transition:left .3s;
+  z-index:9999; padding-top:70px;
 }
-.card h3{ margin:0 0 15px 0; font-size:28px; }
-
-/* foto + inputs */
-.foto{
-  width:180px; height:180px; border-radius:50%; object-fit:cover;
-  border:3px solid var(--brand);
-  display:block; margin:10px auto;
-  background:var(--panel);
-}
-.input, input, select, textarea{
-  width:100%; padding:12px; border-radius:10px;
-  border:1px solid #cfd4da;
-  background:var(--panel); color:var(--text);
-  margin-bottom:10px; font-size:15px;
+.drawer.open{left:0;}
+.drawer a{
+  display:block; padding:15px 22px;
+  border-bottom:1px solid var(--border);
+  text-decoration:none; color:var(--text);
 }
 
-/* buttons */
-.btn{
-  background:linear-gradient(135deg,var(--brand),var(--brand-dark));
-  color:#fff; padding:12px; border:none;
-  width:100%; border-radius:12px; font-weight:700; cursor:pointer;
-}
-.btnGhost{
-  background:var(--card-strong); color:var(--text);
-  padding:10px; border:none; border-radius:10px; cursor:pointer;
+.drawer-toggle{
+  position:fixed; left:15px; top:15px;
+  font-size:24px; cursor:pointer; z-index:10000;
+  background:var(--gold-main);
+  padding:6px 10px; border-radius:10px; color:#000;
 }
 
-/* small */
-.small{ color:var(--muted); font-size:13px; }
-.valorLinha{ display:flex; justify-content:space-between; margin-top:6px; color:var(--muted); font-size:14px; }
-
-/* progress */
-.progressBar{
-  width:100%; height:14px;
-  background:var(--card-strong); border-radius:10px;
-  overflow:hidden; border:1px solid rgba(0,0,0,0.04);
-}
-.fill{
-  height:100%;
-  background:linear-gradient(90deg,var(--brand),var(--brand-dark));
-  width:0%; transition:width .6s ease;
+/*********************************
+ THEME BTN
+**********************************/
+.theme-toggle{
+  position:fixed; right:15px; top:15px;
+  font-size:22px; cursor:pointer; z-index:10001;
+  background:var(--card); padding:6px 10px; border-radius:10px;
 }
 
-/* chart */
-.chartRow{ display:flex; gap:12px; align-items:end; margin-top:12px; }
-.chartCard{
-  flex:1; min-width:90px; background:var(--card-strong);
-  padding:12px; border-radius:12px;
-  display:flex; flex-direction:column; align-items:center; gap:8px;
-  border:1px solid #e6eaef;
+/*********************************
+ TABBAR
+**********************************/
+.tabbar{
+  position:fixed; bottom:0; left:0; right:0;
+  height:70px; background:var(--card);
+  border-top:1px solid var(--border);
+  display:flex; justify-content:space-around; align-items:center;
+  z-index:9990;
 }
-.barShell{
-  width:48px; height:140px;
-  background:var(--panel); border-radius:12px;
-  display:flex; align-items:flex-end; justify-content:center;
-  overflow:hidden; border:1px solid rgba(0,0,0,0.03);
+.tabbar a{
+  text-decoration:none; text-align:center;
+  font-size:20px; flex:1; color:var(--text);
 }
-.barInner{
-  width:100%; display:flex; align-items:flex-end; justify-content:center;
-  color:#fff; font-weight:800; border-radius:10px 10px 0 0;
+.tabbar small{font-size:12px; display:block;}
+
+.action-btn{
+  background:linear-gradient(90deg,var(--gold-main),var(--gold-main2));
+  width:58px; height:58px; border:none; border-radius:30px;
+  display:flex; justify-content:center; align-items:center;
+  margin-top:-35px; color:#000; font-size:26px;
+}
+
+/*********************************
+ PAGE + TABS
+**********************************/
+h1{margin:0; font-size:28px; font-weight:800; color:var(--gold-main);}
+.sub{font-size:14px; opacity:.8;}
+.page-header{padding:0 20px 10px;}
+
+.container{padding:0 20px 20px;}
+
+.tabs{display:flex; gap:10px; margin-top:10px;}
+.tab-btn{
+  flex:1; padding:10px; border-radius:999px;
+  border:1px solid var(--border); cursor:pointer;
+  text-align:center; font-weight:700;
+}
+.tab-btn.active{
+  background:linear-gradient(90deg,var(--gold-main),var(--gold-main2));
+  border:none; color:#000;
+}
+
+/*********************************
+ CARDS + FORM
+**********************************/
+.card{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:18px; margin-top:18px;
+}
+
+label{display:block; margin-top:10px; font-size:13px;}
+input,select,textarea{
+  width:100%; margin-top:6px; padding:11px;
+  border-radius:10px; border:1px solid var(--border);
+  background:var(--card); color:var(--text);
+}
+textarea{min-height:90px; resize:vertical;}
+
+button{
+  padding:11px 14px; border-radius:10px; border:none;
+  background:linear-gradient(90deg,var(--gold-main),var(--gold-main2));
+  font-weight:700; margin-top:14px; cursor:pointer; color:#000;
+}
+
+.row{display:flex; flex-wrap:wrap; gap:10px;}
+.col{flex:1; min-width:120px;}
+
+/************
+ PREVIEW
+*************/
+.photo-preview{
+  width:100px; height:100px; border-radius:50%;
+  object-fit:cover; background:var(--border); margin-top:8px;
+}
+.vehicle-photo{
+  width:90px; height:60px; border-radius:10px;
+  object-fit:cover; background:var(--border);
+}
+.qr-preview{
+  width:120px; height:120px; border-radius:14px;
+  object-fit:cover; background:var(--border);
+}
+
+/**************
+ VEHICLE LIST
+**************/
+.vehicle-card{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:12px; padding:12px; margin-top:10px;
+  display:flex; gap:12px; align-items:center;
+}
+.vehicle-card img{width:70px; height:50px; object-fit:cover; border-radius:10px;}
+.vehicle-card .v-info{flex:1; font-size:13px;}
+.vehicle-card .v-ops{display:flex; flex-direction:column; gap:8px;}
+.vehicle-card button{margin-top:0; padding:6px 10px; font-size:13px;}
+.vehicle-card button.danger{
+  background:var(--border); color:#900; font-weight:700;
 }
 </style>
 </head>
 
-<body>
+<body class="light">
+<!-- BOTÕES TOPO -->
+<div class="drawer-toggle" onclick="toggleDrawer()">☰</div>
+<div id="toggleTheme" class="theme-toggle" onclick="toggleTheme()">🌓</div>
 
-<!-- MENU SUPERIOR -->
-<div class="top-menu">
-  <button onclick="location.href='planos.html'">💎 Planos</button>
-  <button onclick="location.href='perfil.html'">👤 Perfil</button>
-  <button onclick="location.href='index.html'">🏠 Dashboard</button>
-  <button onclick="location.href='entradas.html'">💵 Entradas</button>
-  <button onclick="location.href='resumo.html'">🧮 Resumo</button>
-  <button onclick="location.href='recibo_empresa.html'">🏭 Empresa</button>
-  <button onclick="location.href='recibo_particular.html'">🚘 Particular</button>
-  <button onclick="location.href='manutencao.html'">🛠 Manutenção</button>
-  <button onclick="location.href='calculadora.html'">📟 Calculadora</button>
-</div>
+<!-- DRAWER -->
+<nav class="drawer" id="drawer">
+  <a href="index.html">🏠 Dashboard</a>
+  <a href="entradas.html">💵 Caixa</a>
+  <a href="resumo.html">📊 Resumo</a>
+  <a href="calculadora.html">📟 Calculadora</a>
+  <a href="planos.html">💎 Planos</a>
+  <a href="perfil.html">👤 Perfil</a>
+  <a href="recibo_empresa.html">🏭 Empresa</a>
+  <a href="recibo_particular.html">🚘 Particular</a>
+  <a href="manutencao.html">🛠 Manutenção</a>
+</nav>
 
-<header>
-  <div class="brand">
-    <div class="logo">RF Driver</div>
-    <h1>Perfil</h1>
+<div class="page-header">
+  <h1>Perfil</h1>
+  <div class="sub">Gerencie seus dados pessoais, veículos e informações financeiras.</div>
+
+  <div class="tabs">
+    <div id="tabPessoal" class="tab-btn active">Pessoal</div>
+    <div id="tabVeiculos" class="tab-btn">Veículos</div>
+    <div id="tabFinanceiro" class="tab-btn">Financeiro</div>
   </div>
-
-  <button id="toggleTheme">🌙</button>
-</header>
+</div>
 
 <div class="container">
 
-  <div class="row">
-    <!-- col 1 -->
-    <div class="col-1">
+  <!-- ======================
+       ABA PESSOAL
+  ========================== -->
+  <section id="abaPessoal" class="card">
+    <h2>Dados Pessoais</h2>
 
-      <div class="card">
-        <h3>Dados do Motorista</h3>
-        <img id="fotoPerfil" class="foto" src="" alt="Foto">
-        <input id="fotoInput" type="file" accept="image/*">
-        <input id="nome" class="input" placeholder="Nome completo">
-        <input id="carro" class="input" placeholder="Marca do carro">
-        <input id="modelo" class="input" placeholder="Modelo do carro">
-        <input id="ano" class="input" placeholder="Ano">
-        <input id="placa" class="input" placeholder="Placa">
-        <button id="salvarPerfilBtn" class="btn">Salvar Perfil</button>
+    <label>Foto do motorista</label>
+    <img id="fotoPessoalPreview" class="photo-preview" alt="Foto do motorista"/>
+    <input id="fotoPessoalInput" type="file" accept="image/*"/>
+
+    <div class="row">
+      <div class="col">
+        <label>Nome completo</label>
+        <input id="pNome" type="text" placeholder="Seu nome completo">
       </div>
-
-      <div class="card">
-        <h3>Saldo Inicial</h3>
-        <input id="saldoInicial" type="number" class="input" placeholder="Saldo inicial (R$)" step="0.01">
-        <div class="valorLinha"><span>Saldo atual:</span><strong id="saldoAtualDisplay">R$ 0,00</strong></div>
-        <div style="display:flex;gap:10px;margin-top:12px;">
-          <button id="salvarSaldoBtn" class="btn" style="flex:1;">Salvar Saldo</button>
-          <button id="resetSaldoBtn" class="btnGhost" style="flex:1;">Recarregar</button>
-        </div>
+      <div class="col">
+        <label>Telefone</label>
+        <input id="pTelefone" type="tel" placeholder="(00) 00000-0000">
       </div>
-
-      <div class="card">
-        <h3>Meta Mensal</h3>
-        <input id="metaMensal" type="number" class="input" placeholder="R$" step="0.01">
-        <div class="valorLinha"><span>Total a receber:</span><strong id="tvReceber">R$ 0,00</strong></div>
-        <div class="valorLinha"><span>Meta líquida:</span><strong id="tvMetaLiquida">R$ 0,00</strong></div>
-        <div class="valorLinha"><span>Falta:</span><strong id="tvFalta">R$ 0,00</strong></div>
-        <div style="display:flex;gap:10px;margin-top:12px;">
-          <button id="salvarMetaBtn" class="btn" style="flex:1;">Salvar</button>
-          <button id="limparMetaBtn" class="btnGhost" style="flex:1;">Limpar</button>
-        </div>
-      </div>
-
     </div>
 
-    <!-- col2 -->
-    <div class="col-2">
-
-      <div class="card">
-        <h3>Progresso Mensal</h3>
-        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
-          <div style="flex:1; min-width:200px;">
-            <div class="small">Meta</div>
-            <div id="labelMeta" style="font-weight:800;font-size:18px;margin-top:6px;">R$ 0,00</div>
-
-            <div class="small" style="margin-top:8px;">Realizado</div>
-            <div id="labelRealizado" style="font-weight:800;font-size:18px;margin-top:6px;">R$ 0,00</div>
-
-            <div class="small" style="margin-top:8px;">A receber</div>
-            <div id="labelReceber" style="font-weight:800;font-size:18px;margin-top:6px;">R$ 0,00</div>
-          </div>
-
-          <div style="flex:1; min-width:220px;">
-            <div class="progressBar"><div class="fill" id="linearFill"></div></div>
-            <div class="small" style="margin-top:8px;">Progresso mensal</div>
-          </div>
-        </div>
+    <div class="row">
+      <div class="col">
+        <label>CPF</label>
+        <input id="pCpf" type="text" placeholder="000.000.000-00">
       </div>
-
-      <div class="card">
-        <h3>Detalhes</h3>
-
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <div style="flex:1;">
-            <div class="small">Meta mensal</div>
-            <div class="valorLinha"><strong id="metaMensalVal">R$ 0,00</strong></div>
-          </div>
-          <div style="flex:1;">
-            <div class="small">Realizado</div>
-            <div class="valorLinha"><strong id="realizadoMesVal">R$ 0,00</strong></div>
-          </div>
-          <div style="flex:1;">
-            <div class="small">Saídas</div>
-            <div class="valorLinha"><strong id="saidasMesVal">R$ 0,00</strong></div>
-          </div>
-        </div>
-
-        <div class="chartRow" style="margin-top:12px;">
-          <div class="chartCard">
-            <div class="barShell"><div id="barMeta" class="barInner" style="background:var(--brand)"></div></div>
-            <div class="small">Meta</div>
-            <div id="barMetaLabel" class="small">0%</div>
-          </div>
-
-          <div class="chartCard">
-            <div class="barShell"><div id="barRealizado" class="barInner" style="background:var(--accent-success)"></div></div>
-            <div class="small">Realizado</div>
-            <div id="barRealizadoLabel" class="small">0%</div>
-          </div>
-
-          <div class="chartCard">
-            <div class="barShell"><div id="barReceber" class="barInner" style="background:var(--card-strong)"></div></div>
-            <div class="small">A Receber</div>
-            <div id="barReceberLabel" class="small">0%</div>
-          </div>
-        </div>
-
-        <div id="alertMonthly" class="small" style="margin-top:12px;color:var(--accent-danger);display:none;">
-          Você está abaixo da meta mensal
-        </div>
+      <div class="col">
+        <label>Cidade</label>
+        <input id="pCidade" type="text" placeholder="Cidade">
       </div>
-
+      <div class="col">
+        <label>Estado</label>
+        <input id="pEstado" type="text" placeholder="UF">
+      </div>
     </div>
-  </div>
 
+    <button id="btnSalvarPessoal">Salvar dados pessoais</button>
+  </section>
+
+
+  <!-- ======================
+       ABA VEÍCULOS
+  ========================== -->
+  <section id="abaVeiculos" class="card" style="display:none;">
+    <h2>Veículos</h2>
+
+    <h3 style="margin-top:0;font-size:18px;">Cadastro de veículo</h3>
+
+    <!-- hidden id para edição -->
+    <input type="hidden" id="vEditId"/>
+
+    <div class="row">
+      <div class="col">
+        <label>Tipo</label>
+        <select id="vTipo">
+          <option value="carro">Carro</option>
+          <option value="moto">Moto</option>
+        </select>
+      </div>
+      <div class="col">
+        <label>Foto do veículo</label>
+        <input id="vFotoInput" type="file" accept="image/*"/>
+        <img id="vFotoPreview" class="vehicle-photo"/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label>Marca</label>
+        <input id="vMarca" type="text" placeholder="Ex: Toyota">
+      </div>
+      <div class="col">
+        <label>Modelo</label>
+        <input id="vModelo" type="text" placeholder="Ex: Corolla">
+      </div>
+      <div class="col">
+        <label>Ano</label>
+        <input id="vAno" type="text" placeholder="Ex: 2020">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label>Cor</label>
+        <input id="vCor" type="text" placeholder="Ex: Preto">
+      </div>
+      <div class="col">
+        <label>Placa</label>
+        <input id="vPlaca" type="text" placeholder="ABC-1D23">
+      </div>
+      <div class="col">
+        <label>KM Atual</label>
+        <input id="vKm" type="number" placeholder="0">
+      </div>
+    </div>
+
+    <button id="btnSalvarVeiculo">Salvar veículo</button>
+
+    <h3 style="margin-top:20px;font-size:18px;">Meus veículos</h3>
+    <div id="listaVeiculos"></div>
+  </section>
+
+
+  <!-- ======================
+       ABA FINANCEIRO
+  ========================== -->
+  <section id="abaFinanceiro" class="card" style="display:none;">
+    <h2>Cadastro Financeiro</h2>
+
+    <div class="row">
+      <div class="col">
+        <label>Nome do titular</label>
+        <input id="fTitular" type="text" placeholder="Nome do titular">
+      </div>
+      <div class="col">
+        <label>Banco (opcional)</label>
+        <input id="fBanco" type="text" placeholder="Ex: Nubank, Itaú...">
+      </div>
+      <div class="col">
+        <label>Tipo de conta</label>
+        <select id="fTipoConta">
+          <option value="">Não informado</option>
+          <option value="corrente">Corrente</option>
+          <option value="poupanca">Poupança</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label>Tipo de chave PIX</label>
+        <select id="fTipoPix">
+          <option value="">Nenhum</option>
+          <option value="cpf">CPF</option>
+          <option value="telefone">Telefone</option>
+          <option value="email">E-mail</option>
+          <option value="aleatoria">Aleatória</option>
+        </select>
+      </div>
+      <div class="col">
+        <label>Chave PIX (opcional)</label>
+        <input id="fChavePix" type="text" placeholder="Digite sua chave PIX">
+      </div>
+    </div>
+
+    <label>QR Code para recebimento (opcional)</label>
+    <input id="fQrInput" type="file" accept="image/*"/>
+    <img id="fQrPreview" class="qr-preview"/>
+
+    <label>Observação</label>
+    <textarea id="fObs" placeholder="Ex: Aceito apenas PIX"></textarea>
+
+    <button id="btnSalvarFinanceiro">Salvar dados financeiros</button>
+  </section>
+
+</div> <!-- ./container -->
+
+
+<!-- TABBAR -->
+<div class="tabbar">
+  <a href="index.html">🏠<small>Home</small></a>
+  <a href="entradas.html">💵<small>Caixa</small></a>
+  <button class="action-btn" onclick="location.href='calculadora.html'">+</button>
+  <a href="resumo.html">📊<small>Resumo</small></a>
+  <a class="active" href="perfil.html">👤<small>Perfil</small></a>
 </div>
-
-<!-- Menu Lateral -->
-<div id="sidebar" class="sidebar">
-  <span class="menu-close" onclick="closeMenu()">×</span>
-  <div class="menu-title">Navegação</div>
-  <div class="menu-item" onclick="location.href='planos.html'">💎 Planos</div>
-  <div class="menu-item" onclick="location.href='index.html'">🏠 Dashboard</div>
-  <div class="menu-item" onclick="location.href='entradas.html'">💵 Entradas</div>
-  <div class="menu-item" onclick="location.href='recibo_empresa.html'">🏭 Empresa</div>
-  <div class="menu-item" onclick="location.href='recibo_particular.html'">🚘 Particular</div>
-  <div class="menu-item" onclick="location.href='manutencao.html'">🛠 Manutenção</div>
-  <div class="menu-item" onclick="location.href='resumo.html'">🧮 Resumo</div>
-  <div class="menu-item" onclick="location.href='perfil.html'">👤 Perfil</div>
-  <div class="menu-item" onclick="location.href='calculadora.html'">📟 Calculadora</div>
-</div>
-
+<script src="planos.js"></script>
 <script>
-function openMenu(){ $('sidebar').classList.add('open'); }
-function closeMenu(){ $('sidebar').classList.remove('open'); }
+document.addEventListener("DOMContentLoaded", function(){
 
-const $ = id => document.getElementById(id);
-const brl = v => Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-
-/*** STORAGE KEYS ***/
-const KEY_PROFILE='perfilMotorista';
-const KEY_META='metaMensal';
-const KEY_SALDO='saldoInicial';
-const KEY_REG='entradasSaidas';
-
-/* safe load */
-const load = k=>{
-  try{
-    const raw=localStorage.getItem(k);
-    return raw?JSON.parse(raw):null;
-  }catch(e){
-    return null;
+  /* ===============================
+     BLOQUEIO POR PLANO
+  ================================== */
+  function plano(){
+    try{ return getPlano(); }catch(e){}
+    return (localStorage.getItem('planoAtual')||'free').toLowerCase();
   }
-};
-const save = (k,v)=>localStorage.setItem(k,JSON.stringify(v));
+  (function(){
+    const p = plano();
+    if(p!=='premium' && p!=='pro' && p!=='básico' && p!=='basic'){
+       alert("Perfil é liberado apenas nos planos basico, Premium e Pro.");
+       location.href="planos.html";
+       return;
+    }
+  })();
 
-/*** STATE ***/
-let perfil = load(KEY_PROFILE) || {};
-let meta = load(KEY_META) || {};
-let saldoInicialObj = load(KEY_SALDO) || {valor:0};
-let registros = [].concat(load(KEY_REG) || []);
+  /* ===============================
+     HELPERS
+  ================================== */
+  const $ = id => document.getElementById(id);
 
-/*** THEME ***/
-(function(){
-  const t=localStorage.getItem('theme')||'light';
-  if(t==='dark') document.documentElement.classList.add('dark');
-  $('toggleTheme').addEventListener('click',()=>{
-    const isDark=document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme',isDark?'dark':'light');
-  });
-})();
-
-/*** LOAD UI ***/
-function init(){
-
-  perfil = load(KEY_PROFILE) || {};
-  meta = load(KEY_META) || {};
-  saldoInicialObj = load(KEY_SALDO) || {valor:0};
-  registros = [].concat(load(KEY_REG) || []);
-
-  $('fotoPerfil').src = perfil.foto || '';
-  $('nome').value = perfil.nome || '';
-  $('carro').value = perfil.carro || '';
-  $('modelo').value = perfil.modelo || '';
-  $('ano').value = perfil.ano || '';
-  $('placa').value = perfil.placa || '';
-  $('metaMensal').value = meta.valor || '';
-  $('saldoInicial').value = saldoInicialObj.valor || '';
-  $('saldoAtualDisplay').innerText = brl(saldoInicialObj.valor);
-
-  updateAll();
-}
-init();
-
-/*** FOTO ***/
-$('fotoInput').addEventListener('change', e=>{
-  const f=e.target.files[0];
-  if(!f) return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    perfil.foto=ev.target.result;
-    $('fotoPerfil').src=perfil.foto;
-    save(KEY_PROFILE,perfil);
+  /* ===============================
+     DRAWER
+  ================================== */
+  window.toggleDrawer = function(){
+    const d = $("drawer");
+    if(d) d.classList.toggle("open");
   };
-  r.readAsDataURL(f);
-});
 
-/*** SALVAR PERFIL ***/
-$('salvarPerfilBtn').addEventListener('click',()=>{
-  perfil={
-    nome:$('nome').value.trim(),
-    carro:$('carro').value.trim(),
-    modelo:$('modelo').value.trim(),
-    ano:$('ano').value.trim(),
-    placa:$('placa').value.trim(),
-    foto:perfil.foto||''
+  /* ===============================
+     THEME
+  ================================== */
+  window.toggleTheme = function(){
+    const isDark = document.body.classList.contains("dark");
+    if(isDark){
+       document.body.classList.remove("dark");
+       document.body.classList.add("light");
+       localStorage.setItem("theme","light");
+       const t = $("toggleTheme");
+       if(t) t.innerText="🌙";
+    } else {
+       document.body.classList.add("dark");
+       document.body.classList.remove("light");
+       localStorage.setItem("theme","dark");
+       const t = $("toggleTheme");
+       if(t) t.innerText="☀️";
+    }
   };
-  save(KEY_PROFILE,perfil);
-  alert('Perfil salvo!');
+
+  // inicia tema salvo
+  (function(){
+    const saved = localStorage.getItem("theme") || "light";
+    if(saved==="dark"){
+      document.body.classList.add("dark");
+      const t = $("toggleTheme");
+      if(t) t.innerText="☀️";
+    } else {
+      document.body.classList.add("light");
+      const t = $("toggleTheme");
+      if(t) t.innerText="🌙";
+    }
+  })();
+
+  /* ===============================
+     TROCA DE ABAS
+  ================================== */
+  const abaPessoal    = $("abaPessoal");
+  const abaVeiculos   = $("abaVeiculos");
+  const abaFinanceiro = $("abaFinanceiro");
+
+  const tabPessoal    = $("tabPessoal");
+  const tabVeiculos   = $("tabVeiculos");
+  const tabFin        = $("tabFinanceiro");
+
+  function showAba(nome){
+    if(!abaPessoal || !abaVeiculos || !abaFinanceiro) return;
+    abaPessoal.style.display    = "none";
+    abaVeiculos.style.display   = "none";
+    abaFinanceiro.style.display = "none";
+
+    if(tabPessoal)  tabPessoal.classList.remove("active");
+    if(tabVeiculos) tabVeiculos.classList.remove("active");
+    if(tabFin)      tabFin.classList.remove("active");
+
+    if(nome==="pessoal" && abaPessoal){
+      abaPessoal.style.display="block";
+      if(tabPessoal) tabPessoal.classList.add("active");
+    }
+    if(nome==="veiculos" && abaVeiculos){
+      abaVeiculos.style.display="block";
+      if(tabVeiculos) tabVeiculos.classList.add("active");
+    }
+    if(nome==="financeiro" && abaFinanceiro){
+      abaFinanceiro.style.display="block";
+      if(tabFin) tabFin.classList.add("active");
+    }
+  }
+
+  if(tabPessoal)  tabPessoal.onclick  = ()=>showAba("pessoal");
+  if(tabVeiculos) tabVeiculos.onclick = ()=>showAba("veiculos");
+  if(tabFin)      tabFin.onclick      = ()=>showAba("financeiro");
+
+  /* ===============================
+     PREVIEW DE IMAGENS
+  ================================== */
+  function previewImage(input, imgEl){
+    if(!input || !imgEl) return;
+    const f = input.files[0];
+    if(!f) return;
+    const r = new FileReader();
+    r.onload = e => imgEl.src = e.target.result;
+    r.readAsDataURL(f);
+  }
+
+  const fotoPessoalInput = $("fotoPessoalInput");
+  const fotoPessoalPreview = $("fotoPessoalPreview");
+  if(fotoPessoalInput && fotoPessoalPreview){
+    fotoPessoalInput.addEventListener("change", e=>{
+      previewImage(e.target, fotoPessoalPreview);
+    });
+  }
+
+  const vFotoInput = $("vFotoInput");
+  const vFotoPreview = $("vFotoPreview");
+  if(vFotoInput && vFotoPreview){
+    vFotoInput.addEventListener("change", e=>{
+      previewImage(e.target, vFotoPreview);
+    });
+  }
+
+  const fQrInput = $("fQrInput");
+  const fQrPreview = $("fQrPreview");
+  if(fQrInput && fQrPreview){
+    fQrInput.addEventListener("change", e=>{
+      previewImage(e.target, fQrPreview);
+    });
+  }
+
+  /* ===============================
+     STORAGE KEYS / LOAD / SAVE
+  ================================== */
+  const KEY_PESSOAL    = "perfilPessoalRF";
+  const KEY_VEICULOS   = "veiculosRF";
+  const KEY_FINANCEIRO = "financeiroRF";
+
+  function load(k){
+    try{
+      const raw = localStorage.getItem(k);
+      return raw ? JSON.parse(raw) : null;
+    }catch(e){
+      return null;
+    }
+  }
+  function save(k,v){
+    localStorage.setItem(k, JSON.stringify(v));
+  }
+
+  /* ===============================
+     1) PERFIL PESSOAL
+  ================================== */
+  function salvarPessoal(){
+    const obj = {
+      foto:   fotoPessoalPreview ? (fotoPessoalPreview.src || "") : "",
+      nome:   $("pNome")?.value.trim()    || "",
+      tel:    $("pTelefone")?.value.trim()|| "",
+      cpf:    $("pCpf")?.value.trim()     || "",
+      cidade: $("pCidade")?.value.trim()  || "",
+      estado: $("pEstado")?.value.trim()  || "",
+    };
+    save(KEY_PESSOAL,obj);
+    alert("Dados pessoais salvos!");
+  }
+
+  function carregarPessoal(){
+    const obj = load(KEY_PESSOAL)||{};
+    if(obj.foto && fotoPessoalPreview) fotoPessoalPreview.src = obj.foto;
+    if(obj.nome && $("pNome")) $("pNome").value = obj.nome;
+    if(obj.tel && $("pTelefone")) $("pTelefone").value = obj.tel;
+    if(obj.cpf && $("pCpf")) $("pCpf").value = obj.cpf;
+    if(obj.cidade && $("pCidade")) $("pCidade").value = obj.cidade;
+    if(obj.estado && $("pEstado")) $("pEstado").value = obj.estado;
+  }
+
+  const btnSalvarPessoal = $("btnSalvarPessoal");
+  if(btnSalvarPessoal){
+    btnSalvarPessoal.onclick = salvarPessoal;
+  }
+
+  /* ===============================
+     2) VEÍCULOS múltiplos
+  ================================== */
+  function limparVeiculo(){
+    if($("vEditId")) $("vEditId").value="";
+    if($("vTipo")) $("vTipo").value="carro";
+    if($("vMarca")) $("vMarca").value="";
+    if($("vModelo")) $("vModelo").value="";
+    if($("vAno")) $("vAno").value="";
+    if($("vCor")) $("vCor").value="";
+    if($("vPlaca")) $("vPlaca").value="";
+    if($("vKm")) $("vKm").value="";
+    if(vFotoPreview) vFotoPreview.src="";
+  }
+
+  function salvarVeiculo(){
+    const vTipo   = $("vTipo");
+    const vMarca  = $("vMarca");
+    const vModelo = $("vModelo");
+    const vAno    = $("vAno");
+    const vCor    = $("vCor");
+    const vPlaca  = $("vPlaca");
+    const vKm     = $("vKm");
+    const vEditId = $("vEditId");
+
+    if(!vMarca?.value.trim() || !vModelo?.value.trim()){
+  alert("Marca e Modelo são obrigatórios!");
+  return;
+}
+
+    const tipo = vTipo ? vTipo.value : "carro";
+    const mk   = vMarca.value.trim();
+    const md   = vModelo.value.trim();
+    const ano  = vAno ? vAno.value.trim() : "";
+    const cor  = vCor ? vCor.value.trim() : "";
+    const pl   = vPlaca ? vPlaca.value.trim() : "";
+    const km   = vKm ? vKm.value.trim() : "";
+
+    if(!mk || !md){
+      alert("Marca e Modelo são obrigatórios!");
+      return;
+    }
+
+    const arr = load(KEY_VEICULOS)||[];
+
+    if(vEditId && vEditId.value){
+      const id = Number(vEditId.value);
+      const idx= arr.findIndex(x=>x.id===id);
+      if(idx>=0){
+        arr[idx] = {
+          ...arr[idx],
+          tipo,marca:mk,modelo:md,ano,cor,placa:pl,km,
+          foto: vFotoPreview ? (vFotoPreview.src || arr[idx].foto) : arr[idx].foto
+        };
+        save(KEY_VEICULOS,arr);
+        limparVeiculo();
+        renderVeiculos();
+        alert("Veículo atualizado!");
+      }
+      return;
+    }
+
+    const novo = {
+      id: Date.now(),
+      tipo,
+      marca:mk,modelo:md,ano,cor,placa:pl,km,
+      foto: vFotoPreview ? (vFotoPreview.src || "") : ""
+    };
+    arr.push(novo);
+    save(KEY_VEICULOS,arr);
+    limparVeiculo();
+    renderVeiculos();
+    alert("Veículo salvo!");
+  }
+
+  function renderVeiculos(){
+    const box = $("listaVeiculos");
+    if(!box) return;
+    const arr = load(KEY_VEICULOS)||[];
+    box.innerHTML="";
+
+    if(!arr.length){
+      box.innerHTML = `<div style="opacity:.6;">Nenhum veículo cadastrado</div>`;
+      return;
+    }
+
+    arr.forEach(v=>{
+      const div=document.createElement("div");
+      div.className="vehicle-card";
+      div.innerHTML=`
+        <img src="${v.foto||''}">
+        <div class="v-info">
+          <strong>${v.tipo==="carro"?"🚗":"🏍"} ${v.marca} ${v.modelo}</strong><br>
+          Placa: ${v.placa||"-"}<br>
+          Ano: ${v.ano||"-"} • KM: ${v.km||"-"}
+        </div>
+        <div class="v-ops">
+          <button type="button" onclick="editarVeiculoPerfil(${v.id})">Editar</button>
+          <button type="button" class="danger" onclick="removerVeiculoPerfil(${v.id})">Remover</button>
+        </div>
+      `;
+      box.appendChild(div);
+    });
+  }
+
+  // exponho no window para funcionar no onclick
+  window.editarVeiculoPerfil = function(id){
+    const arr = load(KEY_VEICULOS)||[];
+    const v   = arr.find(x=>x.id===id);
+    if(!v) return;
+
+    if($("vEditId")) $("vEditId").value = v.id;
+    if($("vTipo")) $("vTipo").value     = v.tipo;
+    if($("vMarca")) $("vMarca").value   = v.marca;
+    if($("vModelo")) $("vModelo").value = v.modelo;
+    if($("vAno")) $("vAno").value       = v.ano;
+    if($("vCor")) $("vCor").value       = v.cor;
+    if($("vPlaca")) $("vPlaca").value   = v.placa;
+    if($("vKm")) $("vKm").value         = v.km;
+    if(vFotoPreview && v.foto) vFotoPreview.src = v.foto;
+
+    showAba("veiculos");
+    window.scrollTo({top:0,behavior:"smooth"});
+  };
+
+  window.removerVeiculoPerfil = function(id){
+    if(!confirm("Confirma remover este veículo?"))return;
+    const arr = (load(KEY_VEICULOS)||[]).filter(v=>v.id!==id);
+    save(KEY_VEICULOS,arr);
+    renderVeiculos();
+  };
+
+  const btnSalvarVeiculo = $("btnSalvarVeiculo");
+  if(btnSalvarVeiculo){
+    btnSalvarVeiculo.onclick = salvarVeiculo;
+  }
+
+  /* ===============================
+     3) FINANCEIRO
+  ================================== */
+  function salvarFinanceiro(){
+    const obj = {
+      titular: $("fTitular")?.value.trim() || "",
+      banco: $("fBanco")?.value.trim() || "",
+      tipoConta: $("fTipoConta")?.value || "",
+      tipoPix: $("fTipoPix")?.value || "",
+      chavePix: $("fChavePix")?.value.trim() || "",
+      fotoQr: fQrPreview ? (fQrPreview.src || "") : "",
+      obs: $("fObs")?.value.trim() || ""
+    };
+    save(KEY_FINANCEIRO,obj);
+    alert("Financeiro salvo!");
+  }
+
+  function carregarFinanceiro(){
+    const f = load(KEY_FINANCEIRO)||{};
+    if(f.titular && $("fTitular")) $("fTitular").value=f.titular;
+    if(f.banco && $("fBanco")) $("fBanco").value=f.banco;
+    if(f.tipoConta && $("fTipoConta")) $("fTipoConta").value=f.tipoConta;
+    if(f.tipoPix && $("fTipoPix")) $("fTipoPix").value=f.tipoPix;
+    if(f.chavePix && $("fChavePix")) $("fChavePix").value=f.chavePix;
+    if(f.fotoQr && fQrPreview) fQrPreview.src=f.fotoQr;
+    if(f.obs && $("fObs")) $("fObs").value=f.obs;
+  }
+
+  const btnSalvarFinanceiro = $("btnSalvarFinanceiro");
+  if(btnSalvarFinanceiro){
+    btnSalvarFinanceiro.onclick = salvarFinanceiro;
+  }
+
+  /* ===============================
+     BOOT
+  ================================== */
+  carregarPessoal();
+  carregarFinanceiro();
+  renderVeiculos();
 });
-
-/*** SALDO ***/
-$('salvarSaldoBtn').addEventListener('click',()=>{
-  const v=Number($('saldoInicial').value)||0;
-  saldoInicialObj={valor:v};
-  save(KEY_SALDO,saldoInicialObj);
-  $('saldoAtualDisplay').innerText=brl(v);
-  updateAll();
-});
-$('resetSaldoBtn').addEventListener('click',init);
-
-/*** META ***/
-$('salvarMetaBtn').addEventListener('click',()=>{
-  meta={valor:Number($('metaMensal').value)||0};
-  save(KEY_META,meta);
-  updateAll();
-});
-$('limparMetaBtn').addEventListener('click',()=>{
-  meta={};
-  save(KEY_META,meta);
-  $('metaMensal').value='';
-  updateAll();
-});
-
-/*** HELPERS ***/
-function isThisMonth(iso){
-  const d=new Date(iso), n=new Date();
-  return d.getMonth()===n.getMonth() && d.getFullYear()===n.getFullYear();
-}
-function entradasMes(){
-  registros=[].concat(load(KEY_REG)||[]);
-  return registros.reduce((s,r)=>(r.tipo==='entrada'&&isThisMonth(r.criadoEm)?s+Number(r.valor||0):s),0);
-}
-function saidasMes(){
-  registros=[].concat(load(KEY_REG)||[]);
-  return registros.reduce((s,r)=>(r.tipo==='saida'&&isThisMonth(r.criadoEm)?s+Number(r.valor||0):s),0);
-}
-function realizadoMes(){
-  return entradasMes()-saidasMes()+Number(saldoInicialObj.valor||0);
-}
-
-/*** UPDATE UI ***/
-function updateAll(){
-  registros=[].concat(load(KEY_REG)||[]);
-  const metaMensal=Number(meta.valor||0);
-  const realizados=realizadoMes();
-  const receb=0; /* você pode somar valores a receber depois */
-
-  $('labelMeta').innerText=brl(metaMensal);
-  $('labelRealizado').innerText=brl(realizados);
-  $('labelReceber').innerText=brl(receb);
-
-  $('metaMensalVal').innerText=brl(metaMensal);
-  $('realizadoMesVal').innerText=brl(realizados);
-  $('saidasMesVal').innerText=brl(saidasMes());
-
-  const metaLiquida=metaMensal-receb;
-  $('tvReceber').innerText=brl(receb);
-  $('tvMetaLiquida').innerText=brl(metaLiquida);
-  $('tvFalta').innerText=brl(Math.max(0,metaLiquida-realizados));
-
-  const pct=metaLiquida>0?Math.min(100,Math.round((realizados/metaLiquida)*100)):100;
-  $('linearFill').style.width=pct+'%';
-
-  $('barMeta').style.height=Math.max(6,(metaLiquida/Math.max(metaLiquida,realizados,1))*100)+'%';
-  $('barRealizado').style.height=Math.max(6,(realizados/Math.max(metaLiquida,realizados,1))*100)+'%';
-  $('barReceber').style.height='6%';
-
-  $('barMetaLabel').innerText=Math.round((metaLiquida/Math.max(metaLiquida,realizados,1))*100)+'%';
-  $('barRealizadoLabel').innerText=Math.round((realizados/Math.max(metaLiquida,realizados,1))*100)+'%';
-  $('barReceberLabel').innerText='0%';
-
-  $('alertMonthly').style.display=(realizados<metaLiquida)?'block':'none';
-}
 </script>
-
 </body>
 </html>
