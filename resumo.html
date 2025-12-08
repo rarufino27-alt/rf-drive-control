@@ -3,225 +3,305 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Resumo - Motorista App</title>
+<title>Resumo - RF Driver</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
+/* ==============================
+   PALETA GOLD (NOVO TEMA PADRÃO)
+=================================*/
 :root{
-    --bg: #ffffff;
-    --page-gap: #f3f5f8;
+  --gold-dark:#d6b25f;
+  --gold-dark2:#e8d08a;
 
-    --card: #fafbfc;
-    --card-strong: #f0f2f5;
-    --panel: #ffffff;
+  --gold-light:#90731b;
+  --gold-light2:#b08c2e;
 
-    --brand: #0b5bd7;
-    --brand-dark: #073f8a;
+  --bg-dark:#0d0d0d;
+  --text-dark:#f4f4f4;
+  --card-dark:#161616;
+  --border-dark:#242424;
 
-    --accent-success: #1DB954;
-    --accent-danger: #ff3b30;
+  --bg-light:#f7f7f7;
+  --text-light:#222;
+  --card-light:#ffffff;
+  --border-light:#d6d6d6;
 
-    --text: #0b1115;
-    --muted: #65707a;
+  --accent-success:#1DB954;
+  --accent-danger:#ff3b30;
 
-    --shadow: 0 6px 16px rgba(13,30,45,0.07);
-    --shadow-strong: 0 10px 32px rgba(10,20,30,0.12);
-
-    --radius: 14px;
+  --radius:14px;
 }
 
-.dark{
-    --bg: #0f1115;
-    --page-gap: #15171c;
-    --card: #181a20;
-    --card-strong: #1d1f27;
-    --panel: #1b1d25;
-    --text: #e5e7eb;
-    --muted: #9ca3af;
-    --accent-success: #22c55e;
-    --accent-danger: #ef4444;
+/* DARK */
+body.dark{
+  --bg:var(--bg-dark);
+  --text:var(--text-dark);
+  --card:var(--card-dark);
+  --border:var(--border-dark);
+  --gold-main:var(--gold-dark);
+  --gold-main2:var(--gold-dark2);
 }
 
-*{ box-sizing:border-box; font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+/* LIGHT */
+body.light{
+  --bg:var(--bg-light);
+  --text:var(--text-light);
+  --card:var(--card-light);
+  --border:var(--border-light);
+  --gold-main:var(--gold-light);
+  --gold-main2:var(--gold-light2);
+}
+
+/* BASE */
+*{ box-sizing:border-box; font-family:Inter,system-ui; }
 
 body{
-    margin:0;
-    background:linear-gradient(180deg, var(--page-gap), var(--bg) 50%);
-    color:var(--text);
-    padding-bottom:160px;
-    padding-top:70px; /* espaço para menu */
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  padding-bottom:160px;
+  padding-top:70px;
+  transition:.3s;
 }
 
-/* ===== MENU SUPERIOR ===== */
-.top-menu{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    background:var(--panel);
-    display:flex;
-    padding:8px;
-    gap:8px;
-    align-items:center;
-    z-index:9999;
-    overflow-x:auto;
-    box-shadow:var(--shadow);
+/******************************************
+ MENU LATERAL
+*******************************************/
+.drawer{
+  position:fixed; top:0; left:-260px;
+  width:260px; height:100%;
+  background:var(--card);
+  transition:left .3s;
+  z-index:9999;
+  padding-top:70px;
+}
+.drawer.open{ left:0; }
+
+.drawer a{
+  display:block;
+  padding:15px 22px;
+  border-bottom:1px solid var(--border);
+  text-decoration:none;
+  font-size:17px;
+  color:var(--text);
 }
 
-.top-menu button{
-    padding:10px 14px;
-    background:var(--card);
-    border:1px solid rgba(0,0,0,0.08);
-    border-radius:10px;
-    font-weight:700;
-    cursor:pointer;
-    flex-shrink:0;
-    color:var(--text);
+.drawer-toggle{
+  position:fixed;
+  left:15px; top:15px;
+  font-size:28px;
+  cursor:pointer;
+  z-index:10000;
+  color:var(--gold-main);
 }
 
-/* ===== header ===== */
-header{
-    padding:18px 16px;
-    max-width:980px;
-    margin:0 auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+.theme-toggle{
+  position:fixed;
+  right:15px; top:15px;
+  font-size:24px;
+  cursor:pointer;
+  z-index:10001;
+  color:var(--gold-main);
 }
 
-#toggleTheme{ background:var(--card-strong); padding:8px 12px; border-radius:10px; cursor:pointer; color:var(--text); }
+/******************************************
+ MENU INFERIOR – TABBAR
+*******************************************/
+.tabbar{
+  position:fixed;
+  bottom:0; left:0; right:0;
+  height:70px;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  display:flex; justify-content:space-around;
+  align-items:center;
+  z-index:9990;
+}
+.tabbar a{
+  text-decoration:none;
+  text-align:center;
+  font-size:20px;
+  flex:1;
+  color:var(--text);
+}
+.tabbar small{ font-size:12px; display:block; }
+.tabbar a.active{ color:var(--gold-main); }
 
-/* container */
-.container{ max-width:980px; margin:20px auto; padding:0 16px; }
-/* top cards */
-.top-row{ display:flex; gap:16px; flex-wrap:wrap; justify-content:space-between; }
-.cardTop{ flex:1; min-width:150px; background:var(--card); padding:18px; border-radius:var(--radius); box-shadow:var(--shadow); }
-.cardTop h3{ margin:0; font-size:13px; color:var(--muted); }
-.cardTop .value{ margin-top:8px; font-size:26px; font-weight:800; }
+.action-btn{
+  background:linear-gradient(90deg,var(--gold-main),var(--gold-main2));
+  width:58px; height:58px;
+  border:none; border-radius:30px;
+  color:#000; font-size:26px;
+  display:flex; align-items:center; justify-content:center;
+  margin-top:-35px;
+  box-shadow:0 0 12px rgba(0,0,0,.5);
+}
 
-/* filters */
-.filters{ display:flex; gap:10px; margin-top:18px; }
-.filters button{ flex:1; padding:12px; border-radius:12px; background:var(--card); font-weight:700; cursor:pointer; }
-.filters button.active{ background:linear-gradient(135deg,var(--brand),var(--brand-dark)); color:#fff; }
+/******************************************
+ HEADER
+*******************************************/
+h1{
+  font-weight:800;
+  margin:0;
+  font-size:28px;
+  color:var(--gold-main);
+}
 
-/* cards */
-.card{ margin-top:18px; background:var(--card); padding:18px; border-radius:var(--radius); box-shadow:var(--shadow); }
-.card h2{ margin:0 0 12px 0; font-size:18px; font-weight:800; }
+.sub{
+  font-size:14px;
+  opacity:.75;
+  margin-top:4px;
+}
 
-/* lines */
-.line{ display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(0,0,0,0.05); }
+/******************************************
+ CONTAINER
+*******************************************/
+.container{
+  padding:20px;
+}
 
-/* chart */
-.chartRow{ display:flex; gap:12px; align-items:end; padding-top:10px; }
-.chartCard{ flex:1; background:var(--card-strong); padding:12px; border-radius:12px; display:flex; flex-direction:column; align-items:center; }
-.barShell{ width:48px; height:140px; background:var(--panel); border-radius:12px; display:flex; align-items:flex-end; }
-.barInner{ width:100%; color:#fff; font-weight:800; border-radius:10px 10px 0 0; }
+/******************************************
+ CARDS & LINHAS
+*******************************************/
+.card{
+  margin-top:18px;
+  background:var(--card);
+  padding:18px;
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+}
 
-/* === end style */
+.line{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+.line:last-child{ border-bottom:none; }
+
+/******************************************
+ CHART
+*******************************************/
+.chartRow{
+  display:flex;
+  gap:12px;
+  align-items:flex-end;
+}
+
+.barShell{
+  width:48px; height:140px;
+  background:var(--card);
+  border-radius:12px;
+  display:flex;
+  align-items:flex-end;
+}
+
+.barInner{
+  width:100%;
+  border-radius:10px 10px 0 0;
+  transition:height .6s cubic-bezier(.17,.67,.6,1.35);
+}
+
+/******** fim do CSS *********/
 </style>
 </head>
 
 <body>
 
-<!-- MENU SUPERIOR -->
-<div class="top-menu">
-  <button onclick="location.href='planos.html'">💎 Planos</button>
-  <button onclick="location.href='perfil.html'">👤 Perfil</button>
-  <button onclick="location.href='index.html'">🏠 Dashboard</button>
-  <button onclick="location.href='entradas.html'">💵 Entradas</button>
-  <button onclick="location.href='resumo.html'">🧮 Resumo</button>
-  <button onclick="location.href='recibo_empresa.html'">🏭 Empresa</button>
-  <button onclick="location.href='recibo_particular.html'">🚘 Particular</button>
-  <button onclick="location.href='manutencao.html'">🛠 Manutenção</button>
-  <button onclick="location.href='calculadora.html'">📟 Calculadora</button>
-</div>
+<!-- BOTÕES SUPERIORES -->
+<div class="drawer-toggle" onclick="toggleDrawer()">☰</div>
+<div id="toggleTheme" class="theme-toggle" onclick="toggleTheme()">🌓</div>
 
-<header>
-  <div class="brand">
-      <div class="logo">RF Driver</div>
-      <h1>Financeiro</h1>
-  </div>
-  <button id="toggleTheme">🌙</button>
-</header>
+<!-- MENU LATERAL -->
+<nav class="drawer" id="drawer">
+  <a href="index.html">🏠 Dashboard</a>
+  <a href="entradas.html">💵 Caixa</a>
+  <a href="resumo.html">📊 Resumo</a>
+  <a href="calculadora.html">📟 Calculadora</a>
+  <a href="planos.html">💎 Planos</a>
+  <a href="perfil.html">👤 Perfil</a>
+  <a href="recibo_empresa.html">🏭 Empresa</a>
+  <a href="recibo_particular.html">🚘 Particular</a>
+  <a href="manutencao.html">🛠 Manutenção</a>
+</nav>
 
 <div class="container">
-    <!-- Top cards -->
-    <div class="top-row">
-        <div class="cardTop">
-            <h3>Faturamento</h3>
-            <div id="valFaturamento" class="value">R$ 0,00</div>
-        </div>
 
-        <div class="cardTop">
-            <h3>Despesas</h3>
-            <div id="valDespesas" class="value">R$ 0,00</div>
-        </div>
+<!-- HEADER -->
+<h1>Resumo</h1>
+<div class="sub">Visão geral da sua performance financeira.</div>
 
-        <div class="cardTop">
-            <h3>Lucro Líquido</h3>
-            <div id="valLucro" class="value">R$ 0,00</div>
-        </div>
+<!-- TOP VALUES -->
+<div class="card">
+  <h2>Totais</h2>
+  <div class="line"><span>Faturamento:</span> <strong id="valFaturamento">R$ 0,00</strong></div>
+  <div class="line"><span>Despesas:</span>    <strong id="valDespesas">R$ 0,00</strong></div>
+  <div class="line"><span>Lucro Líquido:</span> <strong id="valLucro">R$ 0,00</strong></div>
+</div>
+
+<!-- CARDS -->
+<div class="card">
+  <h2>Resumo por Método</h2>
+  <div class="line"><span>Dinheiro:</span> <strong id="mDinheiro">R$ 0,00</strong></div>
+  <div class="line"><span>PIX:</span> <strong id="mPix">R$ 0,00</strong></div>
+  <div class="line"><span>Cartão:</span> <strong id="mCartao">R$ 0,00</strong></div>
+  <div class="line"><span>App (Uber/99):</span> <strong id="mApp">R$ 0,00</strong></div>
+  <div class="line"><span>Outras entradas:</span> <strong id="mOutras">R$ 0,00</strong></div>
+</div>
+
+<div class="card">
+  <h2>Resumo por Categoria</h2>
+  <div class="line"><span>Uber:</span> <strong id="cUber">R$ 0,00</strong></div>
+  <div class="line"><span>99:</span> <strong id="c99">R$ 0,00</strong></div>
+  <div class="line"><span>InDriver:</span> <strong id="cInDriver">R$ 0,00</strong></div>
+  <div class="line"><span>Particular:</span> <strong id="cParticular">R$ 0,00</strong></div>
+  <div class="line"><span>Empresa:</span> <strong id="cEmpresa">R$ 0,00</strong></div>
+</div>
+
+<div class="card">
+  <h2>Desempenho</h2>
+
+  <!-- GRÁFICO -->
+  <div class="chartRow">
+    <div style="text-align:center;">
+      <div class="barShell">
+        <div id="barFat" class="barInner" style="background:var(--gold-main); height:10%;"></div>
+      </div>
+      <small>Faturamento</small>
+      <small id="barFatLabel">0%</small>
     </div>
 
-    <!-- Filters -->
-    <div class="filters">
-        <button id="fDia" class="active" onclick="setFiltro('dia')">Hoje</button>
-        <button id="fSemana" onclick="setFiltro('semana')">Semana</button>
-        <button id="fMes" onclick="setFiltro('mes')">Mês</button>
+    <div style="text-align:center;">
+      <div class="barShell">
+        <div id="barDesp" class="barInner" style="background:var(--accent-danger); height:10%;"></div>
+      </div>
+      <small>Despesas</small>
+      <small id="barDespLabel">0%</small>
     </div>
 
-    <!-- Resumo por método -->
-    <div class="card">
-        <h2>Resumo por Método</h2>
-        <div class="line"><span>Dinheiro:</span> <strong id="mDinheiro">R$ 0,00</strong></div>
-        <div class="line"><span>PIX:</span> <strong id="mPix">R$ 0,00</strong></div>
-        <div class="line"><span>Cartão:</span> <strong id="mCartao">R$ 0,00</strong></div>
-        <div class="line"><span>App (Uber/99):</span> <strong id="mApp">R$ 0,00</strong></div>
-        <div class="line"><span>Outras entradas:</span> <strong id="mOutras">R$ 0,00</strong></div>
+    <div style="text-align:center;">
+      <div class="barShell">
+        <div id="barLucro" class="barInner" style="background:var(--accent-success); height:10%;"></div>
+      </div>
+      <small>Lucro</small>
+      <small id="barLucroLabel">0%</small>
     </div>
+  </div>
+</div>
 
-    <!-- Resumo por categoria -->
-    <div class="card">
-        <h2>Resumo por Categoria</h2>
-        <div class="line"><span>Uber:</span> <strong id="cUber">R$ 0,00</strong></div>
-        <div class="line"><span>99:</span> <strong id="c99">R$ 0,00</strong></div>
-        <div class="line"><span>InDriver:</span> <strong id="cInDriver">R$ 0,00</strong></div>
-        <div class="line"><span>Particular:</span> <strong id="cParticular">R$ 0,00</strong></div>
-        <div class="line"><span>Empresa:</span> <strong id="cEmpresa">R$ 0,00</strong></div>
-    </div>
+</div> <!-- ./container -->
 
-    <!-- Chart -->
-    <div class="card">
-        <h2>Desempenho</h2>
-        <div class="chartRow" style="margin-top:8px;">
-            <div class="chartCard">
-                <div class="barShell" aria-hidden="true">
-                    <div id="barFat" class="barInner" style="height:10%; background:var(--brand);"></div>
-                </div>
-                <div class="hint">Faturamento</div>
-                <div id="barFatLabel" class="hint">0%</div>
-            </div>
-
-            <div class="chartCard">
-                <div class="barShell" aria-hidden="true">
-                    <div id="barDesp" class="barInner" style="height:10%; background:var(--accent-danger);"></div>
-                </div>
-                <div class="hint">Despesas</div>
-                <div id="barDespLabel" class="hint">0%</div>
-            </div>
-
-            <div class="chartCard">
-                <div class="barShell" aria-hidden="true">
-                    <div id="barLucro" class="barInner" style="height:10%; background:var(--accent-success);"></div>
-                </div>
-                <div class="hint">Lucro</div>
-                <div id="barLucroLabel" class="hint">0%</div>
-            </div>
-        </div>
-    </div>
-
-</div> <!-- container -->
+<!-- MENU INFERIOR -->
+<div class="tabbar">
+  <a href="index.html">🏠<small>Home</small></a>
+  <a href="entradas.html">💵<small>Caixa</small></a>
+  <button class="action-btn" onclick="location.href='calculadora.html'">+</button>
+  <a class="active" href="resumo.html">📊<small>Resumo</small></a>
+  <a href="planos.html">💎<small>Planos</small></a>
+</div>
 
 <script src="planos.js"></script>
 
@@ -231,144 +311,182 @@ if(!planoTem("resumo")){
    location.href="planos.html";
 }
 </script>
-
 <script>
-
 /* helpers */
 const $ = id => document.getElementById(id);
-const brl = v => Number(v || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const brl = v => Number(v || 0).toLocaleString(
+  "pt-BR",{ style:"currency", currency:"BRL" }
+);
 
 /* THEME */
 function applyTheme(theme){
-    if(theme === 'dark'){
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme','dark');
-        $('toggleTheme').innerText = '☀️';
-    } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme','light');
-        $('toggleTheme').innerText = '🌙';
-    }
+  if(theme === 'dark'){
+    document.body.classList.add('dark');
+    document.body.classList.remove('light');
+    localStorage.setItem('theme','dark');
+    $('toggleTheme').innerText = '☀️';
+  } else {
+    document.body.classList.remove('dark');
+    document.body.classList.add('light');
+    localStorage.setItem('theme','light');
+    $('toggleTheme').innerText = '🌙';
+  }
 }
+
 (function initTheme(){
-    const saved = localStorage.getItem('theme') || 'light';
-    applyTheme(saved);
-    $('toggleTheme').addEventListener('click', ()=>{ const isDark = document.documentElement.classList.contains('dark'); applyTheme(isDark ? 'light' : 'dark'); });
+  const saved = localStorage.getItem('theme') || 'light';
+  applyTheme(saved);
 })();
 
-/* filters */
+/* FILTERS */
 let filtro = 'dia';
 function setFiltro(f){
-    filtro = f;
-    document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
-    const id = 'f' + f.charAt(0).toUpperCase() + f.slice(1);
-    const el = document.getElementById(id);
-    if(el) el.classList.add('active');
-    atualizarResumo();
+  filtro = f;
+  document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+  const id = 'f' + f.charAt(0).toUpperCase() + f.slice(1);
+  const el = document.getElementById(id);
+  if(el) el.classList.add('active');
+  atualizarResumo();
 }
 
-/* period helpers */
-function isToday(date){
-    const n = new Date();
-    return date.getFullYear() === n.getFullYear() &&
-           date.getMonth() === n.getMonth() &&
-           date.getDate() === n.getDate();
+function isToday(d){
+  const n = new Date();
+  return d.getFullYear()===n.getFullYear() &&
+         d.getMonth()===n.getMonth() &&
+         d.getDate()===n.getDate();
 }
-function isSameWeek(date){
-    const now = new Date();
-    const start = new Date(now);
-    start.setDate(now.getDate() - now.getDay() + 1);
-    start.setHours(0,0,0,0);
-    const end = new Date(start);
-    end.setDate(start.getDate() + 6);
-    end.setHours(23,59,59,999);
-    return date >= start && date <= end;
+function isSameWeek(d){
+  const now = new Date();
+  const start = new Date(now);
+  start.setDate(now.getDate()-now.getDay()+1);
+  start.setHours(0,0,0,0);
+
+  const end = new Date(start);
+  end.setDate(start.getDate()+6);
+  end.setHours(23,59,59,999);
+
+  return d>=start && d<=end;
 }
-function isSameMonth(date){
-    const now = new Date();
-    return date.getFullYear() === now.getFullYear() &&
-           date.getMonth() === now.getMonth();
+function isSameMonth(d){
+  const now = new Date();
+  return d.getFullYear()===now.getFullYear() &&
+         d.getMonth()===now.getMonth();
 }
+
 function filtrarData(d){
-    if(filtro === 'dia') return isToday(d);
-    if(filtro === 'semana') return isSameWeek(d);
-    return isSameMonth(d);
+  if(filtro==='dia') return isToday(d);
+  if(filtro==='semana') return isSameWeek(d);
+  return isSameMonth(d);
 }
 
-/* main */
+/* MAIN */
 function atualizarResumo(){
-    const registros = JSON.parse(localStorage.getItem('entradasSaidas') || '[]');
+  const registros = JSON.parse(localStorage.getItem('entradasSaidas')||'[]');
 
-    let fat = 0, desp = 0;
-    let mDin = 0, mPix = 0, mCar = 0, mApp = 0, mOut = 0;
-    let cU = 0, c99 = 0, cInd = 0, cPar = 0, cEmp = 0;
+  let fat=0, desp=0;
+  let mDin=0,mPix=0,mCar=0,mApp=0,mOut=0;
+  let cU=0,c99=0,cInd=0,cPar=0,cEmp=0;
 
-    registros.forEach(r=>{
-        const d = new Date(r.criadoEm || r.createdAt || Date.now());
-        if(!filtrarData(d)) return;
-        const v = Number(r.valor || r.valorBruto || 0);
+  registros.forEach(r=>{
+    const d = new Date(r.criadoEm||r.createdAt||Date.now());
+    if(!filtrarData(d)) return;
 
-        if(r.tipo === 'entrada'){
-            fat += v;
+    const v = Number(r.valor||r.valorBruto||0);
 
-            if(r.formaPag === 'dinheiro') mDin += v;
-            else if(r.formaPag === 'pix') mPix += v;
-            else if(r.formaPag === 'cartao') mCar += v;
-            else if(r.formaPag === 'appMobile') mApp += v;
-            else mOut += v;
+    if(r.tipo==='entrada'){
+      fat+=v;
+      if(r.formaPag==='dinheiro') mDin+=v;
+      else if(r.formaPag==='pix') mPix+=v;
+      else if(r.formaPag==='cartao') mCar+=v;
+      else if(r.formaPag==='appMobile') mApp+=v;
+      else mOut+=v;
 
-            if(r.appTipo === 'uber') cU += v;
-            if(r.appTipo === '99') c99 += v;
-            if(r.appTipo === 'indriver') cInd += v;
-            if(r.categoria === 'particular') cPar += v;
-            if(r.categoria === 'empresa') cEmp += v;
+      if(r.appTipo==='uber') cU+=v;
+      if(r.appTipo==='99') c99+=v;
+      if(r.appTipo==='indriver') cInd+=v;
+      if(r.categoria==='particular') cPar+=v;
+      if(r.categoria==='empresa') cEmp+=v;
 
-        } else {
-            desp += v;
+    } else {
+      desp+=v;
+      if(r.formaPag==='dinheiro') mDin-=v;
+      else if(r.formaPag==='pix') mPix-=v;
+      else if(r.formaPag==='cartao') mCar-=v;
+    }
+  });
 
-            if(r.formaPag === 'dinheiro') mDin -= v;
-            else if(r.formaPag === 'pix') mPix -= v;
-            else if(r.formaPag === 'cartao') mCar -= v;
-        }
-    });
+  const lucro = fat-desp;
 
-    const lucro = fat - desp;
+  $('valFaturamento').innerText = brl(fat);
+  $('valDespesas').innerText = brl(desp);
+  $('valLucro').innerText = brl(lucro);
+  $('valLucro').style.color = lucro>=0?'var(--accent-success)':'var(--accent-danger)';
 
-    $('valFaturamento').innerText = brl(fat);
-    $('valDespesas').innerText = brl(desp);
-    $('valLucro').innerText = brl(lucro);
-    $('valLucro').style.color = lucro >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)';
+  $('mDinheiro').innerText = brl(mDin);
+  $('mPix').innerText = brl(mPix);
+  $('mCartao').innerText = brl(mCar);
+  $('mApp').innerText = brl(mApp);
+  $('mOutras').innerText = brl(mOut);
 
-    $('mDinheiro').innerText = brl(mDin);
-    $('mPix').innerText = brl(mPix);
-    $('mCartao').innerText = brl(mCar);
-    $('mApp').innerText = brl(mApp);
-    $('mOutras').innerText = brl(mOut);
+  $('cUber').innerText = brl(cU);
+  $('c99').innerText = brl(c99);
+  $('cInDriver').innerText = brl(cInd);
+  $('cParticular').innerText = brl(cPar);
+  $('cEmpresa').innerText = brl(cEmp);
 
-    $('cUber').innerText = brl(cU);
-    $('c99').innerText = brl(c99);
-    $('cInDriver').innerText = brl(cInd);
-    $('cParticular').innerText = brl(cPar);
-    $('cEmpresa').innerText = brl(cEmp);
+  const max = Math.max(Math.abs(fat), Math.abs(desp), Math.abs(lucro), 1);
+  const pctFat = Math.round(fat/max*100);
+  const pctDesp = Math.round(desp/max*100);
+  const pctLucro = Math.round(Math.abs(lucro)/max*100);
 
-    const max = Math.max(Math.abs(fat), Math.abs(desp), Math.abs(lucro), 1);
-    const pctFat = Math.round(fat / max * 100);
-    const pctDesp = Math.round(desp / max * 100);
-    const pctLucro = Math.round(Math.abs(lucro) / max * 100);
+  $('barFat').style.height  = Math.max(6,pctFat)+'%';
+  $('barDesp').style.height = Math.max(6,pctDesp)+'%';
+  $('barLucro').style.height= Math.max(6,pctLucro)+'%';
 
-    $('barFat').style.height = Math.max(6,pctFat) + '%';
-    $('barDesp').style.height = Math.max(6,pctDesp) + '%';
-    $('barLucro').style.height = Math.max(6,pctLucro) + '%';
+  $('barFatLabel').innerText  = pctFat+'%';
+  $('barDespLabel').innerText = pctDesp+'%';
+  $('barLucroLabel').innerText= pctLucro+'%';
 
-    $('barFatLabel').innerText = pctFat + '%';
-    $('barDespLabel').innerText = pctDesp + '%';
-    $('barLucroLabel').innerText = pctLucro + '%';
-
-    $('barLucro').style.background = lucro>=0 ? 'var(--accent-success)' : 'var(--accent-danger)';
+  $('barLucro').style.background = lucro>=0?'var(--accent-success)':'var(--accent-danger)';
 }
 
-/* init */
+/* INIT */
 window.addEventListener('load', atualizarResumo);
+</script>
+
+<script>
+// ======================
+// MENU LATERAL
+// ======================
+function toggleDrawer(){
+   const drawer = document.getElementById("drawer");
+   drawer.classList.toggle("open");
+}
+
+// ======================
+// TEMA
+// ======================
+function toggleTheme(){
+  const isDark = document.body.classList.contains("dark");
+  if(isDark){
+     document.body.classList.remove("dark");
+     document.body.classList.add("light");
+     localStorage.setItem("theme","light");
+     document.getElementById("toggleTheme").innerText="🌙";
+  } else {
+     document.body.classList.add("dark");
+     document.body.classList.remove("light");
+     localStorage.setItem("theme","dark");
+     document.getElementById("toggleTheme").innerText="☀️";
+  }
+}
+
+// inicia o tema salvo
+(function(){
+  const saved = localStorage.getItem("theme") || "light";
+  if(saved==="dark") document.body.classList.add("dark");
+  else document.body.classList.add("light");
+})();
 </script>
 
 </body>
