@@ -35,7 +35,6 @@
     --shadow:0 6px 16px rgba(0,0,0,0.35);
 }
 
-/* BASE */
 *{ box-sizing:border-box; }
 body{
     margin:0;
@@ -43,6 +42,32 @@ body{
     background:linear-gradient(180deg,var(--page-gap),var(--bg) 50%);
     color:var(--text);
     padding-bottom:160px;
+    padding-top:60px;
+}
+
+/* MENU SUPERIOR */
+.top-menu{
+    position:fixed;
+    top:0; left:0;
+    width:100%;
+    background:var(--panel);
+    display:flex;
+    padding:8px;
+    gap:8px;
+    align-items:center;
+    z-index:9999;
+    overflow-x:auto;
+    box-shadow:var(--shadow);
+}
+.top-menu button{
+    padding:10px 14px;
+    background:var(--card);
+    border:1px solid rgba(0,0,0,0.08);
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+    flex-shrink:0;
+    color:var(--text);
 }
 
 /* HEADER */
@@ -54,15 +79,7 @@ header{
     align-items:center;
     justify-content:space-between;
 }
-.brand{
-    display:flex;align-items:center;gap:12px;
-}
-.brand .logo{
-    width:80px;height:20px;border-radius:12px;
-    display:flex;align-items:center;justify-content:center;
-    font-weight:800;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand-dark));
-    font-size:13px;box-shadow:var(--shadow);
-}
+
 #toggleTheme{
     background:var(--card-strong);
     padding:8px 12px;border-radius:10px;
@@ -75,11 +92,7 @@ header{
 .container{max-width:980px;margin:0 auto;padding:0 16px;}
 
 /* TABS */
-.tabs{
-    display:flex;
-    gap:10px;
-    margin-bottom:16px;
-}
+.tabs{ display:flex; gap:10px; margin-bottom:16px; }
 .tab{
     flex:1;text-align:center;padding:12px;background:var(--card);
     border-radius:var(--radius);font-weight:700;
@@ -100,7 +113,6 @@ header{
 }
 .card h3{margin-top:0;margin-bottom:12px;}
 
-/* INPUTS */
 .form input,.form select,.form textarea{
     width:100%;padding:12px;border-radius:10px;
     border:1px solid #cfd4da;background:var(--panel);
@@ -108,7 +120,6 @@ header{
 }
 textarea{resize:vertical;min-height:80px}
 
-/* FUNCIONÁRIO */
 .funcionario-block{
     background:var(--card-strong);
     padding:14px;border-radius:12px;margin-bottom:10px;
@@ -116,101 +127,57 @@ textarea{resize:vertical;min-height:80px}
 
 /* BOTÃO */
 button{
-    width:40%;padding:14px;border:none;border-radius:10px;
+    width:auto;padding:14px;border:none;border-radius:10px;
     font-size:15px;font-weight:700;cursor:pointer;
     background:linear-gradient(135deg,var(--brand),var(--brand-dark));
     color:#fff;
-}
-
-/* ===== MENU LATERAL ===== */
-.sidebar{
-  position:fixed;
-  top:0;
-  left:-260px;
-  width:260px;
-  height:100%;
-  background:var(--panel);
-  padding:20px;
-  box-shadow:2px 0 18px rgba(15,23,42,.35);
-  transition:.3s;
-  z-index:9999;
-  overflow-y:auto;
-}
-.sidebar.open{ left:0; }
-
-.menu-button{
-  position:fixed;
-  top:5px;
-  left:12px;
-  background:var(--brand);
-  color:#fff;
-  padding:6px 12px;
-  border-radius:999px;
-  cursor:pointer;
-  z-index:9999;
-  font-weight:700;
-  font-size:13px;
-  display:flex;
-  align-items:center;
-  gap:6px;
-  box-shadow:0 8px 16px rgba(15,23,42,0.25);
-}
-.menu-button span.icon{font-size:16px;}
-
-.menu-close{
-  display:block;
-  font-size:24px;
-  cursor:pointer;
-  margin-bottom:6px;
-  text-align:right;
-}
-.menu-title{
-  font-weight:700;
-  font-size:35px;
-  margin-bottom:10px;
-}
-.menu-item{
-  padding:15px 0;
-  font-size:20px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:10px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- === BOTÃO MENU === -->
-<div class="menu-button" onclick="openMenu()">
-  <span class="icon">☰</span>
-  <span>Menu</span>
+<script>
+// BLOQUEIO SOMENTE PRO
+(function(){
+  const plano = (localStorage.getItem('planoAtual')||'free').toLowerCase();
+  if(plano !== 'pro'){
+     alert("Recibo Empresa é exclusivo do plano PRO.");
+     location.href='planos.html';
+  }
+})();
+</script>
+
+<div class="top-menu">
+  <button onclick="location.href='planos.html'">💎 Planos</button>
+  <button onclick="location.href='perfil.html'">👤 Perfil</button>
+  <button onclick="location.href='index.html'">🏠 Dashboard</button>
+  <button onclick="location.href='entradas.html'">💵 Caixa</button>
+  <button onclick="location.href='resumo.html'">🧮 Resumo</button>
+  <button onclick="location.href='recibo_empresa.html'">🏭 Empresa</button>
+  <button onclick="location.href='recibo_particular.html'">🚘 Particular</button>
+  <button onclick="location.href='manutencao.html'">🛠 Manutenção</button>
+  <button onclick="location.href='calculadora.html'">📟 Calculadora</button>
 </div>
 
 <header>
     <div class="brand">
         <div class="logo">RF Driver</div>
-    <h1 style="margin:50;font-size:30px;font-weight:800">Recibo Empresas</h1>
+        <h1 style="margin:0;font-size:30px;font-weight:800">Recibo Empresas</h1>
     </div>
-
-  <button id="toggleTheme">
-    <span class="icon">🌙</span>
-    <span>Escuro/Claro</span>
-  </button>
+    <button id="toggleTheme">🌙</button>
 </header>
 
 <div class="container">
-
 <!-- TABS -->
 <div class="tabs">
     <div class="tab active" data-tab="cadastro">Cadastro</div>
     <div class="tab" data-tab="emitir">Emitir Recibo</div>
     <div class="tab" data-tab="historico">Histórico</div>
 </div>
+
 <!-- =============== TAB - CADASTRO ================= -->
 <div id="tab-cadastro" class="card">
-
   <h3>Dados da empresa / motorista</h3>
 
   <div class="form">
@@ -225,9 +192,7 @@ button{
 
       <button id="savePerfil">Salvar Dados</button>
   </div>
-
 </div>
-
 
 
 <!-- =============== TAB - EMITIR ================= -->
@@ -278,55 +243,14 @@ button{
 </div>
 
 
-
 <!-- =============== TAB - HISTÓRICO ================= -->
 <div id="tab-historico" class="card" style="display:none;">
   <h3>Histórico de recibos</h3>
-
   <div id="listaRecibos"></div>
 </div>
 
-<!-- ============= MENU LATERAL =============== -->
-<div id="sidebar" class="sidebar">
-  <span class="menu-close" onclick="closeMenu()">×</span>
-  <div class="menu-title">Navegação</div>
-  <div class="menu-item" onclick="location.href='planos.html'">💎 Planos</div>
-  <div class="menu-item" onclick="location.href='index.html'">🏠 Dashboard</div>
-  <div class="menu-item" onclick="location.href='entradas.html'">💵 Entradas</div>
-  <div class="menu-item" onclick="location.href='recibo_empresa.html'">🏭 Empresa</div>
-  <div class="menu-item" onclick="location.href='recibo_particular.html'">🚘 Particular</div>
-  <div class="menu-item" onclick="location.href='manutencao.html'">🛠 Manutenção</div>
-  <div class="menu-item" onclick="location.href='resumo.html'">🧮 Resumo</div>
-  <div class="menu-item" onclick="location.href='perfil.html'">👤 Perfil</div>
-  <div class="menu-item" onclick="location.href='calculadora.html'">📟 Calculadora</div>
-</div>
-
-<!-- SCRIPTS -->
-<script src="planos.js"></script>
-
 <script>
-/* ============================
-   BLOQUEIO POR PLANO
-   ============================ */
-// Recibo Empresa é exclusivo do PRO
-if (!planoTem("reciboEmpresa")) {
-  alert("Recibo Empresa é exclusivo do plano PRO.");
-  location.href = "planos.html";
-}
-</script>
-
-<script>
-/* ====== MENU ====== */
-function openMenu(){
-  document.getElementById("sidebar").classList.add("open");
-}
-function closeMenu(){
-  document.getElementById("sidebar").classList.remove("open");
-}
-
-/* ============================
-   THEME (CLARO / ESCURO)
-   ============================ */
+// THEME
 function applyTheme(theme){
   const btn = document.getElementById("toggleTheme");
   if(theme === "dark"){
@@ -344,16 +268,16 @@ function applyTheme(theme){
   applyTheme(saved);
   const btn = document.getElementById("toggleTheme");
   if(btn){
-    btn.addEventListener("click", ()=>{
-      const isDark = document.documentElement.classList.contains("dark");
-      applyTheme(isDark ? "light" : "dark");
-    });
+    btn.addEventListener("click", ()=>applyTheme(
+      document.documentElement.classList.contains("dark")?"light":"dark"
+    ));
   }
 })();
+</script>
 
-/* ============================
-   HELPERS GERAIS
-   ============================ */
+
+<script>
+// HELPERS
 const $ = id => document.getElementById(id);
 const RECIBOS_KEY = "recibosViagemEmpresa";
 
@@ -369,93 +293,81 @@ function formatDateBr(iso){
   if(!iso) return "-";
   const d = new Date(iso);
   if(!isNaN(d)){
-    const dd = String(d.getDate()).padStart(2,"0");
-    const mm = String(d.getMonth()+1).padStart(2,"0");
-    const yy = d.getFullYear();
-    return dd+"/"+mm+"/"+yy;
-  }
-  if(/^\d{4}-\d{2}-\d{2}$/.test(iso)){
-    const [y,m,da] = iso.split("-");
-    return da+"/"+m+"/"+y;
+    return String(d.getDate()).padStart(2,"0") + "/" +
+           String(d.getMonth()+1).padStart(2,"0") + "/" +
+           d.getFullYear();
   }
   return iso;
 }
+
 function timeToMin(str){
   if(!str) return null;
-  const p = str.split(":");
-  if(p.length < 2) return null;
-  const h = parseInt(p[0],10);
-  const m = parseInt(p[1],10);
-  if(isNaN(h) || isNaN(m)) return null;
+  const [h,m] = str.split(":").map(Number);
+  if(isNaN(h)||isNaN(m)) return null;
   return h*60+m;
 }
+
 function formatMin(min){
   if(!min || min <= 0) return "0 min";
   const h = Math.floor(min/60);
   const m = min % 60;
-  let out = "";
+  let out="";
   if(h>0) out += h+"h";
   if(h>0 && m>0) out += " ";
   if(m>0) out += m+"min";
   return out;
 }
-
-/* ============================
-   TABS (CADASTRO / EMITIR / HISTÓRICO)
-   ============================ */
+</script>
+<script>
+/* ==== TABS ==== */
 function setActiveTab(name){
   document.querySelectorAll(".tab").forEach(t=>{
     t.classList.toggle("active", t.dataset.tab === name);
   });
   $("tab-cadastro").style.display  = (name === "cadastro" ? "block" : "none");
-  $("tab-emitir").style.display    = (name === "emitir" ? "block" : "none");
-  $("tab-historico").style.display = (name === "historico" ? "block" : "none");
+  $("tab-emitir").style.display    = (name === "emitir"   ? "block" : "none");
+  $("tab-historico").style.display = (name === "historico"? "block" : "none");
 }
 document.querySelectorAll(".tab").forEach(tab=>{
   tab.addEventListener("click", ()=> setActiveTab(tab.dataset.tab));
 });
-// padrão: ir direto para emitir
 setActiveTab("emitir");
 
-/* ============================
-   PERFIL (EMPRESA + MOTORISTA)
-   ============================ */
+/* ==== PERFIL ==== */
 function getPerfil(){
   try { return JSON.parse(localStorage.getItem("perfilReciboEmpresa") || "{}"); }
   catch(e){ return {}; }
 }
 function preencherPerfil(){
   const p = getPerfil();
-  if($("empresa"))   $("empresa").value   = p.empresa || "";
-  if($("cnpj"))      $("cnpj").value      = p.cnpj || "";
-  if($("motorista")) $("motorista").value = p.motorista || "";
-  if($("cpf"))       $("cpf").value       = p.cpf || "";
-  if($("marca"))     $("marca").value     = p.marca || "";
-  if($("modelo"))    $("modelo").value    = p.modelo || "";
-  if($("placa"))     $("placa").value     = p.placa || "";
-  if($("cor"))       $("cor").value       = p.cor || "";
+  $("empresa").value   = p.empresa   || "";
+  $("cnpj").value      = p.cnpj      || "";
+  $("motorista").value = p.motorista || "";
+  $("cpf").value       = p.cpf       || "";
+  $("marca").value     = p.marca     || "";
+  $("modelo").value    = p.modelo    || "";
+  $("placa").value     = p.placa     || "";
+  $("cor").value       = p.cor       || "";
 }
+$("savePerfil").addEventListener("click", ()=>{
+  const data = {
+    empresa:   $("empresa").value,
+    cnpj:      $("cnpj").value,
+    motorista: $("motorista").value,
+    cpf:       $("cpf").value,
+    marca:     $("marca").value,
+    modelo:    $("modelo").value,
+    placa:     $("placa").value,
+    cor:       $("cor").value
+  };
+  localStorage.setItem("perfilReciboEmpresa", JSON.stringify(data));
+  alert("Dados salvos!");
+});
+</script>
 
-if($("savePerfil")){
-  $("savePerfil").addEventListener("click", ()=>{
-    const data = {
-      empresa:   $("empresa")?.value || "",
-      cnpj:      $("cnpj")?.value || "",
-      motorista: $("motorista")?.value || "",
-      cpf:       $("cpf")?.value || "",
-      marca:     $("marca")?.value || "",
-      modelo:    $("modelo")?.value || "",
-      placa:     $("placa")?.value || "",
-      cor:       $("cor")?.value || ""
-    };
-    localStorage.setItem("perfilReciboEmpresa", JSON.stringify(data));
-    alert("Dados salvos!");
-  });
-}
 
-/* ============================
-   FUNCIONÁRIOS DINÂMICOS
-   ============================ */
+<script>
+/* ==== FUNCIONÁRIOS ==== */
 const funcionariosContainer = $("funcionariosContainer");
 
 function criarBlocoFuncionario(indice){
@@ -471,432 +383,209 @@ function criarBlocoFuncionario(indice){
     <input type="text" data-field="local">
     <label>Horário de embarque</label>
     <input type="time" data-field="hora">
-    <label>Houve atraso?</label>
-    <select data-field="atraso">
-      <option value="nao">Não</option>
-      <option value="sim">Sim</option>
-    </select>
-    <div class="atraso-extra" style="display:none;">
-      <label>Minutos de atraso</label>
-      <input type="number" data-field="minAtraso" min="0" step="1">
-    </div>
   `;
-  const selectAtraso = div.querySelector('select[data-field="atraso"]');
-  const caixaAtraso  = div.querySelector('.atraso-extra');
-  const horaEmb      = div.querySelector('input[data-field="hora"]');
-  const minAtraso    = div.querySelector('input[data-field="minAtraso"]');
-
-  selectAtraso.addEventListener("change", ()=>{
-    caixaAtraso.style.display = selectAtraso.value === "sim" ? "block" : "none";
-    recomputeDerivedUI();
-  });
-  horaEmb.addEventListener("change", recomputeDerivedUI);
-  minAtraso.addEventListener("input", recomputeDerivedUI);
-
   return div;
 }
-function atualizarIndicesFuncionarios(){
-  document.querySelectorAll(".funcionario-block").forEach((block,i)=>{
-    const tag = block.querySelector(".tag-func");
-    if(tag) tag.textContent = "Funcionário " + (i+1);
+function atualizarIndices(){
+  document.querySelectorAll(".funcionario-block").forEach((b,i)=>{
+    b.querySelector(".tag-func").innerText = "Funcionário " + (i+1);
   });
 }
 function adicionarFuncionario(){
   const count = document.querySelectorAll(".funcionario-block").length;
-  const block = criarBlocoFuncionario(count+1);
-  funcionariosContainer.appendChild(block);
-  atualizarIndicesFuncionarios();
+  funcionariosContainer.appendChild(criarBlocoFuncionario(count+1));
+  atualizarIndices();
 }
 function removerFuncionario(){
   const blocks = document.querySelectorAll(".funcionario-block");
-  if(blocks.length > 1){
+  if(blocks.length>1){
     blocks[blocks.length-1].remove();
-    atualizarIndicesFuncionarios();
-    recomputeDerivedUI();
+    atualizarIndices();
   }
 }
+$("addFuncionarioBtn").addEventListener("click", adicionarFuncionario);
+$("removerFuncionarioBtn").addEventListener("click", removerFuncionario);
 
-/* ============================
-   LEITURA DOS DADOS DO FORM
-   ============================ */
-function readDadosFromDOM(){
-  const dados = {
-    empresaDestino:      $("empresaDestino")?.value.trim() || "",
-    empresaResponsavel:  $("empresaResponsavel")?.value.trim() || "",
-    solicitante:         $("solicitante")?.value.trim() || "",
-    horaChegada:         $("horaChegada")?.value || "",
-    descricao:           $("descricao")?.value.trim() || "",
-    valor:               $("valor")?.value || "",
-    dataViagem:          $("dataViagem")?.value || "",
-    horaInicio:          $("horaInicio")?.value || "",
-    kmInicial:           $("kmInicial")?.value || "",
-    horaFim:             $("horaFim")?.value || "",
-    kmFinal:             $("kmFinal")?.value || "",
+/* garante um */
+if(!document.querySelector(".funcionario-block")) adicionarFuncionario();
+</script>
+
+
+<script>
+/* ==== LEITURA ==== */
+function readDados(){
+  const d = {
+    empresaDestino:      $("empresaDestino").value,
+    empresaResponsavel:  $("empresaResponsavel").value,
+    solicitante:         $("solicitante").value,
+    horaChegada:         $("horaChegada").value,
+    descricao:           $("descricao").value,
+    horaInicio:          $("horaInicio").value,
+    kmInicial:           $("kmInicial").value,
+    horaFim:             $("horaFim").value,
+    kmFinal:             $("kmFinal").value,
+    valor:               $("valor").value,
+    dataViagem:          $("dataViagem").value,
     funcionarios: []
   };
 
   document.querySelectorAll(".funcionario-block").forEach(block=>{
-    const get = f => (block.querySelector('[data-field="'+f+'"]') || {}).value || "";
-    dados.funcionarios.push({
-      nome:          get("nome").trim(),
-      empresa:       get("empresa").trim(),
-      local:         get("local").trim(),
-      horaEmbarque:  get("hora").trim(),
-      atraso:        get("atraso"),
-      minutosAtraso: Number(get("minAtraso")) || 0
+    const get = f=> block.querySelector(`[data-field="${f}"]`)?.value || "";
+    d.funcionarios.push({
+      nome:    get("nome"),
+      empresa: get("empresa"),
+      local:   get("local"),
+      hora:    get("hora")
     });
   });
-
-  return dados;
+  return d;
 }
+</script>
 
-/* ============================
-   CÁLCULOS (KM, TEMPO)
-   ============================ */
-function computeDerivedFromData(d){
-  const ini     = timeToMin(d.horaInicio);
-  const fim     = timeToMin(d.horaFim);
-  const chegada = timeToMin(d.horaChegada);
+
+<script>
+/* ==== CÁLCULOS ==== */
+function compute(d){
+  const ini = timeToMin(d.horaInicio);
+  const fim = timeToMin(d.horaFim);
+  const chg = timeToMin(d.horaChegada);
 
   let tempoViagemMin = 0;
-  if(ini != null && fim != null){
-    let diff = fim - ini;
-    if(diff < 0) diff += 24*60;
+  if(ini!=null && fim!=null){
+    let diff = fim-ini;
+    if(diff<0) diff += 1440;
     tempoViagemMin = diff;
   }
 
-  let baseEspera = 0;
-  if(ini != null && chegada != null){
-    let diff = ini - chegada;
-    if(diff < 0) diff += 24*60;
-    baseEspera = diff;
+  let baseEspera=0;
+  if(ini!=null && chg!=null){
+    let diff = ini-chg;
+    if(diff<0) diff+=1440;
+    baseEspera=diff;
   }
 
-  let atrasoMin = 0;
-  if(Array.isArray(d.funcionarios)){
-    atrasoMin = d.funcionarios.reduce((acc,f)=>{
-      if(f.atraso === "sim" && f.minutosAtraso > 0) return acc + f.minutosAtraso;
-      return acc;
-    },0);
-  }
-
-  const tempoEsperaMin = baseEspera + atrasoMin;
-
-  let totalKm = null;
+  const tempoEsperaMin = baseEspera;
   const ki = parseFloat(d.kmInicial);
   const kf = parseFloat(d.kmFinal);
-  if(!isNaN(ki) && !isNaN(kf)){
-    const diff = kf - ki;
-    totalKm = diff >= 0 ? +diff.toFixed(1) : 0;
-  }
+  let totalKm = (!isNaN(ki)&&!isNaN(kf)) ? Math.max(0,kf-ki) : null;
 
   return {
     tempoViagemMin,
-    tempoEsperaMin,
-    tempoViagemStr:  formatMin(tempoViagemMin),
-    tempoEsperaStr:  formatMin(tempoEsperaMin),
+    tempoViagemStr: formatMin(tempoViagemMin),
+    tempoEsperaStr: formatMin(tempoEsperaMin),
     totalKm
   };
 }
-
-function recomputeDerivedUI(){
-  const dados = readDadosFromDOM();
-  const d     = computeDerivedFromData(dados);
-  if($("totalKmDisplay"))       $("totalKmDisplay").innerText       = d.totalKm != null ? d.totalKm + " km" : "-";
-  if($("tempoEsperaDisplay"))   $("tempoEsperaDisplay").innerText   = d.tempoEsperaStr;
-  if($("tempoViagemDisplay"))   $("tempoViagemDisplay").innerText   = d.tempoViagemStr;
+function updateUI(){
+  const d = compute(readDados());
+  $("tempoViagemDisplay").innerText = d.tempoViagemStr;
+  $("tempoEsperaDisplay").innerText = d.tempoEsperaStr;
+  $("totalKmDisplay").innerText = d.totalKm!=null ? (d.totalKm+" km") : "-";
 }
+["horaChegada","horaInicio","horaFim","kmInicial","kmFinal"].forEach(id=>{
+  $(id).addEventListener("input", updateUI);
+});
+</script>
 
-/* ============================
-   HISTÓRICO
-   ============================ */
+
+<script>
+/* ==== HISTÓRICO ==== */
 function renderHistorico(){
   const lista = $("listaRecibos");
-  if(!lista) return;
   const recs = loadRecibos();
   if(!recs.length){
-    lista.innerHTML = "<div style='font-size:13px;color:#65707a;'>Nenhum recibo emitido até agora.</div>";
+    lista.innerHTML = "<div style='color:#65707a;font-size:13px'>Nenhum recibo emitido.</div>";
     return;
   }
-  let html = "";
-  recs.forEach(r=>{
-    const dataLabel    = formatDateBr(r.dataViagem || r.createdAt);
-    const empresaLabel = r.empresaDestino || "-";
-    const kmLabel      = (r.resumoKm != null ? r.resumoKm + " km" : "");
-    html += `
-      <div class="hist-item">
-        <div>
-          <div style="font-weight:700;">${dataLabel} — ${empresaLabel}</div>
-          <div style="font-size:12px;color:#65707a;">${kmLabel}</div>
-        </div>
-        <div class="actions">
-          <button class="btn-sm" data-id="${r.id}" data-action="pdf">PDF</button>
-          <button class="btn-sm" data-id="${r.id}" data-action="del" style="background:#e11d48;color:#fff;border:none;">Excluir</button>
-        </div>
+  lista.innerHTML = recs.map(r=>`
+    <div class="hist-item">
+      <div>
+        <strong>${formatDateBr(r.dataViagem)}</strong><br>
+        <span style='font-size:12px;'>${r.empresaDestino||"-"}</span>
       </div>
-    `;
-  });
-  lista.innerHTML = html;
-
-  lista.querySelectorAll("button[data-action]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const id     = Number(btn.getAttribute("data-id"));
-      const action = btn.getAttribute("data-action");
-      if(action === "pdf") baixarRecibo(id);
-      if(action === "del") excluirRecibo(id);
-    });
-  });
+    </div>
+  `).join("");
 }
-function excluirRecibo(id){
-  if(!confirm("Excluir este recibo do histórico?")) return;
-  let recs = loadRecibos();
-  recs = recs.filter(r => r.id !== id);
+</script>
+
+
+<script>
+/* ==== PDF (PRO somente) ==== */
+function gerarPdf(d, perfil, res){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.text("RECIBO DE VIAGEM (Empresa)", 10, 10);
+  doc.text("Motorista: "+(perfil.motorista||""),10,20);
+  doc.text("Empresa destino: "+(d.empresaDestino||""),10,30);
+  doc.text("Data: "+formatDateBr(d.dataViagem),10,40);
+  doc.text("Total km: "+(res.totalKm||"-"),10,50);
+  doc.save("recibo_empresa.pdf");
+}
+</script>
+
+
+<script>
+/* ==== EMITIR ==== */
+$("emitirPdf").addEventListener("click", ()=>{
+  const plano = (localStorage.getItem("planoAtual")||"free").toLowerCase();
+  if(plano!=="pro"){ alert("Esta função é exclusiva do plano PRO."); return; }
+
+  const perfil = getPerfil();
+  const d = readDados();
+  const r = compute(d);
+
+  if(!d.empresaDestino){ alert("Informe a empresa de destino."); return; }
+  const temFunc = (d.funcionarios||[]).some(f=>f.nome);
+  if(!temFunc){ alert("Informe pelo menos um funcionário."); return; }
+
+  gerarPdf(d, perfil, r);
+
+  const recs = loadRecibos();
+  recs.unshift({
+    id:Date.now(),
+    empresaDestino:d.empresaDestino,
+    dataViagem:d.dataViagem,
+    dados:d
+  });
   saveRecibos(recs);
   renderHistorico();
-}
-function baixarRecibo(id){
-  const recs   = loadRecibos();
-  const rec    = recs.find(r => r.id === id);
-  if(!rec) return;
-  const perfil  = getPerfil();
-  const derived = computeDerivedFromData(rec.dados);
-  gerarPdf(rec.dados, perfil, derived);
-}
+  setActiveTab("historico");
+});
+</script>
 
-/* ============================
-   GERAR PDF (jsPDF)
-   ============================ */
-function gerarPdf(dados, perfil, derived){
-  const { jsPDF } = window.jspdf;
-  const doc       = new jsPDF("p","mm","a4");
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const marginX   = 15;
-  let y = 15;
 
-  doc.setFont("helvetica","bold");
-  doc.setFontSize(18);
-  doc.text("RECIBO DE VIAGEM", pageWidth/2, y, {align:"center"});
-  y += 8;
+<script>
+/* ==== WhatsApp (PRO somente) ==== */
+$("enviarWa").addEventListener("click", ()=>{
+  const plano = (localStorage.getItem("planoAtual")||"free").toLowerCase();
+  if(plano!=="pro"){ alert("Envio por WhatsApp exclusivo do PRO."); return; }
 
-  if(perfil.empresa){
-    doc.setFontSize(11);
-    doc.setFont("helvetica","normal");
-    doc.text(perfil.empresa, pageWidth/2, y, {align:"center"});
-    y += 5;
-  }
-  if(perfil.cnpj){
-    doc.setFontSize(10);
-    doc.text("CNPJ: "+perfil.cnpj, pageWidth/2, y, {align:"center"});
-    y += 6;
-  } else {
-    y += 4;
-  }
+  const d = readDados();
+  const msg = `RECIBO EMPRESA
+Destino: ${d.empresaDestino||"-"}
+Data: ${formatDateBr(d.dataViagem)}
+Valor: ${d.valor}`;
 
-  function drawSection(title, lines){
-    const boxWidth   = pageWidth - marginX*2;
-    const lineHeight = 5;
-    const innerH     = 8 + lines.length*lineHeight + 4;
-    const boxY       = y;
-    doc.setDrawColor(150);
-    doc.roundedRect(marginX, boxY, boxWidth, innerH, 2, 2);
-    doc.setFont("helvetica","bold");
-    doc.setFontSize(12);
-    doc.text(title, marginX+3, boxY+6);
-    doc.setFont("helvetica","normal");
-    doc.setFontSize(10);
-    let ty = boxY+12;
-    lines.forEach(line=>{
-      if(line) doc.text(line, marginX+4, ty);
-      ty += lineHeight;
-    });
-    y = boxY + innerH + 4;
-  }
+  window.open("https://wa.me/?text="+encodeURIComponent(msg));
+});
+</script>
 
-  drawSection("Dados da Empresa / Motorista", [
-    "Empresa: "  + (perfil.empresa   || "-"),
-    "CNPJ: "     + (perfil.cnpj      || "-"),
-    "Motorista: "+ (perfil.motorista || "-"),
-    "CPF/RG: "   + (perfil.cpf       || "-"),
-    "Veículo: "  + ((perfil.marca || "") + " " + (perfil.modelo || "") + " - " + (perfil.cor || "")),
-    "Placa: "    + (perfil.placa || "-")
-  ]);
 
-  drawSection("Dados da Viagem & Empresa", [
-    "Empresa de destino: "                + (dados.empresaDestino      || "-"),
-    "Empresa responsável pelos funcionários: " + (dados.empresaResponsavel || "-"),
-    "Solicitante da viagem: "             + (dados.solicitante         || "-"),
-    "Data da viagem: "                    + formatDateBr(dados.dataViagem),
-    "Horário de chegada: "                + (dados.horaChegada || "-"),
-    "Descrição / tipo de serviço: "       + (dados.descricao   || "-")
-  ]);
-
-  const funcLines = [];
-  (dados.funcionarios || []).forEach((f,i)=>{
-    if(!f.nome && !f.empresa && !f.local && !f.horaEmbarque) return;
-    funcLines.push(`Funcionário ${i+1}: ${f.nome || "-"}`);
-    funcLines.push("Empresa: "+(f.empresa||"-")+"  |  Local: "+(f.local||"-"));
-    const atrasoTxt = (f.atraso === "sim")
-      ? "Sim" + (f.minutosAtraso > 0 ? " ("+f.minutosAtraso+" min)" : "")
-      : "Não";
-    funcLines.push("Horário de embarque: "+(f.horaEmbarque||"-")+"  |  Atraso: "+atrasoTxt);
-    funcLines.push("");
-  });
-  if(!funcLines.length){
-    funcLines.push("Nenhum funcionário informado.");
-  }
-  drawSection("Funcionários", funcLines);
-
-  drawSection("Horários & Quilometragem", [
-    "Horário inicial: "         + (dados.horaInicio || "-"),
-    "KM inicial: "              + (dados.kmInicial  || "-"),
-    "Horário final: "           + (dados.horaFim    || "-"),
-    "KM final: "                + (dados.kmFinal    || "-"),
-    "Total de KM: "             + (derived.totalKm != null ? derived.totalKm + " km" : "-"),
-    "Tempo de espera total: "   + derived.tempoEsperaStr,
-    "Tempo de viagem: "         + derived.tempoViagemStr
-  ]);
-
-  drawSection("Resumo Financeiro", [
-    "Valor total da viagem: R$ " + (dados.valor || "-"),
-    "Data da viagem: "           + formatDateBr(dados.dataViagem)
-  ]);
-
-  y += 6;
-  doc.setFontSize(10);
-  doc.text("____________________________________", marginX, y);
-  y += 5;
-  doc.text("Motorista: " + (perfil.motorista || ""), marginX, y);
-  y += 10;
-  doc.text("____________________________________", marginX, y);
-  y += 5;
-  doc.text("Responsável: " + (dados.solicitante || ""), marginX, y);
-
-  doc.save("recibo_viagem_empresa.pdf");
-}
-
-/* ============================
-   BOTÕES: EMITIR PDF / WHATS
-   ============================ */
-const btnPdf = $("emitirPdf");
-const btnWa  = $("enviarWa");
-
-// bloqueio por plano (PDF / WHATS), mesmo sendo PRO hoje, já deixo pronto
-if(btnPdf && !planoTem("reciboEmpresaPdf")){
-  btnPdf.style.display = "none";
-}
-if(btnWa && !planoTem("reciboEmpresaWhats")){
-  btnWa.style.display = "none";
-}
-
-if(btnPdf){
-  btnPdf.addEventListener("click", ()=>{
-    const perfil = getPerfil();
-    if(!perfil.motorista || !perfil.cpf || !perfil.marca || !perfil.modelo || !perfil.placa || !perfil.cor){
-      alert("Preencha e salve o cadastro do recibo (motorista e veículo) antes de emitir.");
-      setActiveTab("cadastro");
-      return;
-    }
-
-    const dados = readDadosFromDOM();
-
-    if(!dados.empresaDestino){
-      alert("Informe a empresa de destino.");
-      return;
-    }
-    if(!dados.solicitante){
-      alert("Informe o solicitante da viagem.");
-      return;
-    }
-
-    const temFunc = (dados.funcionarios || []).some(f=>f.nome);
-    if(!temFunc){
-      alert("Informe pelo menos um funcionário.");
-      return;
-    }
-
-    const derived = computeDerivedFromData(dados);
-    gerarPdf(dados, perfil, derived);
-
-    let recs = loadRecibos();
-    recs.unshift({
-      id: Date.now(),
-      createdAt: new Date().toISOString(),
-      empresaDestino: dados.empresaDestino,
-      dataViagem: dados.dataViagem,
-      resumoKm: derived.totalKm,
-      dados
-    });
-    saveRecibos(recs);
-    renderHistorico();
-    setActiveTab("historico");
-  });
-}
-
-if(btnWa){
-  btnWa.addEventListener("click", ()=>{
-    if(!planoTem("reciboEmpresaWhats")){
-      alert("Envio via WhatsApp disponível apenas no plano PRO.");
-      return;
-    }
-    const perfil  = getPerfil();
-    const dados   = readDadosFromDOM();
-    const derived = computeDerivedFromData(dados);
-
-    const funcsTxt = (dados.funcionarios || [])
-      .filter(f=>f.nome)
-      .map((f,i)=>{
-        const atrasoTxt = f.atraso === "sim"
-          ? "Sim" + (f.minutosAtraso > 0 ? " ("+f.minutosAtraso+" min)" : "")
-          : "Não";
-        return `Funcionário ${i+1}: ${f.nome}
-Empresa: ${f.empresa||"-"}
-Local de embarque: ${f.local||"-"}
-Horário de embarque: ${f.horaEmbarque||"-"}
-Atraso: ${atrasoTxt}`;
-      }).join("\n\n") || "Nenhum informado";
-
-    const msg = 
-`RECIBO DE VIAGEM - EMPRESA
-
-Empresa: ${perfil.empresa || "-"}
-CNPJ: ${perfil.cnpj || "-"}
-Motorista: ${perfil.motorista || "-"}
-CPF/RG: ${perfil.cpf || "-"}
-Veículo: ${perfil.marca || ""} ${perfil.modelo || ""} - ${perfil.cor || ""}
-Placa: ${perfil.placa || ""}
-
-Destino: ${dados.empresaDestino || "-"}
-Responsável pelos funcionários: ${dados.empresaResponsavel || "-"}
-Solicitante da viagem: ${dados.solicitante || "-"}
-Data da viagem: ${formatDateBr(dados.dataViagem)}
-Chegada no ponto: ${dados.horaChegada || "-"}
-Descrição / serviço: ${dados.descricao || "-"}
-
---- Funcionários ---
-${funcsTxt}
-
-Horário inicial: ${dados.horaInicio || "-"}
-KM inicial: ${dados.kmInicial || "-"}
-Horário final: ${dados.horaFim || "-"}
-KM final: ${dados.kmFinal || "-"}
-Total de KM: ${derived.totalKm != null ? derived.totalKm + " km" : "-"}
-
-Tempo de espera total: ${derived.tempoEsperaStr}
-Tempo de viagem: ${derived.tempoViagemStr}
-
-Motorista: ${perfil.motorista || "-"}
-Responsável: ${dados.solicitante || "-"}`;
-
-    window.open("https://wa.me/?text=" + encodeURIComponent(msg));
-  });
-}
-
+<script>
+/* ==== BOOT ==== */
+document.addEventListener("DOMContentLoaded", ()=>{
+  preencherPerfil();
+  updateUI();
+  renderHistorico();
+});
+</script>
+<script>
 /* ============================
    EVENTOS DE INPUT (RECALC)
    ============================ */
 ["horaChegada","horaInicio","horaFim","kmInicial","kmFinal"].forEach(id=>{
   const el = $(id);
-  if(el) el.addEventListener("input", recomputeDerivedUI);
+  if(el) el.addEventListener("input", updateUI);
 });
 
 /* ============================
@@ -908,15 +597,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
     adicionarFuncionario();
   }
   preencherPerfil();
-  recomputeDerivedUI();
+  updateUI();
   renderHistorico();
-
-  if($("addFuncionarioBtn")){
-    $("addFuncionarioBtn").addEventListener("click", adicionarFuncionario);
-  }
-  if($("removerFuncionarioBtn")){
-    $("removerFuncionarioBtn").addEventListener("click", removerFuncionario);
-  }
 });
 </script>
 
