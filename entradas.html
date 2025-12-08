@@ -5,77 +5,104 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Entradas e Saídas - Motorista App</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 /* ============================ */
-/*     PALETA CORPORATIVA       */
-/*     + MODO CLARO / ESCURO    */
+/* PALETA CORPORATIVA GLOBAL    */
 /* ============================ */
 
 :root{
-    /* MODO CLARO */
-    --bg: #ffffff;
-    --page-gap: #f3f5f8;
+    --bg:#ffffff;
+    --page-gap:#f3f5f8;
 
-    --card: #fafbfc;
-    --card-strong: #f0f2f5;
-    --panel: #ffffff;
+    --card:#fafbfc;
+    --card-strong:#f0f2f5;
+    --panel:#ffffff;
 
-    --brand: #0b5bd7;
-    --brand-dark: #073f8a;
+    --brand:#0b5bd7;
+    --brand-dark:#073f8a;
 
-    --accent-success: #1DB954;
-    --accent-danger: #ff3b30;
+    --accent-success:#1DB954;
+    --accent-danger:#ff3b30;
 
-    --text: #0b1115;
-    --muted: #65707a;
+    --text:#0b1115;
+    --muted:#65707a;
 
-    --shadow: 0 6px 16px rgba(13,30,45,0.07);
-    --shadow-strong: 0 10px 32px rgba(10,20,30,0.12);
+    --shadow:0 6px 16px rgba(13,30,45,0.07);
+    --shadow-strong:0 10px 32px rgba(10,20,30,0.12);
 
-    --radius: 14px;
+    --radius:14px;
 }
 
 /* ============================ */
-/*       MODO ESCURO GLOBAL     */
+/*       MODO ESCURO            */
 /* ============================ */
 
 .dark{
-    --bg: #0f1115;
-    --page-gap: #15171c;
+    --bg:#0f1115;
+    --page-gap:#15171c;
 
-    --card: #181a20;
-    --card-strong: #1d1f27;
-    --panel: #1b1d25;
+    --card:#181a20;
+    --card-strong:#1d1f27;
+    --panel:#1b1d25;
 
-    --text: #e5e7eb;
-    --muted: #9ca3af;
+    --text:#e5e7eb;
+    --muted:#9ca3af;
 
-    --shadow: 0 6px 16px rgba(0,0,0,0.35);
-    --shadow-strong: 0 10px 32px rgba(0,0,0,0.45);
+    --brand:#3b82f6;
+    --brand-dark:#2563eb;
 
-    --brand: #3b82f6;
-    --brand-dark: #2563eb;
-
-    --accent-success: #22c55e;
-    --accent-danger: #ef4444;
+    --accent-success:#22c55e;
+    --accent-danger:#ef4444;
 }
 
+/* Remove menu lateral antigo */
+.sidebar, .menu-button{ display:none!important; }
+
 /* ============================ */
-/*           BASE               */
+/* BASE                         */
 /* ============================ */
 
-*{ box-sizing:border-box; }
+*{ box-sizing:border-box; font-family:Inter,system-ui; }
 
 body{
     margin:0;
-    font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background:linear-gradient(180deg, var(--page-gap), var(--bg) 50%);
+    background:linear-gradient(180deg,var(--page-gap),var(--bg) 50%);
     color:var(--text);
-    padding-bottom:160px; /* espaço do menu inferior */
+    padding-bottom:180px;
+    padding-top:70px; /* espaço menu */
 }
 
 /* ============================ */
-/*          HEADER              */
+/* MENU SUPERIOR                */
+/* ============================ */
+
+.top-menu{
+  position:fixed;
+  top:0;left:0;width:100%;
+  background:var(--panel);
+  display:flex;
+  padding:6px;
+  gap:8px;
+  align-items:center;
+  z-index:9999;
+  overflow-x:auto;
+  box-shadow:var(--shadow);
+}
+.top-menu button{
+  padding:10px 14px;
+  background:var(--card);
+  border:1px solid rgba(0,0,0,0.08);
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+  flex-shrink:0;
+  color:var(--text);
+}
+
+/* ============================ */
+/* HEADER                       */
 /* ============================ */
 
 header{
@@ -86,29 +113,34 @@ header{
     align-items:center;
     justify-content:space-between;
 }
-
 .brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
+    display:flex;align-items:center;gap:12px;
 }
 .brand .logo{
     width:80px;
-    height:30px;
+    height:20px;
     border-radius:12px;
     display:flex;
     align-items:center;
     justify-content:center;
     font-weight:800;
+    font-size:13px;
     color:#fff;
     background:linear-gradient(135deg,var(--brand),var(--brand-dark));
     box-shadow:var(--shadow);
-    font-size:13px;
 }
 
+#toggleTheme{
+  background:var(--card-strong);
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  color:var(--text);
+  font-weight:700;
+}
 
 /* ============================ */
-/*          CONTAINER           */
+/* CONTAINER                    */
 /* ============================ */
 
 .container{
@@ -118,7 +150,7 @@ header{
 }
 
 /* ============================ */
-/*             TABS             */
+/* TABS                         */
 /* ============================ */
 
 .tabs{
@@ -126,7 +158,6 @@ header{
     gap:10px;
     margin-bottom:16px;
 }
-
 .tab{
     flex:1;
     text-align:center;
@@ -139,34 +170,28 @@ header{
     border:1px solid #d7dce2;
     transition:.25s;
 }
-
 .tab.active{
     background:linear-gradient(135deg,var(--brand),var(--brand-dark));
     color:#fff;
     border:none;
-    box-shadow:0 4px 12px rgba(0,0,0,0.15);
 }
 
 /* ============================ */
-/*           CARDS              */
+/* CARDS                        */
 /* ============================ */
 
 .card{
     background:var(--card);
     border-radius:var(--radius);
     padding:20px;
-    margin-bottom:18px;
+    margin-bottom:25px;
     border:1px solid #d7dce2;
     box-shadow:var(--shadow);
 }
-
-.card h3{
-    margin-top:0;
-    margin-bottom:12px;
-}
+.card h3{margin:0 0 12px 0;}
 
 /* ============================ */
-/*         FORM INPUTS          */
+/* FORM INPUTS                  */
 /* ============================ */
 
 .form input,
@@ -180,14 +205,8 @@ header{
     margin-bottom:12px;
     font-size:15px;
 }
-
-.dark .form input,
-.dark .form select{
-    border-color:#2c2f36;
-}
-
 button{
-    width:50%;
+    width:17%;
     padding:14px;
     background:linear-gradient(135deg,var(--brand),var(--brand-dark));
     border:none;
@@ -197,16 +216,64 @@ button{
     cursor:pointer;
     color:#fff;
 }
-
-/* linhas lado a lado */
-.row{
-    display:flex;
-    gap:10px;
-}
-.col{ flex:1; }
+.row{display:flex;gap:10px;}
+.col{flex:1}
 
 /* ============================ */
-/*         LISTA ITENS          */
+/* FILTRO POR PERÍODO           */
+/* ============================ */
+
+.period-filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:8px;
+}
+.period-filters .period-btn{
+    width:auto;
+    padding:8px 12px;
+    font-size:12px;
+    border-radius:999px;
+    border:1px solid #d7dce2;
+    background:var(--panel);
+    color:var(--muted);
+}
+.period-filters .period-btn.active{
+    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+    color:#fff;
+    border:none;
+}
+.period-range{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+}
+.period-range label{
+    font-size:12px;
+    color:var(--muted);
+}
+.period-range input[type="date"]{
+    padding:6px 8px;
+    border-radius:8px;
+    border:1px solid #cfd4da;
+    background:var(--panel);
+    font-size:12px;
+}
+.period-range .period-apply{
+    width:auto;
+    padding:8px 12px;
+    font-size:12px;
+}
+.period-note{
+    display:block;
+    margin-top:8px;
+    font-size:11px;
+    color:var(--muted);
+}
+
+/* ============================ */
+/* LISTA                        */
 /* ============================ */
 
 .item{
@@ -218,21 +285,14 @@ button{
     gap:12px;
     margin-bottom:10px;
 }
-
-.item small{
-    color:var(--muted);
-}
-
+.item small{color:var(--muted);}
 .remove{
     background:var(--accent-danger);
     color:#fff;
-    border:none;
-    padding:6px 12px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:700;
+    border:none;padding:4px 50px;
+    border-radius:8px;cursor:pointer;
+    font-weight:800;
 }
-
 .totals{
     text-align:right;
     font-weight:800;
@@ -241,103 +301,46 @@ button{
 }
 
 /* ============================ */
-/*      MODAL MAQUINETA         */
+/* MODAL                        */
 /* ============================ */
 
 #modalMaquineta{
-    position:fixed;
-    inset:0;
+    position:fixed;inset:0;
     background:rgba(0,0,0,0.55);
     display:none;
     z-index:2000;
     padding-top:40px;
 }
-
 .modalBox{
     background:var(--card);
-    width:92%;
-    max-width:420px;
-    padding:20px;
-    border-radius:14px;
-    margin:auto;
-    box-shadow:var(--shadow-strong);
-}
-
-/* ===== MENU LATERAL ===== */
-.sidebar{
-  position:fixed;
-  top:0;
-  left:-260px;
-  width:260px;
-  height:100%;
-  background:var(--panel);
-  padding:20px;
-  box-shadow:2px 0 18px rgba(15,23,42,.35);
-  transition:.3s;
-  z-index:9999;
-  overflow-y:auto;
-}
-.sidebar.open{ left:0; }
-
-.menu-button{
-  position:fixed;
-  top:3px;
-  left:15px;
-  background:var(--brand);
-  color:#fff;
-  padding:8px 12px;
-  border-radius:999px;
-  cursor:pointer;
-  z-index:9999;
-  font-weight:700;
-  font-size:13px;
-  display:flex;
-  align-items:center;
-  gap:6px;
-  box-shadow:0 8px 16px rgba(15,23,42,0.25);
-}
-.menu-button span.icon{font-size:16px;}
-
-.menu-close{
-  display:block;
-  font-size:24px;
-  cursor:pointer;
-  margin-bottom:6px;
-  text-align:right;
-}
-.menu-title{
-  font-weight:700;
-  font-size:35px;
-  margin-bottom:10px;
-}
-.menu-item{
-  padding:15px 0;
-  font-size:20px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:10px;
+    width:92%;max-width:420px;
+    padding:20px;border-radius:14px;
+    margin:auto;box-shadow:var(--shadow-strong);
 }
 </style>
 </head>
 
 <body>
 
-<!-- === BOTÃO MENU === -->
-<div class="menu-button" onclick="openMenu()">
-  <span class="icon">☰</span>
-  <span>Menu</span>
+<!-- MENU SUPERIOR -->
+<div class="top-menu">
+  <button onclick="location.href='planos.html'">💎 Planos</button>
+  <button onclick="location.href='perfil.html'">👤 Perfil</button>
+  <button onclick="location.href='index.html'">🏠 Dashboard</button>
+  <button onclick="location.href='entradas.html'">💵 Caixa</button>
+  <button onclick="location.href='resumo.html'">🧮 Resumo</button>
+  <button onclick="location.href='recibo_empresa.html'">🏭 Empresa</button>
+  <button onclick="location.href='recibo_particular.html'">🚘 Particular</button>
+  <button onclick="location.href='manutencao.html'">🛠 Manutenção</button>
+  <button onclick="location.href='calculadora.html'">📟 Calculadora</button>
 </div>
 
 <header>
     <div class="brand">
         <div class="logo">RF Driver</div>
-        <h1>Caixa</h1>
+        <h1>cash control</h1>
     </div>
-
-  <button id="toggleTheme">
-    <span class="icon">🌙</span>
-  </button>
+    <button id="toggleTheme">🌙</button>
 </header>
 
 <div class="container">
@@ -492,8 +495,33 @@ button{
 
     </div>
 </div>
+
 <!-- ============================ -->
-<!--      LISTAS (ENTRADAS)       -->
+<!--   FILTRO POR PERÍODO        -->
+<!-- ============================ -->
+
+<div class="card" id="filtrosPeriodo">
+    <h3>Período das movimentações</h3>
+    <div class="period-filters">
+        <button type="button" class="period-btn active" id="btnPeriodoHoje">Hoje</button>
+        <button type="button" class="period-btn" id="btnPeriodoSemana">Semana</button>
+        <button type="button" class="period-btn" id="btnPeriodoMes">Mês</button>
+        <button type="button" class="period-btn" id="btnPeriodoPersonalizado">Período</button>
+    </div>
+    <div class="period-range" id="periodoPersonalizadoContainer" style="display:none; margin-top:10px;">
+        <label>De:
+            <input type="date" id="dataInicioFiltro">
+        </label>
+        <label>Até:
+            <input type="date" id="dataFimFiltro">
+        </label>
+        <button type="button" id="btnAplicarFiltroDatas" class="period-apply">Aplicar filtro</button>
+    </div>
+    <small class="period-note" id="legendaPeriodoAtivo">Mostrando movimentações de hoje.</small>
+</div>
+
+<!-- ============================ -->
+<!--      LISTAS (ENTRADAS)      -->
 <!-- ============================ -->
 
 <div class="lists" style="display:flex; gap:16px; flex-wrap:wrap; margin-top:10px;">
@@ -543,8 +571,7 @@ button{
     </div>
 </div>
 
-
-<!-- ============= MENU LATERAL =============== -->
+<!-- Menu lateral (mantido escondido para compatibilidade) -->
 <div id="sidebar" class="sidebar">
   <span class="menu-close" onclick="closeMenu()">×</span>
   <div class="menu-title">Navegação</div>
@@ -558,45 +585,11 @@ button{
   <div class="menu-item" onclick="location.href='perfil.html'">👤 Perfil</div>
   <div class="menu-item" onclick="location.href='calculadora.html'">📟 Calculadora</div>
 </div>
-
-<!-- ============================ -->
-<!--  PARTE 3 — SCRIPTS FINAIS    -->
-<!-- ============================ -->
 <script src="planos.js"></script>
 
 <script>
-if(!planoTem("outrasEntradas")){
-   // esconde botão / seção "outras entradas"
-   document.addEventListener("DOMContentLoaded", ()=>{
-     const el = document.getElementById("btnOutrasEntradas");
-     if(el) el.style.display="none";
-   });
-}
-</script>
-
-<script>
-/* ====== MENU ====== */
-function openMenu(){
-  document.getElementById("sidebar").classList.add("open");
-}
-function closeMenu(){
-  document.getElementById("sidebar").classList.remove("open");
-}
-
-// trava o clique na aba "Outras Entradas"
-const tabOutras = document.querySelector('[data-tab="outras"]');
-
-tabOutras.addEventListener('click', ()=>{
-    if(!planoTem("outrasEntradas")){
-        alert("Este recurso está disponível somente nos planos Premium e Pro.");
-        location.href = "planos.html"; // opcional
-        return;
-    }
-});
-</script>
-<script>
 /* ====================
-   THEMES (CLARO / ESCURO)
+   THEME (CLARO / ESCURO)
    ==================== */
 function applyTheme(theme){
     if(theme === 'dark'){
@@ -624,6 +617,58 @@ function applyTheme(theme){
 })();
 
 /* ====================
+   MENU LATERAL (se usar)
+   ==================== */
+function openMenu(){
+  const sb = document.getElementById("sidebar");
+  if(sb) sb.classList.add("open");
+}
+function closeMenu(){
+  const sb = document.getElementById("sidebar");
+  if(sb) sb.classList.remove("open");
+}
+
+/* ====================
+   PLANO ATUAL
+   ==================== */
+function getPlanoAtualSeguro(){
+  try{
+    if(typeof getPlano === 'function') return getPlano(); // vindo do planos.js
+  }catch(e){}
+  return (localStorage.getItem("planoAtual") || "free").toLowerCase();
+}
+function isPlanoFree(){
+  return getPlanoAtualSeguro() === "free";
+}
+
+/*
+Regras de período:
+- free:   hoje
+- basico: hoje + semana
+- premium: hoje + semana + mes + periodo
+- pro:    tudo
+*/
+function bloquearSePlanoNaoPermite(tipoPeriodo){
+    const plano = getPlanoAtualSeguro(); // free, basico, premium, pro
+
+    if(tipoPeriodo === 'semana'){
+        if(plano === 'free'){
+            alert("Recurso de período por SEMANA está disponível a partir do plano BÁSICO.");
+            window.location.href = "planos.html";
+            return true;
+        }
+    }
+    if(tipoPeriodo === 'mes' || tipoPeriodo === 'personalizado'){
+        if(plano === 'free' || plano === 'basico'){
+            alert("Recurso de período por MÊS e PERÍODO personalizado está disponível a partir do plano PREMIUM.");
+            window.location.href = "planos.html";
+            return true;
+        }
+    }
+    return false;
+}
+
+/* ====================
    STORAGE & STATE
    ==================== */
 let registros = JSON.parse(localStorage.getItem('entradasSaidas') || '[]');
@@ -633,9 +678,130 @@ const $ = id => document.getElementById(id);
 const formatBRL = v => Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 
 /* ====================
-   TABS
+   ESTADO DO PERÍODO
+   ==================== */
+let periodoAtivo = 'hoje'; // 'hoje' | 'semana' | 'mes' | 'personalizado'
+let dataInicioCustom = null;
+let dataFimCustom = null;
+
+function normalizarData(d){
+    const nd = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    return nd;
+}
+
+function passaFiltroPeriodo(reg){
+    // se não tiver data salva, não filtra (mantém visível)
+    if(!reg.criadoEm) return true;
+
+    const d = new Date(reg.criadoEm);
+    if(isNaN(d.getTime())) return true;
+
+    const hoje = new Date();
+    const hojeNorm = normalizarData(hoje);
+    const dataNorm = normalizarData(d);
+
+    if(periodoAtivo === 'hoje'){
+        return dataNorm.getTime() === hojeNorm.getTime();
+    }
+
+    if(periodoAtivo === 'semana'){
+        // últimos 7 dias (incluindo hoje)
+        const limite = new Date(hojeNorm);
+        limite.setDate(limite.getDate() - 6);
+        return dataNorm >= limite && dataNorm <= hojeNorm;
+    }
+
+    if(periodoAtivo === 'mes'){
+        return (
+            d.getFullYear() === hoje.getFullYear() &&
+            d.getMonth() === hoje.getMonth()
+        );
+    }
+
+    if(periodoAtivo === 'personalizado'){
+        if(!dataInicioCustom || !dataFimCustom) return true;
+        const ini = normalizarData(dataInicioCustom);
+        const fim = normalizarData(dataFimCustom);
+        return dataNorm >= ini && dataNorm <= fim;
+    }
+
+    return true;
+}
+
+function atualizarUIPeriodo(){
+    const legenda = $('legendaPeriodoAtivo');
+    const btnHoje = $('btnPeriodoHoje');
+    const btnSemana = $('btnPeriodoSemana');
+    const btnMes = $('btnPeriodoMes');
+    const btnPers = $('btnPeriodoPersonalizado');
+    const contPers = $('periodoPersonalizadoContainer');
+
+    [btnHoje, btnSemana, btnMes, btnPers].forEach(btn=>{
+        if(!btn) return;
+        btn.classList.remove('active');
+    });
+
+    if(periodoAtivo === 'hoje' && btnHoje) btnHoje.classList.add('active');
+    if(periodoAtivo === 'semana' && btnSemana) btnSemana.classList.add('active');
+    if(periodoAtivo === 'mes' && btnMes) btnMes.classList.add('active');
+    if(periodoAtivo === 'personalizado' && btnPers) btnPers.classList.add('active');
+
+    if(contPers){
+        contPers.style.display = periodoAtivo === 'personalizado' ? 'flex' : 'none';
+    }
+
+    if(legenda){
+        if(periodoAtivo === 'hoje') legenda.innerText = "Mostrando movimentações de hoje.";
+        if(periodoAtivo === 'semana') legenda.innerText = "Mostrando movimentações dos últimos 7 dias.";
+        if(periodoAtivo === 'mes') legenda.innerText = "Mostrando movimentações do mês atual.";
+        if(periodoAtivo === 'personalizado') legenda.innerText = "Mostrando movimentações no período selecionado.";
+    }
+}
+
+function setPeriodo(tipo){
+    if(tipo === 'semana' || tipo === 'mes' || tipo === 'personalizado'){
+        if(bloquearSePlanoNaoPermite(tipo)) return;
+    }
+    periodoAtivo = tipo;
+    atualizarUIPeriodo();
+    mostrarListas();
+}
+
+function aplicarFiltroPersonalizado(){
+    if(bloquearSePlanoNaoPermite('personalizado')) return;
+
+    const iniValue = $('dataInicioFiltro')?.value;
+    const fimValue = $('dataFimFiltro')?.value;
+
+    if(!iniValue || !fimValue){
+        alert("Selecione a data inicial e a data final.");
+        return;
+    }
+    const ini = new Date(iniValue + 'T00:00:00');
+    const fim = new Date(fimValue + 'T23:59:59');
+    if(ini > fim){
+        alert("A data inicial não pode ser maior que a data final.");
+        return;
+    }
+
+    dataInicioCustom = ini;
+    dataFimCustom = fim;
+    periodoAtivo = 'personalizado';
+    atualizarUIPeriodo();
+    mostrarListas();
+}
+
+/* ====================
+   TABS + REGRAS DE PLANO
    ==================== */
 function setActiveTab(name){
+    // Regra de plano: FREE só pode "corridas"
+    if(isPlanoFree() && (name === 'outras' || name === 'saidas')){
+        alert("No plano FREE, apenas a aba 'Entradas (Corridas)' está liberada. Atualize seu plano para liberar todas as funções.");
+        window.location.href = "planos.html";
+        return;
+    }
+
     document.querySelectorAll('.tab').forEach(t=>{
         t.classList.toggle('active', t.getAttribute('data-tab') === name);
     });
@@ -643,16 +809,38 @@ function setActiveTab(name){
     $('form-outras').style.display = name === 'outras' ? 'block' : 'none';
     $('form-saidas').style.display = name === 'saidas' ? 'block' : 'none';
 }
+
 document.querySelectorAll('.tab').forEach(t => {
     t.addEventListener('click', ()=> setActiveTab(t.getAttribute('data-tab')));
 });
-setActiveTab('corridas');
+
+/* Força aba padrão e aplica restrição inicial */
+function aplicarRegrasPlanoCaixa(){
+    setActiveTab('corridas'); // sempre começa em corridas
+    // Se free, mantemos os formulários de outras/saídas escondidos.
+    if(isPlanoFree()){
+        if($('form-outras')) $('form-outras').style.display = 'none';
+        if($('form-saidas')) $('form-saidas').style.display = 'none';
+    }
+}
 
 /* ====================
    MAQUINETAS (modal)
    ==================== */
-function abrirCadastroMaquineta(){ if($('modalMaquineta')){ $('modalMaquineta').style.display='block'; $('modalMaquineta').setAttribute('aria-hidden','false'); } }
-function fecharCadastroMaquineta(){ if($('modalMaquineta')){ $('modalMaquineta').style.display='none'; $('modalMaquineta').setAttribute('aria-hidden','true'); } }
+function abrirCadastroMaquineta(){
+    const m = $('modalMaquineta');
+    if(m){
+        m.style.display='block';
+        m.setAttribute('aria-hidden','false');
+    }
+}
+function fecharCadastroMaquineta(){
+    const m = $('modalMaquineta');
+    if(m){
+        m.style.display='none';
+        m.setAttribute('aria-hidden','true');
+    }
+}
 
 function persistMaquinetas(){ localStorage.setItem('maquinetas', JSON.stringify(maquinetas)); }
 function persist(){ localStorage.setItem('entradasSaidas', JSON.stringify(registros)); }
@@ -661,7 +849,7 @@ function atualizarMaquinetas(selectId){
     const sel = $(selectId);
     if(!sel) return;
     sel.innerHTML = '';
-    maqLoop: for(let i=0;i<maquinetas.length;i++){
+    for(let i=0;i<maquinetas.length;i++){
         const m = maquinetas[i];
         const opt = document.createElement('option');
         opt.value = i;
@@ -853,7 +1041,12 @@ $('btnAdicionarSaida')?.addEventListener('click', ()=>{
    ==================== */
 function escapeHtml(text){
     if(!text) return '';
-    return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,"&#039;");
+    return String(text)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,"&#039;");
 }
 
 function mostrarListas(){
@@ -866,7 +1059,9 @@ function mostrarListas(){
     let totalBrutoEntradas = 0;
     let totalSaidas = 0;
 
-    registros.forEach(r=>{
+    const filtrados = registros.filter(passaFiltroPeriodo);
+
+    filtrados.forEach(r=>{
         const div = document.createElement('div');
         div.className = 'item';
 
@@ -960,27 +1155,20 @@ function limparFormSaida(){
     atualizarMaquinetas('maqOutra');
     atualizarMaquinetas('maqSaida');
 
+    // listeners dos botões de período
+    $('btnPeriodoHoje')?.addEventListener('click', ()=> setPeriodo('hoje'));
+    $('btnPeriodoSemana')?.addEventListener('click', ()=> setPeriodo('semana'));
+    $('btnPeriodoMes')?.addEventListener('click', ()=> setPeriodo('mes'));
+    $('btnPeriodoPersonalizado')?.addEventListener('click', ()=> setPeriodo('personalizado'));
+    $('btnAplicarFiltroDatas')?.addEventListener('click', aplicarFiltroPersonalizado);
+
+    atualizarUIPeriodo();
     mostrarListas();
+    aplicarRegrasPlanoCaixa();
 
-    // link inputs that may not have been bound earlier
-    $('valorBrutoEntrada')?.addEventListener('input', recalcCorrida);
-    $('taxaAppEntrada')?.addEventListener('input', recalcCorrida);
-    $('parcelaEntrada')?.addEventListener('change', recalcCorrida);
-
-    $('valorBrutoOutra')?.addEventListener('input', recalcOutra);
-    $('parcelaOutra')?.addEventListener('change', recalcOutra);
-
-    // Close modal when clicking outside modalBox
+    // fecha modal ao clicar fora da caixa
     document.getElementById('modalMaquineta')?.addEventListener('click', (e)=>{
         if(e.target && e.target.id === 'modalMaquineta') fecharCadastroMaquineta();
-    });
-
-    // ensure the active menu item is correct (for consistency)
-    document.querySelectorAll('.bottom-menu .menu-item').forEach(el=>{
-        el.classList.remove('active');
-        if(el.getAttribute('href') && el.getAttribute('href').includes('entradas.html')){
-            el.classList.add('active');
-        }
     });
 })();
 </script>
