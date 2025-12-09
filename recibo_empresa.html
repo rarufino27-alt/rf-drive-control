@@ -3,378 +3,470 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Recibo Empresa - Fluxo Driver</title>
+<title>Recibo Corporativo - Fluxo Driver</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!-- jsPDF para gerar o PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 :root{
-    --bg:#ffffff;
-    --page-gap:#f3f5f8;
-    --card:#fafbfc;
-    --card-strong:#f0f2f5;
-    --panel:#ffffff;
-    --brand:#0b5bd7;
-    --brand-dark:#073f8a;
-    --text:#0b1115;
-    --muted:#65707a;
-    --radius:14px;
-    --shadow:0 6px 16px rgba(13,30,45,0.07);
-}
-.dark{
-    --bg:#0f1115;
-    --page-gap:#15171c;
-    --card:#181a20;
-    --card-strong:#1d1f27;
-    --panel:#1b1d25;
-    --text:#e5e7eb;
-    --muted:#9ca3af;
-    --brand:#3b82f6;
-    --brand-dark:#2563eb;
-    --shadow:0 6px 16px rgba(0,0,0,0.35);
+  --gold-dark:#d6b25f;
+  --gold-dark2:#e8d08a;
+
+  --gold-light:#90731b;
+  --gold-light2:#b08c2e;
+
+  --bg-dark:#0d0d0d;
+  --text-dark:#f4f4f4;
+  --card-dark:#161616;
+  --border-dark:#242424;
+
+  --bg-light:#f7f7f7;
+  --text-light:#222;
+  --card-light:#ffffff;
+  --border-light:#d6d6d6;
+
+  --radius:14px;
 }
 
-*{ box-sizing:border-box; }
+body.dark{
+  --bg:var(--bg-dark);
+  --text:var(--text-dark);
+  --card:var(--card-dark);
+  --border:var(--border-dark);
+  --gold-main:var(--gold-dark);
+  --gold-main2:var(--gold-dark2);
+}
+body.light{
+  --bg:var(--bg-light);
+  --text:var(--text-light);
+  --card:var(--card-light);
+  --border:var(--border-light);
+  --gold-main:var(--gold-light);
+  --gold-main2:var(--gold-light2);
+}
+
+*{ box-sizing:border-box; font-family:Inter,system-ui; }
+
 body{
-    margin:0;
-    font-family:Inter,Roboto,Arial,sans-serif;
-    background:linear-gradient(180deg,var(--page-gap),var(--bg) 50%);
-    color:var(--text);
-    padding-bottom:160px;
-    padding-top:60px;
+  margin:0; background:var(--bg); color:var(--text);
+  padding-top:70px; padding-bottom:100px;
 }
 
-/* MENU SUPERIOR */
-.top-menu{
-    position:fixed;
-    top:0; left:0;
-    width:100%;
-    background:var(--panel);
-    display:flex;
-    padding:8px;
-    gap:8px;
-    align-items:center;
-    z-index:9999;
-    overflow-x:auto;
-    box-shadow:var(--shadow);
+/* Drawer */
+.drawer{
+  position:fixed; top:0; left:-260px;
+  width:260px; height:100%;
+  background:var(--card); transition:.3s;
+  z-index:9999; padding-top:70px;
 }
-.top-menu button{
-    padding:10px 14px;
-    background:var(--card);
-    border:1px solid rgba(0,0,0,0.08);
-    border-radius:10px;
-    font-weight:700;
-    cursor:pointer;
-    flex-shrink:0;
-    color:var(--text);
+.drawer.open{ left:0; }
+.drawer a{
+  display:block; padding:14px 22px;
+  border-bottom:1px solid var(--border);
+  text-decoration:none; color:var(--text);
 }
 
-/* HEADER */
-header{
-    padding:18px 16px;
-    max-width:980px;
-    margin:0 auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+.drawer-toggle{
+  position:fixed; left:15px; top:15px; z-index:10000;
+  background:var(--gold-main);
+  padding:7px 12px; border-radius:10px; color:#000;
+  font-size:23px; cursor:pointer;
 }
 
-#toggleTheme{
-    background:var(--card-strong);
-    padding:8px 12px;border-radius:10px;
-    border:1px solid rgba(0,0,0,.15);
-    font-weight:700;color:var(--text);
-    cursor:pointer;
+/* theme */
+.theme-toggle{
+  position:fixed; right:15px; top:15px; z-index:10001;
+  background:var(--card); padding:6px 10px; border-radius:10px;
+  font-size:22px; cursor:pointer;
 }
 
-/* CONTAINER */
-.container{max-width:980px;margin:0 auto;padding:0 16px;}
-
-/* TABS */
-.tabs{ display:flex; gap:10px; margin-bottom:16px; }
-.tab{
-    flex:1;text-align:center;padding:12px;background:var(--card);
-    border-radius:var(--radius);font-weight:700;
-    cursor:pointer;color:var(--muted);
-    border:1px solid #d7dce2;transition:.25s;
+/* header */
+.page-header{
+  padding:0 20px 10px;
 }
-.tab.active{
-    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
-    color:#fff;border:none;
+h1{ margin:0; font-size:30px; font-weight:800; color:var(--gold-main);}
+
+/* tabs */
+.tabs{display:flex; gap:10px; margin-top:12px;}
+.tab-btn{
+  flex:1; background:var(--card); border:1px solid var(--border);
+  padding:10px; border-radius:999px; cursor:pointer;
+  font-weight:700; color:var(--text); text-align:center;
+}
+.tab-btn.active{
+  background:linear-gradient(90deg,var(--gold-main),var(--gold-main2));
+  border:none; color:#000;
 }
 
-/* CARD */
+/* container */
+.container{padding:0 20px 20px;}
+
+/* card */
 .card{
-    background:var(--card);
-    border-radius:var(--radius);
-    padding:20px;margin-bottom:18px;
-    border:1px solid #d7dce2;box-shadow:var(--shadow);
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:18px; margin-top:16px;
 }
-.card h3{margin-top:0;margin-bottom:12px;}
+.card h3{margin-top:0;margin-bottom:10px;}
 
-.form input,.form select,.form textarea{
-    width:100%;padding:12px;border-radius:10px;
-    border:1px solid #cfd4da;background:var(--panel);
-    color:var(--text);margin-bottom:12px;font-size:15px;
+label{display:block;margin-top:10px; font-size:13px;}
+input,select,textarea{
+  width:100%; margin-top:6px; padding:11px; border-radius:10px;
+  border:1px solid var(--border); background:var(--card); color:var(--text);
 }
-textarea{resize:vertical;min-height:80px}
+textarea{resize:vertical; min-height:80px;}
+.row{display:flex; flex-wrap:wrap; gap:12px;}
+.col{flex:1; min-width:120px;}
 
-.funcionario-block{
-    background:var(--card-strong);
-    padding:14px;border-radius:12px;margin-bottom:10px;
-}
-
-/* BOTÃO */
 button{
-    width:auto;padding:14px;border:none;border-radius:10px;
-    font-size:15px;font-weight:700;cursor:pointer;
-    background:linear-gradient(135deg,var(--brand),var(--brand-dark));
-    color:#fff;
+  padding:12px; border:none; border-radius:10px;
+  background:linear-gradient(90deg,var(--gold-main),var(--gold-main2));
+  cursor:pointer; font-weight:700; color:#000; margin-top:12px;
+}
+
+/* funcionarios */
+.funcionario-block{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:12px; padding:12px; margin-bottom:12px;
+}
+
+/* tabbar */
+.tabbar{
+  position:fixed; bottom:0; left:0; right:0; height:70px;
+  background:var(--card); border-top:1px solid var(--border);
+  display:flex; justify-content:space-around; align-items:center;
+  z-index:9990;
+}
+.tabbar a{
+  text-decoration:none; color:var(--text);
+  font-size:20px; text-align:center;
+}
+.tabbar small{display:block; font-size:12px;}
+.action-btn{
+  width:58px; height:58px; border-radius:50%;
+  background:linear-gradient(90deg,var(--gold-main),var(--gold-main2));
+  border:none; font-size:26px; margin-top:-35px; color:#000;
 }
 </style>
 </head>
 
-<body>
+<body class="light">
 
-<script>
-// BLOQUEIO SOMENTE PRO
-(function(){
-  const plano = (localStorage.getItem('planoAtual')||'free').toLowerCase();
-  if(plano !== 'pro'){
-     alert("Recibo Empresa é exclusivo do plano PRO.");
-     location.href='planos.html';
-  }
-})();
-</script>
+<div class="drawer-toggle" onclick="toggleDrawer()">☰</div>
+<div id="toggleTheme" class="theme-toggle" onclick="toggleTheme()">🌓</div>
 
-<div class="top-menu">
-  <button onclick="location.href='planos.html'">💎 Planos</button>
-  <button onclick="location.href='perfil.html'">👤 Perfil</button>
-  <button onclick="location.href='index.html'">🏠 Dashboard</button>
-  <button onclick="location.href='entradas.html'">💵 Caixa</button>
-  <button onclick="location.href='resumo.html'">🧮 Resumo</button>
-  <button onclick="location.href='recibo_empresa.html'">🏭 Empresa</button>
-  <button onclick="location.href='recibo_particular.html'">🚘 Particular</button>
-  <button onclick="location.href='manutencao.html'">🛠 Manutenção</button>
-  <button onclick="location.href='calculadora.html'">📟 Calculadora</button>
+<nav class="drawer" id="drawer">
+  <a href="index.html">🏠 Dashboard</a>
+  <a href="entradas.html">💵 Caixa</a>
+  <a href="resumo.html">📊 Resumo</a>
+  <a href="calculadora.html">📟 Calculadora</a>
+  <a href="planos.html">💎 Planos</a>
+  <a href="perfil.html">👤 Perfil</a>
+  <a href="recibo_empresa.html">🏭 Empresas</a>
+  <a href="recibo_particular.html">🚘 Particular</a>
+  <a href="manutencao.html">🛠 Manutenção</a>
+</nav>
+
+<div class="page-header">
+  <h1>Recibo Corporativo</h1>
+  <div class="tabs">
+    <div id="tabCadastro" data-tab="cadastro" class="tab-btn active">Cadastro</div>
+    <div id="tabEmitir" data-tab="emitir" class="tab-btn">Emitir</div>
+    <div id="tabHistorico" data-tab="historico" class="tab-btn">Histórico</div>
+  </div>
 </div>
-
-<header>
-    <div class="brand">
-        <div class="logo">RF Driver</div>
-        <h1 style="margin:0;font-size:30px;font-weight:800">Recibo Empresas</h1>
-    </div>
-    <button id="toggleTheme">🌙</button>
-</header>
 
 <div class="container">
-<!-- TABS -->
-<div class="tabs">
-    <div class="tab active" data-tab="cadastro">Cadastro</div>
-    <div class="tab" data-tab="emitir">Emitir Recibo</div>
-    <div class="tab" data-tab="historico">Histórico</div>
-</div>
+  <!-- ======================
+       ABA CADASTRO
+  ========================= -->
+  <section id="abaCadastro" class="card">
+    <h3>Dados do motorista / empresa</h3>
 
-<!-- =============== TAB - CADASTRO ================= -->
-<div id="tab-cadastro" class="card">
-  <h3>Dados da empresa / motorista</h3>
+    <div class="row">
+      <div class="col">
+        <label>Empresa (opcional)</label>
+        <input id="empresa" type="text">
+      </div>
+      <div class="col">
+        <label>CNPJ (opcional)</label>
+        <input id="cnpj" type="text">
+      </div>
+    </div>
 
-  <div class="form">
-      <input id="empresa" placeholder="Empresa (opcional)">
-      <input id="cnpj" placeholder="CNPJ (opcional)">
-      <input id="motorista" placeholder="Nome do Motorista *">
-      <input id="cpf" placeholder="CPF ou RG *">
-      <input id="marca" placeholder="Marca *">
-      <input id="modelo" placeholder="Modelo *">
-      <input id="placa" placeholder="Placa *">
-      <input id="cor" placeholder="Cor *">
+    <div class="row">
+      <div class="col">
+        <label>Motorista *</label>
+        <input id="motorista" type="text">
+      </div>
+      <div class="col">
+        <label>CPF ou RG *</label>
+        <input id="cpf" type="text">
+      </div>
+    </div>
 
-      <button id="savePerfil">Salvar Dados</button>
-  </div>
-</div>
+    <div class="row">
+      <div class="col">
+        <label>Marca *</label>
+        <input id="marca" type="text">
+      </div>
+      <div class="col">
+        <label>Modelo *</label>
+        <input id="modelo" type="text">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label>Placa *</label>
+        <input id="placa" type="text">
+      </div>
+      <div class="col">
+        <label>Cor *</label>
+        <input id="cor" type="text">
+      </div>
+    </div>
+
+    <button id="btnSalvarCadastro">Salvar Dados</button>
+  </section>
 
 
-<!-- =============== TAB - EMITIR ================= -->
-<div id="tab-emitir" class="card" style="display:none;">
+  <!-- ======================
+       ABA EMITIR
+  ========================= -->
+  <section id="abaEmitir" class="card" style="display:none;">
+    <h3>Dados da viagem</h3>
 
-  <h3>Dados básicos da viagem</h3>
+    <label>Empresa destino *</label>
+    <input id="empresaDestino" type="text">
 
-  <div class="form">
+    <label>Empresa responsável</label>
+    <input id="empresaResponsavel" type="text">
 
-    <input id="empresaDestino" placeholder="Empresa de destino">
-    <input id="empresaResponsavel" placeholder="Empresa responsável pelos funcionários">
-    <input id="solicitante" placeholder="Solicitante">
-    <input id="horaChegada" type="time" placeholder="Horário de chegada">
-    <textarea id="descricao" placeholder="Descrição da viagem / tipo de serviço"></textarea>
+    <label>Solicitante</label>
+    <input id="solicitante" type="text">
 
-    <h3 style="margin-top:20px;">Funcionários</h3>
+    <label>Horário de chegada</label>
+    <input id="horaChegada" type="time">
 
+    <label>Descrição da viagem</label>
+    <textarea id="descricao"></textarea>
+
+    <h3>Funcionários</h3>
     <div id="funcionariosContainer"></div>
 
-    <div style="display:flex; gap:10px;">
-      <button type="button" id="addFuncionarioBtn">+ Adicionar</button>
-      <button type="button" id="removerFuncionarioBtn" style="background:#777;">- Remover</button>
+    <div style="display:flex;gap:10px;">
+      <button type="button" id="btnAddFuncionario">+ Adicionar</button>
+      <button type="button" id="btnRemoveFuncionario" style="background:#aaa;">- Remover</button>
     </div>
 
-    <h3 style="margin-top:20px;">Horários e KM</h3>
+    <h3 style="margin-top:15px;">Horários / KM</h3>
 
-    <input id="horaInicio" type="time" placeholder="Horário inicial">
-    <input id="kmInicial" type="number" placeholder="KM inicial">
-    <input id="horaFim" type="time" placeholder="Horário final">
-    <input id="kmFinal" type="number" placeholder="KM final">
+    <label>Horário início</label>
+    <input id="horaInicio" type="time">
 
-    <div style="margin-top:12px;">
-      <strong>Total KM: </strong><span id="totalKmDisplay">0</span><br>
-      <strong>Espera: </strong><span id="tempoEsperaDisplay">0 min</span><br>
-      <strong>Viagem: </strong><span id="tempoViagemDisplay">0 min</span>
+    <label>KM inicial</label>
+    <input id="kmInicial" type="number">
+
+    <label>Horário final</label>
+    <input id="horaFim" type="time">
+
+    <label>KM final</label>
+    <input id="kmFinal" type="number">
+
+    <div style="margin-top:12px; font-size:14px;">
+      <strong>Total KM:</strong> <span id="totalKmDisplay">0 km</span><br>
+      <strong>Espera:</strong> <span id="tempoEsperaDisplay">0</span><br>
+      <strong>Viagem:</strong> <span id="tempoViagemDisplay">0</span>
     </div>
 
-    <h3 style="margin-top:20px;">Resumo financeiro</h3>
+    <h3 style="margin-top:15px;">Financeiro</h3>
 
-    <input id="valor" type="number" step="0.01" placeholder="Valor total da viagem (R$)">
-    <input id="dataViagem" type="date" placeholder="Data da viagem">
+    <label>Valor total (R$)</label>
+    <input id="valor" type="number" step="0.01">
 
-    <button id="emitirPdf">Gerar PDF</button>
-    <button id="enviarWa" style="background:#128c7e;">Enviar WhatsApp</button>
+    <label>Data da viagem</label>
+    <input id="dataViagem" type="date">
 
-  </div>
+    <button id="btnEmitirPdf">Emitir PDF</button>
+    <button id="btnEnviarWhats" style="background:#128c7e;">Enviar WhatsApp</button>
+  </section>
 
+
+  <!-- ======================
+       ABA HISTÓRICO
+  ========================= -->
+  <section id="abaHistorico" class="card" style="display:none;">
+    <h3>Histórico</h3>
+    <div id="listaRecibos"></div>
+  </section>
+</div> <!-- ./container -->
+
+<!-- MENU INFERIOR IGUAL AS OUTRAS PÁGINAS -->
+<div class="tabbar">
+  <a href="index.html">🏠<small>Home</small></a>
+  <a href="entradas.html">💵<small>Caixa</small></a>
+  <button class="action-btn" onclick="location.href='calculadora.html'">+</button>
+  <a href="resumo.html">📊<small>Resumo</small></a>
+  <a href="perfil.html">👤<small>Perfil</small></a>
 </div>
 
-
-<!-- =============== TAB - HISTÓRICO ================= -->
-<div id="tab-historico" class="card" style="display:none;">
-  <h3>Histórico de recibos</h3>
-  <div id="listaRecibos"></div>
-</div>
+<script src="planos.js"></script>
 
 <script>
-// THEME
-function applyTheme(theme){
-  const btn = document.getElementById("toggleTheme");
-  if(theme === "dark"){
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("theme","dark");
-    if(btn) btn.innerText = "☀️";
-  } else {
-    document.documentElement.classList.remove("dark");
-    localStorage.setItem("theme","light");
-    if(btn) btn.innerText = "🌙";
+/* ===============================
+   BLOQUEIO POR PLANO (FREEMIUM)
+================================= */
+(function(){
+  let p = 'free';
+  try{
+    if(typeof getPlano === 'function'){
+      p = getPlano() || localStorage.getItem('planoAtual') || 'free';
+    }else{
+      p = localStorage.getItem('planoAtual') || 'free';
+    }
+  }catch(e){
+    p = localStorage.getItem('planoAtual') || 'free';
   }
-}
-(function initTheme(){
-  const saved = localStorage.getItem("theme") || "light";
-  applyTheme(saved);
-  const btn = document.getElementById("toggleTheme");
-  if(btn){
-    btn.addEventListener("click", ()=>applyTheme(
-      document.documentElement.classList.contains("dark")?"light":"dark"
-    ));
+  p = (p || 'free').toLowerCase();
+
+  if(p === 'freemium' || p === 'free'){
+    alert("A página Recibo Empresa não está disponível no plano Freemium.");
+    window.location.href = "planos.html";
   }
 })();
-</script>
 
-
-<script>
-// HELPERS
+/* ===============================
+   HELPERS / STORAGE
+================================= */
 const $ = id => document.getElementById(id);
-const RECIBOS_KEY = "recibosViagemEmpresa";
 
-function loadRecibos(){
-  try { return JSON.parse(localStorage.getItem(RECIBOS_KEY) || "[]"); }
-  catch(e){ return []; }
+const RECIBOS_KEY  = "recibosViagemEmpresaRF";
+const PERFIL_KEY   = "perfilReciboEmpresaRF";
+
+function load(key){
+  try{
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  }catch(e){
+    return null;
+  }
 }
-function saveRecibos(list){
-  localStorage.setItem(RECIBOS_KEY, JSON.stringify(list));
+function save(key, value){
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
 function formatDateBr(iso){
   if(!iso) return "-";
   const d = new Date(iso);
-  if(!isNaN(d)){
-    return String(d.getDate()).padStart(2,"0") + "/" +
-           String(d.getMonth()+1).padStart(2,"0") + "/" +
-           d.getFullYear();
-  }
-  return iso;
+  if(isNaN(d)) return iso;
+  const dd = String(d.getDate()).padStart(2,"0");
+  const mm = String(d.getMonth()+1).padStart(2,"0");
+  const yy = d.getFullYear();
+  return `${dd}/${mm}/${yy}`;
 }
 
 function timeToMin(str){
   if(!str) return null;
   const [h,m] = str.split(":").map(Number);
-  if(isNaN(h)||isNaN(m)) return null;
-  return h*60+m;
+  if(isNaN(h) || isNaN(m)) return null;
+  return h*60 + m;
 }
-
 function formatMin(min){
   if(!min || min <= 0) return "0 min";
   const h = Math.floor(min/60);
   const m = min % 60;
-  let out="";
-  if(h>0) out += h+"h";
-  if(h>0 && m>0) out += " ";
-  if(m>0) out += m+"min";
-  return out;
+  let txt = "";
+  if(h>0) txt += h + "h";
+  if(h>0 && m>0) txt += " ";
+  if(m>0) txt += m + "min";
+  return txt;
 }
-</script>
-<script>
-/* ==== TABS ==== */
-function setActiveTab(name){
-  document.querySelectorAll(".tab").forEach(t=>{
-    t.classList.toggle("active", t.dataset.tab === name);
-  });
-  $("tab-cadastro").style.display  = (name === "cadastro" ? "block" : "none");
-  $("tab-emitir").style.display    = (name === "emitir"   ? "block" : "none");
-  $("tab-historico").style.display = (name === "historico"? "block" : "none");
-}
-document.querySelectorAll(".tab").forEach(tab=>{
-  tab.addEventListener("click", ()=> setActiveTab(tab.dataset.tab));
-});
-setActiveTab("emitir");
 
-/* ==== PERFIL ==== */
-function getPerfil(){
-  try { return JSON.parse(localStorage.getItem("perfilReciboEmpresa") || "{}"); }
-  catch(e){ return {}; }
+/* ===============================
+   TEMA (ajustado para body.dark/body.light)
+================================= */
+function applyTheme(theme){
+  const body = document.body;
+  const btn  = $("toggleTheme");
+
+  body.classList.remove("dark","light");
+
+  if(theme === "dark"){
+    body.classList.add("dark");
+    localStorage.setItem("theme","dark");
+    if(btn) btn.innerText = "☀️";
+  } else {
+    body.classList.add("light");
+    localStorage.setItem("theme","light");
+    if(btn) btn.innerText = "🌙";
+  }
 }
-function preencherPerfil(){
-  const p = getPerfil();
-  $("empresa").value   = p.empresa   || "";
-  $("cnpj").value      = p.cnpj      || "";
-  $("motorista").value = p.motorista || "";
-  $("cpf").value       = p.cpf       || "";
-  $("marca").value     = p.marca     || "";
-  $("modelo").value    = p.modelo    || "";
-  $("placa").value     = p.placa     || "";
-  $("cor").value       = p.cor       || "";
-}
-$("savePerfil").addEventListener("click", ()=>{
-  const data = {
-    empresa:   $("empresa").value,
-    cnpj:      $("cnpj").value,
-    motorista: $("motorista").value,
-    cpf:       $("cpf").value,
-    marca:     $("marca").value,
-    modelo:    $("modelo").value,
-    placa:     $("placa").value,
-    cor:       $("cor").value
+
+(function initTheme(){
+  const saved = localStorage.getItem("theme") || "light";
+  applyTheme(saved);
+})();
+
+/* ===============================
+   ABAS
+================================= */
+function setAba(nome){
+  const map = {
+    cadastro: "abaCadastro",
+    emitir: "abaEmitir",
+    historico: "abaHistorico"
   };
-  localStorage.setItem("perfilReciboEmpresa", JSON.stringify(data));
-  alert("Dados salvos!");
-});
-</script>
 
+  ["cadastro","emitir","historico"].forEach(tabName=>{
+    const tabEl = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+    const secId = map[tabName];
+    const secEl = $(secId);
 
-<script>
-/* ==== FUNCIONÁRIOS ==== */
+    if(tabEl) tabEl.classList.toggle("active", tabName === nome);
+    if(secEl) secEl.style.display = (tabName === nome ? "block" : "none");
+  });
+}
+
+/* ===============================
+   PERFIL (CADASTRO)
+================================= */
+function preencherPerfil(){
+  const p = load(PERFIL_KEY) || {};
+  const campos = ["empresa","cnpj","motorista","cpf","marca","modelo","placa","cor"];
+  campos.forEach(id=>{
+    const el = $(id);
+    if(el && p[id] != null) el.value = p[id];
+  });
+}
+
+function salvarPerfil(){
+  const data = {};
+  ["empresa","cnpj","motorista","cpf","marca","modelo","placa","cor"].forEach(id=>{
+    data[id] = ($(id)?.value || "").trim();
+  });
+  save(PERFIL_KEY, data);
+  alert("Dados salvos com sucesso!");
+}
+
+const btnSalvarCadastro = $("btnSalvarCadastro");
+if(btnSalvarCadastro){
+  btnSalvarCadastro.addEventListener("click", salvarPerfil);
+}
+
+/* ===============================
+   FUNCIONÁRIOS
+================================= */
 const funcionariosContainer = $("funcionariosContainer");
 
 function criarBlocoFuncionario(indice){
   const div = document.createElement("div");
   div.className = "funcionario-block";
   div.innerHTML = `
-    <div class="tag-func">Funcionário ${indice}</div>
+    <div class="func-label" style="font-weight:700;margin-bottom:8px;">
+      Funcionário ${indice}
+    </div>
     <label>Nome</label>
     <input type="text" data-field="nome">
     <label>Empresa</label>
@@ -386,51 +478,64 @@ function criarBlocoFuncionario(indice){
   `;
   return div;
 }
-function atualizarIndices(){
-  document.querySelectorAll(".funcionario-block").forEach((b,i)=>{
-    b.querySelector(".tag-func").innerText = "Funcionário " + (i+1);
+
+function atualizarIndicesFuncionarios(){
+  if(!funcionariosContainer) return;
+  const blocks = funcionariosContainer.querySelectorAll(".funcionario-block");
+  blocks.forEach((b,i)=>{
+    const lbl = b.querySelector(".func-label");
+    if(lbl) lbl.textContent = "Funcionário " + (i+1);
   });
 }
+
 function adicionarFuncionario(){
-  const count = document.querySelectorAll(".funcionario-block").length;
-  funcionariosContainer.appendChild(criarBlocoFuncionario(count+1));
-  atualizarIndices();
+  if(!funcionariosContainer) return;
+  const qtd = funcionariosContainer.querySelectorAll(".funcionario-block").length;
+  funcionariosContainer.appendChild(criarBlocoFuncionario(qtd+1));
+  atualizarIndicesFuncionarios();
 }
+
 function removerFuncionario(){
-  const blocks = document.querySelectorAll(".funcionario-block");
-  if(blocks.length>1){
+  if(!funcionariosContainer) return;
+  const blocks = funcionariosContainer.querySelectorAll(".funcionario-block");
+  if(blocks.length > 1){
     blocks[blocks.length-1].remove();
-    atualizarIndices();
+    atualizarIndicesFuncionarios();
   }
 }
-$("addFuncionarioBtn").addEventListener("click", adicionarFuncionario);
-$("removerFuncionarioBtn").addEventListener("click", removerFuncionario);
 
-/* garante um */
-if(!document.querySelector(".funcionario-block")) adicionarFuncionario();
-</script>
+const btnAddFuncionario    = $("btnAddFuncionario");
+const btnRemoveFuncionario = $("btnRemoveFuncionario");
 
+if(btnAddFuncionario)    btnAddFuncionario.addEventListener("click", adicionarFuncionario);
+if(btnRemoveFuncionario) btnRemoveFuncionario.addEventListener("click", removerFuncionario);
 
-<script>
-/* ==== LEITURA ==== */
+// Garante 1 funcionário inicial
+if(funcionariosContainer && !funcionariosContainer.querySelector(".funcionario-block")){
+  adicionarFuncionario();
+}
+
+/* ===============================
+   LEITURA DOS CAMPOS
+================================= */
 function readDados(){
   const d = {
-    empresaDestino:      $("empresaDestino").value,
-    empresaResponsavel:  $("empresaResponsavel").value,
-    solicitante:         $("solicitante").value,
-    horaChegada:         $("horaChegada").value,
-    descricao:           $("descricao").value,
-    horaInicio:          $("horaInicio").value,
-    kmInicial:           $("kmInicial").value,
-    horaFim:             $("horaFim").value,
-    kmFinal:             $("kmFinal").value,
-    valor:               $("valor").value,
-    dataViagem:          $("dataViagem").value,
+    empresaDestino:     $("empresaDestino")?.value || "",
+    empresaResponsavel: $("empresaResponsavel")?.value || "",
+    solicitante:        $("solicitante")?.value || "",
+    horaChegada:        $("horaChegada")?.value || "",
+    descricao:          $("descricao")?.value || "",
+    horaInicio:         $("horaInicio")?.value || "",
+    kmInicial:          $("kmInicial")?.value || "",
+    horaFim:            $("horaFim")?.value || "",
+    kmFinal:            $("kmFinal")?.value || "",
+    valor:              $("valor")?.value || "",
+    dataViagem:         $("dataViagem")?.value || "",
     funcionarios: []
   };
 
   document.querySelectorAll(".funcionario-block").forEach(block=>{
-    const get = f=> block.querySelector(`[data-field="${f}"]`)?.value || "";
+    const get = campo => block.querySelector(`[data-field="${campo}"]`)?.value || "";
     d.funcionarios.push({
       nome:    get("nome"),
       empresa: get("empresa"),
@@ -438,168 +543,273 @@ function readDados(){
       hora:    get("hora")
     });
   });
+
   return d;
 }
-</script>
 
-
-<script>
-/* ==== CÁLCULOS ==== */
+/* ===============================
+   CÁLCULOS KM / TEMPO
+================================= */
 function compute(d){
   const ini = timeToMin(d.horaInicio);
   const fim = timeToMin(d.horaFim);
   const chg = timeToMin(d.horaChegada);
 
   let tempoViagemMin = 0;
-  if(ini!=null && fim!=null){
-    let diff = fim-ini;
-    if(diff<0) diff += 1440;
+  if(ini != null && fim != null){
+    let diff = fim - ini;
+    if(diff < 0) diff += 1440;
     tempoViagemMin = diff;
   }
 
-  let baseEspera=0;
-  if(ini!=null && chg!=null){
-    let diff = ini-chg;
-    if(diff<0) diff+=1440;
-    baseEspera=diff;
+  let tempoEsperaMin = 0;
+  if(ini != null && chg != null){
+    let diff = ini - chg;
+    if(diff < 0) diff += 1440;
+    tempoEsperaMin = diff;
   }
 
-  const tempoEsperaMin = baseEspera;
   const ki = parseFloat(d.kmInicial);
   const kf = parseFloat(d.kmFinal);
-  let totalKm = (!isNaN(ki)&&!isNaN(kf)) ? Math.max(0,kf-ki) : null;
+  let totalKm = null;
+  if(!isNaN(ki) && !isNaN(kf)){
+    totalKm = Math.max(0, kf - ki);
+  }
 
   return {
     tempoViagemMin,
     tempoViagemStr: formatMin(tempoViagemMin),
+    tempoEsperaMin,
     tempoEsperaStr: formatMin(tempoEsperaMin),
     totalKm
   };
 }
+
 function updateUI(){
-  const d = compute(readDados());
-  $("tempoViagemDisplay").innerText = d.tempoViagemStr;
-  $("tempoEsperaDisplay").innerText = d.tempoEsperaStr;
-  $("totalKmDisplay").innerText = d.totalKm!=null ? (d.totalKm+" km") : "-";
+  const dados = readDados();
+  const res   = compute(dados);
+
+  const elViagem  = $("tempoViagemDisplay");
+  const elEspera  = $("tempoEsperaDisplay");
+  const elTotalKm = $("totalKmDisplay");
+
+  if(elViagem)  elViagem.textContent  = res.tempoViagemStr;
+  if(elEspera)  elEspera.textContent  = res.tempoEsperaStr;
+  if(elTotalKm) elTotalKm.textContent = (res.totalKm != null ? res.totalKm + " km" : "-");
 }
-["horaChegada","horaInicio","horaFim","kmInicial","kmFinal"].forEach(id=>{
-  $(id).addEventListener("input", updateUI);
-});
-</script>
 
-
-<script>
-/* ==== HISTÓRICO ==== */
-function renderHistorico(){
-  const lista = $("listaRecibos");
-  const recs = loadRecibos();
-  if(!recs.length){
-    lista.innerHTML = "<div style='color:#65707a;font-size:13px'>Nenhum recibo emitido.</div>";
-    return;
-  }
-  lista.innerHTML = recs.map(r=>`
-    <div class="hist-item">
-      <div>
-        <strong>${formatDateBr(r.dataViagem)}</strong><br>
-        <span style='font-size:12px;'>${r.empresaDestino||"-"}</span>
-      </div>
-    </div>
-  `).join("");
-}
-</script>
-
-
-<script>
-/* ==== PDF (PRO somente) ==== */
-function gerarPdf(d, perfil, res){
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  doc.text("RECIBO DE VIAGEM (Empresa)", 10, 10);
-  doc.text("Motorista: "+(perfil.motorista||""),10,20);
-  doc.text("Empresa destino: "+(d.empresaDestino||""),10,30);
-  doc.text("Data: "+formatDateBr(d.dataViagem),10,40);
-  doc.text("Total km: "+(res.totalKm||"-"),10,50);
-  doc.save("recibo_empresa.pdf");
-}
-</script>
-
-
-<script>
-/* ==== EMITIR ==== */
-$("emitirPdf").addEventListener("click", ()=>{
-  const plano = (localStorage.getItem("planoAtual")||"free").toLowerCase();
-  if(plano!=="pro"){ alert("Esta função é exclusiva do plano PRO."); return; }
-
-  const perfil = getPerfil();
-  const d = readDados();
-  const r = compute(d);
-
-  if(!d.empresaDestino){ alert("Informe a empresa de destino."); return; }
-  const temFunc = (d.funcionarios||[]).some(f=>f.nome);
-  if(!temFunc){ alert("Informe pelo menos um funcionário."); return; }
-
-  gerarPdf(d, perfil, r);
-
-  const recs = loadRecibos();
-  recs.unshift({
-    id:Date.now(),
-    empresaDestino:d.empresaDestino,
-    dataViagem:d.dataViagem,
-    dados:d
-  });
-  saveRecibos(recs);
-  renderHistorico();
-  setActiveTab("historico");
-});
-</script>
-
-
-<script>
-/* ==== WhatsApp (PRO somente) ==== */
-$("enviarWa").addEventListener("click", ()=>{
-  const plano = (localStorage.getItem("planoAtual")||"free").toLowerCase();
-  if(plano!=="pro"){ alert("Envio por WhatsApp exclusivo do PRO."); return; }
-
-  const d = readDados();
-  const msg = `RECIBO EMPRESA
-Destino: ${d.empresaDestino||"-"}
-Data: ${formatDateBr(d.dataViagem)}
-Valor: ${d.valor}`;
-
-  window.open("https://wa.me/?text="+encodeURIComponent(msg));
-});
-</script>
-
-
-<script>
-/* ==== BOOT ==== */
-document.addEventListener("DOMContentLoaded", ()=>{
-  preencherPerfil();
-  updateUI();
-  renderHistorico();
-});
-</script>
-<script>
-/* ============================
-   EVENTOS DE INPUT (RECALC)
-   ============================ */
+// Eventos para recalcular
 ["horaChegada","horaInicio","horaFim","kmInicial","kmFinal"].forEach(id=>{
   const el = $(id);
   if(el) el.addEventListener("input", updateUI);
 });
 
-/* ============================
-   BOOT INICIAL
-   ============================ */
-document.addEventListener("DOMContentLoaded", ()=>{
-  // garante pelo menos 1 funcionário
-  if(!document.querySelector(".funcionario-block")){
-    adicionarFuncionario();
+/* ===============================
+   HISTÓRICO
+================================= */
+function renderHistorico(){
+  const box = $("listaRecibos");
+  if(!box) return;
+
+  const recs = load(RECIBOS_KEY) || [];
+  if(!recs.length){
+    box.innerHTML = "<div style='color:var(--muted);font-size:13px;'>Nenhum recibo emitido até o momento.</div>";
+    return;
   }
+
+  box.innerHTML = "";
+  recs.forEach(r=>{
+    const item = document.createElement("div");
+    item.style.borderRadius = "10px";
+    item.style.border = "1px solid #d7dce2";
+    item.style.padding = "10px";
+    item.style.marginBottom = "8px";
+    item.style.fontSize = "13px";
+    item.innerHTML = `
+      <div style="font-weight:700;">${formatDateBr(r.dataViagem)}</div>
+      <div>${r.empresaDestino || "-"}</div>
+      <div style="opacity:.7;">Motorista: ${r.motorista || "-"}</div>
+      <div style="opacity:.7;">Valor: ${r.valor ? "R$ " + Number(r.valor).toFixed(2).replace(".",",") : "-"}</div>
+    `;
+    box.appendChild(item);
+  });
+}
+
+/* ===============================
+   PDF (jsPDF)
+================================= */
+function gerarPdf(d, perfil, res){
+  if(!window.jspdf || !window.jspdf.jsPDF){
+    alert("Biblioteca de PDF não carregada.");
+    return;
+  }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let y = 10;
+  doc.setFontSize(14);
+  doc.text("RECIBO DE VIAGEM - EMPRESA", 10, y); y += 8;
+
+  doc.setFontSize(11);
+  doc.text("Motorista: " + (perfil.motorista || ""), 10, y); y += 6;
+  doc.text("Documento: " + (perfil.cpf || ""), 10, y); y += 6;
+  doc.text("Veículo: " + (perfil.marca || "") + " " + (perfil.modelo || ""), 10, y); y += 6;
+  doc.text("Placa: " + (perfil.placa || "") + " - Cor: " + (perfil.cor || ""), 10, y); y += 8;
+
+  doc.text("Empresa destino: " + (d.empresaDestino || ""), 10, y); y += 6;
+  doc.text("Empresa responsável: " + (d.empresaResponsavel || ""), 10, y); y += 6;
+  doc.text("Solicitante: " + (d.solicitante || ""), 10, y); y += 6;
+  doc.text("Data: " + formatDateBr(d.dataViagem || new Date().toISOString().slice(0,10)), 10, y); y += 8;
+
+  doc.text("Descrição:", 10, y); y += 6;
+  const splitDesc = doc.splitTextToSize(d.descricao || "", 180);
+  doc.text(splitDesc, 10, y);
+  y += splitDesc.length * 5 + 4;
+
+  doc.text("Funcionários:", 10, y); y += 6;
+  (d.funcionarios || []).forEach((f,idx)=>{
+    if(!(f.nome || "").trim()) return;
+    const linha = `${idx+1}. ${f.nome} - ${f.empresa || ""} - ${f.local || ""} (${f.hora || ""})`;
+    const lines = doc.splitTextToSize(linha, 180);
+    doc.text(lines, 10, y);
+    y += lines.length * 5;
+    if(y > 270){
+      doc.addPage();
+      y = 10;
+    }
+  });
+
+  y += 4;
+  if(y > 260){ doc.addPage(); y = 10; }
+
+  doc.text("KM inicial: " + (d.kmInicial || "-") + "   KM final: " + (d.kmFinal || "-") + "   Total: " + (res.totalKm != null ? res.totalKm + " km" : "-"), 10, y); y += 6;
+  doc.text("Tempo de espera: " + res.tempoEsperaStr + "   Tempo de viagem: " + res.tempoViagemStr, 10, y); y += 10;
+
+  const valorNumber = Number(d.valor || 0);
+  doc.setFontSize(12);
+  doc.text("Valor total: R$ " + valorNumber.toFixed(2).replace(".",","), 10, y); y += 20;
+
+  doc.text("__________________________________", 10, y); y += 6;
+  doc.text("Assinatura do responsável", 10, y);
+
+  doc.save("recibo_empresa.pdf");
+}
+
+/* ===============================
+   EMITIR / WHATSAPP
+================================= */
+const btnEmitirPdf   = $("btnEmitirPdf");
+const btnWhats       = $("btnEnviarWhats");
+
+if(btnEmitirPdf){
+  btnEmitirPdf.addEventListener("click", ()=>{
+    let p = (localStorage.getItem("planoAtual") || "free").toLowerCase();
+    try{
+      if(typeof getPlano === "function"){
+        p = (getPlano() || p).toLowerCase();
+      }
+    }catch(e){}
+    if(p === "freemium" || p === "free"){
+      alert("Função de PDF não disponível no plano Freemium.");
+      return;
+    }
+
+    const perfil = load(PERFIL_KEY) || {};
+    const d      = readDados();
+    const res    = compute(d);
+
+    if(!(d.empresaDestino || "").trim()){
+      alert("Informe a empresa destino.");
+      return;
+    }
+    const temFunc = (d.funcionarios || []).some(f => (f.nome || "").trim());
+    if(!temFunc){
+      alert("Informe pelo menos um funcionário.");
+      return;
+    }
+
+    gerarPdf(d, perfil, res);
+
+    const recs = load(RECIBOS_KEY) || [];
+    recs.unshift({
+      id: Date.now(),
+      empresaDestino: d.empresaDestino,
+      dataViagem: d.dataViagem || new Date().toISOString().slice(0,10),
+      valor: d.valor || "",
+      motorista: perfil.motorista || ""
+    });
+    save(RECIBOS_KEY, recs);
+    renderHistorico();
+    setAba("historico");
+  });
+}
+
+if(btnWhats){
+  btnWhats.addEventListener("click", ()=>{
+    let p = (localStorage.getItem("planoAtual") || "free").toLowerCase();
+    try{
+      if(typeof getPlano === "function"){
+        p = (getPlano() || p).toLowerCase();
+      }
+    }catch(e){}
+    if(p === "freemium" || p === "free"){
+      alert("Envio por WhatsApp não disponível no plano Freemium.");
+      return;
+    }
+
+    const perfil = load(PERFIL_KEY) || {};
+    const d      = readDados();
+    const res    = compute(d);
+
+    const dataStr = formatDateBr(d.dataViagem || new Date().toISOString().slice(0,10));
+    const valorNumber = Number(d.valor || 0);
+
+    let msg = `RECIBO EMPRESA%0A`;
+    msg += `Destino: ${d.empresaDestino || "-"}%0A`;
+    msg += `Data: ${dataStr}%0A`;
+    msg += `Motorista: ${perfil.motorista || "-"}%0A`;
+    msg += `Total KM: ${res.totalKm != null ? res.totalKm + " km" : "-"}%0A`;
+    msg += `Valor: R$ ${valorNumber.toFixed(2).replace(".",",")}%0A%0A`;
+    msg += `Funcionários:%0A`;
+    (d.funcionarios || []).forEach((f,i)=>{
+      if(!(f.nome || "").trim()) return;
+      msg += `${i+1}. ${f.nome} - ${f.empresa || ""} - ${f.local || ""} (${f.hora || ""})%0A`;
+    });
+
+    window.open("https://wa.me/?text=" + msg, "_blank");
+  });
+}
+
+/* ===============================
+   BOOT INICIAL
+================================= */
+(function boot(){
   preencherPerfil();
   updateUI();
   renderHistorico();
-});
+  // Começar direto na aba Emitir (rotina)
+  setAba("emitir");
+})();
+</script>
+
+<script>
+// Drawer
+function toggleDrawer(){
+  const dr = document.getElementById('drawer');
+  dr.classList.toggle('open');
+}
+
+// Theme toggle usando applyTheme e body.dark/light
+function toggleTheme(){
+  const isDark = document.body.classList.contains("dark");
+  const newTheme = isDark ? "light" : "dark";
+  applyTheme(newTheme);
+}
+
+// Tabs pelo id (garantia)
+document.getElementById("tabCadastro").addEventListener("click", ()=>setAba("cadastro"));
+document.getElementById("tabEmitir").addEventListener("click",   ()=>setAba("emitir"));
+document.getElementById("tabHistorico").addEventListener("click",()=>setAba("historico"));
 </script>
 
 </body>
